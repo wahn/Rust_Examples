@@ -8,10 +8,9 @@ fn sum_first_then_divide(slice: &[uint]) -> f32 {
     for i in range(0u, len) {
         sum += slice[i];
     }
-    let mut fsum = sum as f32;
+    let fsum = sum as f32;
     let flen = len as f32;
-    fsum = fsum / flen;
-    return fsum;
+    fsum / flen
 }
 
 fn recursive_sum(slice: &[uint]) -> f32 {
@@ -36,7 +35,7 @@ fn recursive_sum(slice: &[uint]) -> f32 {
             sum = f1 * recursive_sum(slice.slice(0, len-1)) + f2 * slm1;
         },
     };
-    return sum;
+    sum
 }
 
 fn do_sequential(id: uint) {
