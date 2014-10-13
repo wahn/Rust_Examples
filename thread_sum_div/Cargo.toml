@@ -1,0 +1,5 @@
+[package]
+
+name = "thread_sum_div"
+version = "0.0.1"
+authors = ["Jan Walter <jan@janwalter.com>"]
