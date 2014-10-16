@@ -1,6 +1,6 @@
 use std::rand;
 
-static NTASKS: uint = 20;
+static NTASKS: uint = 8;
 
 fn sum_first_then_divide(slice: &[uint]) -> f32 {
     let len = slice.len();
@@ -11,6 +11,16 @@ fn sum_first_then_divide(slice: &[uint]) -> f32 {
     let fsum = sum as f32;
     let flen = len as f32;
     fsum / flen
+}
+
+fn divide_while_summing_up(slice: &[uint]) -> f32 {
+    let len = slice.len();
+    let flen = len as f32;
+    let mut sum = 0f32;
+    for i in range(0u, len) {
+        sum += (slice[i] as f32) / flen;
+    }
+    sum
 }
 
 fn recursive_sum(slice: &[uint]) -> f32 {
@@ -50,10 +60,13 @@ fn do_sequential(id: uint) {
         // sum1
         let sum1 = sum_first_then_divide(b);
         // sum2
-        let sum2 = recursive_sum(b);
+        let sum2 = divide_while_summing_up(b);
+        // sum3
+        let sum3 = recursive_sum(b);
         if i % 1000u == 0u {
             println!("({}, {}): sum1 = {}", id, i, sum1);
             println!("({}, {}): sum2 = {}", id, i, sum2);
+            println!("({}, {}): sum3 = {}", id, i, sum3);
         }
     }
 }
