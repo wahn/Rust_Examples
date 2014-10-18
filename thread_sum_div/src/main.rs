@@ -1,5 +1,9 @@
-use std::rand;
+extern crate test;
 
+use std::rand;
+use test::Bencher;
+
+#[cfg(not(test))]
 static NTASKS: uint = 8;
 
 fn sum_first_then_divide(slice: &[uint]) -> f32 {
@@ -48,6 +52,7 @@ fn recursive_sum(slice: &[uint]) -> f32 {
     sum
 }
 
+#[cfg(not(test))]
 fn do_sequential(id: uint) {
     // create array (filled with zeros)
     let mut a = [0u, ..7000u];
@@ -71,6 +76,7 @@ fn do_sequential(id: uint) {
     }
 }
 
+#[cfg(not(test))]
 fn do_in_parallel() {
     for p in range(0u, NTASKS) {
         spawn(proc() {
@@ -79,9 +85,53 @@ fn do_in_parallel() {
     }
 }
 
+#[cfg(not(test))]
 fn main() {
     println!("do_sequential()");
     do_sequential(0);
     println!("do_in_parallel()");
     do_in_parallel();
 }
+
+#[bench]
+fn bench_sum1(b: &mut Bencher) {
+    // create array (filled with zeros)
+    let mut a = [0u, ..7000u];
+    // fill array (randomly) with values in [0,99]
+    for i in range(0u, 7000u) {
+        a[i] = rand::random::<uint>() % 1000u;
+    }
+    let nma = a; // non-mutable copy
+    b.iter(|| {
+        sum_first_then_divide(nma)
+    })
+}
+
+#[bench]
+fn bench_sum2(b: &mut Bencher) {
+    // create array (filled with zeros)
+    let mut a = [0u, ..7000u];
+    // fill array (randomly) with values in [0,99]
+    for i in range(0u, 7000u) {
+        a[i] = rand::random::<uint>() % 1000u;
+    }
+    let nma = a; // non-mutable copy
+    b.iter(|| {
+        divide_while_summing_up(nma)
+    })
+}
+
+#[bench]
+fn bench_sum3(b: &mut Bencher) {
+    // create array (filled with zeros)
+    let mut a = [0u, ..7000u];
+    // fill array (randomly) with values in [0,99]
+    for i in range(0u, 7000u) {
+        a[i] = rand::random::<uint>() % 1000u;
+    }
+    let nma = a; // non-mutable copy
+    b.iter(|| {
+        recursive_sum(nma)
+    })
+}
+
