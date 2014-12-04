@@ -33,15 +33,13 @@ fn main() {
                 Err(why) => fail!("couldn't open {}: {}", display, why.desc),
                 Ok(_) => (),
             }
-            println!("bytes read: {}{}{}{}{}{}{}", 
-                     buf[0] as char,
-                     buf[1] as char,
-                     buf[2] as char,
-                     buf[3] as char,
-                     buf[4] as char,
-                     buf[5] as char,
-                     buf[6] as char);
-            // TODO: assert 7 bytes read are "BLENDER"
+            // pack those 7 bytes into a string ...
+            let mut string = String::new();
+            for n in range(0u, 7) {
+                string.push(buf[n] as char);
+            }
+            // ... to be able to compare them
+            println!("First 7 bytes match \"BLENDER\"? {}", string == String::from_str("BLENDER"));
         } // file gets closed here
         // code below is temporary
         let z = Complex { re: -1.0, im: 0.0 };
