@@ -28,27 +28,30 @@ fn main() {
         let slice: &str = args[1].as_slice();
         println!("open \"{}\" ...", slice);
         {
-            // read 7 bytes from the Blender file
+            // read 12 bytes from the Blender file
             let path = Path::new(slice);
             let display = path.display();
             let mut file = match File::open(&path) {
                 Err(why) => fail!("couldn't open {}: {}", display, why.desc),
                 Ok(file) => file,
             };
-            let mut buf = [0u8, ..7];
+            let mut buf = [0u8, ..12];
             match file.read(buf) {
                 Err(why) => fail!("couldn't open {}: {}", display, why.desc),
                 Ok(_) => (),
             }
-            // pack those 7 bytes into a string ...
-            let mut string = String::new();
-            for n in range(0u, 7) {
-                string.push(buf[n] as char);
+            // pack those 12 bytes into a string ...
+            let mut header = String::new();
+            for n in range(0u, 12) {
+                header.push(buf[n] as char);
             }
             // ... to be able to compare them
-            if string == String::from_str("BLENDER") {
+            let slice = header.as_slice();
+            let blender: &str = slice.slice(0, 7); // first 7 chars
+            if blender == "BLENDER" {
                 println!("INFO: a Blender file.");
                 println!("size of pointer in bytes: {}", pointer_size());
+                println!("Header (12 chars): {}", header);
             } else {
                 println!("ERROR: not a Blender file.");
             }
