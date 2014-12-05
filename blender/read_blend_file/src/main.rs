@@ -1,6 +1,7 @@
 use std::io::File;
-use std::os;
 use std::fmt;
+use std::mem;
+use std::os;
 
 #[repr(C)]
 struct Complex {
@@ -11,6 +12,12 @@ struct Complex {
 #[link(name = "m")]
 extern {
     fn csqrtf(z: Complex) -> Complex;
+}
+
+fn pointer_size() -> uint {
+    let tmp = 0u8;
+    let boxed = box tmp;
+    mem::size_of_val(&boxed)
 }
 
 fn main() {
@@ -39,7 +46,12 @@ fn main() {
                 string.push(buf[n] as char);
             }
             // ... to be able to compare them
-            println!("First 7 bytes match \"BLENDER\"? {}", string == String::from_str("BLENDER"));
+            if string == String::from_str("BLENDER") {
+                println!("INFO: a Blender file.");
+                println!("size of pointer in bytes: {}", pointer_size());
+            } else {
+                println!("ERROR: not a Blender file.");
+            }
         } // file gets closed here
         // code below is temporary
         let z = Complex { re: -1.0, im: 0.0 };
