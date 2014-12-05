@@ -50,8 +50,23 @@ fn main() {
             let blender: &str = slice.slice(0, 7); // first 7 chars
             if blender == "BLENDER" {
                 println!("INFO: a Blender file.");
-                println!("size of pointer in bytes: {}", pointer_size());
+                let ptr_size = pointer_size();
+                println!("size of pointer in bytes: {}", ptr_size);
                 println!("Header (12 chars): {}", header);
+                let mut ptr_size_differs = false;
+                if buf[7] as char == '_' {
+                    // 32-bit pointers expected
+                    if ptr_size != 4 {
+                        ptr_size_differs = true;
+                    }
+                    println!("32-bit pointers in file, pointer size differs? {}", ptr_size_differs);
+                } else {
+                    // 64-bit pointers expected
+                    if ptr_size != 8 {
+                        ptr_size_differs = true;
+                    }
+                    println!("64-bit pointers in file, pointer size differs? {}", ptr_size_differs);
+                }
             } else {
                 println!("ERROR: not a Blender file.");
             }
