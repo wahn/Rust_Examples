@@ -1,17 +1,29 @@
+extern crate libc;
+
+use libc::types;
 use std::io::File;
 use std::fmt;
 use std::mem;
 use std::os;
 
-#[repr(C)]
-struct Complex {
-    re: f32,
-    im: f32,
+#[link(name = "z")]
+extern {
+    fn gzopen(path: *const types::os::arch::c95::c_char,
+              mode: *const types::os::arch::c95::c_char)
+              -> types::common::c95::c_void;
 }
 
-#[link(name = "m")]
+#[link(name = "z")]
 extern {
-    fn csqrtf(z: Complex) -> Complex;
+    fn gzread(file: types::common::c95::c_void,
+              buf:  types::common::c95::c_void,
+              len:  uint)
+              -> int;
+}
+
+#[link(name = "z")]
+extern {
+    fn gzclose(file: types::common::c95::c_void) -> int;
 }
 
 fn pointer_size() -> uint {
@@ -98,21 +110,5 @@ fn main() {
                 println!("ERROR: not a Blender file.");
             }
         } // file gets closed here
-        // code below is temporary
-        let z = Complex { re: -1.0, im: 0.0 };
-        let z_sqrt = unsafe {
-            csqrtf(z)
-        };
-        println!("the square root of {} is {}", z, z_sqrt);
-    }
-}
-
-impl fmt::Show for Complex {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        if self.im < 0. {
-            write!(f, "{}-{}i", self.re, -self.im)
-        } else {
-            write!(f, "{}+{}i", self.re, self.im)
-        }
     }
 }
