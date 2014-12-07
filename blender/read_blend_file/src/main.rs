@@ -67,6 +67,33 @@ fn main() {
                     }
                     println!("64-bit pointers in file, pointer size differs? {}", ptr_size_differs);
                 }
+                // little endian or big endian?
+                let mut l_endian;
+                let endian_test = 1u16; // value one stored in two bytes
+                if endian_test.to_le() != endian_test {
+                    l_endian = false;
+                } else {
+                    // if we are on a little endian machine to_le() is a no-op
+                    l_endian = true;
+                }
+                println!("l_endian = {}", l_endian);
+                let mut switch_endian;
+                if buf[8] as char == 'v' {
+                    // file stores little endian
+                    if !l_endian {
+                        switch_endian = true;
+                    } else {
+                        switch_endian = false;
+                    }
+                } else {
+                    // file stores big endian
+                    if l_endian {
+                        switch_endian = true;
+                    } else {
+                        switch_endian = false;
+                    }
+                }
+                println!("switch_endian = {}", switch_endian);
             } else {
                 println!("ERROR: not a Blender file.");
             }
