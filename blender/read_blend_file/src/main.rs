@@ -1,30 +1,31 @@
-extern crate libc;
+// extern crate libc;
 
-use libc::types;
+// use libc::types;
 use std::io::File;
-use std::fmt;
 use std::mem;
 use std::os;
 
-#[link(name = "z")]
-extern {
-    fn gzopen(path: *const types::os::arch::c95::c_char,
-              mode: *const types::os::arch::c95::c_char)
-              -> types::common::c95::c_void;
-}
+// https://stackoverflow.com/questions/24633784/is-there-a-gzip-library-available-for-rust
 
-#[link(name = "z")]
-extern {
-    fn gzread(file: types::common::c95::c_void,
-              buf:  types::common::c95::c_void,
-              len:  uint)
-              -> int;
-}
+// #[link(name = "z")]
+// extern {
+//     fn gzopen(path: *const types::os::arch::c95::c_char,
+//               mode: *const types::os::arch::c95::c_char)
+//               -> types::common::c95::c_void;
+// }
 
-#[link(name = "z")]
-extern {
-    fn gzclose(file: types::common::c95::c_void) -> int;
-}
+// #[link(name = "z")]
+// extern {
+//     fn gzread(file: types::common::c95::c_void,
+//               buf:  types::common::c95::c_void,
+//               len:  uint)
+//               -> int;
+// }
+
+// #[link(name = "z")]
+// extern {
+//     fn gzclose(file: types::common::c95::c_void) -> int;
+// }
 
 fn pointer_size() -> uint {
     let tmp = 0u8;
