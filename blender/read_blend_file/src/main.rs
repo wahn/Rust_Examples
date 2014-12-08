@@ -107,6 +107,12 @@ fn main() {
                     }
                 }
                 println!("switch_endian = {}", switch_endian);
+                // get the version number
+                let mut num = String::new();
+                for n in range(9u, 12) {
+                    num.push(buf[n] as char);
+                }
+                println!("num = {}", num);
             } else {
                 println!("ERROR: not a Blender file.");
             }
