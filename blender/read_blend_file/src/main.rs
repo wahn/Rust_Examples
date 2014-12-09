@@ -155,9 +155,9 @@ fn main() {
                             }
                         }
                         // read remaining stuff
-                        file.read_exact(len - counter);
+                        let _dummy = file.read_exact(len - counter);
                     } else {
-                        file.read_exact(len);
+                        let _dummy = file.read_exact(len);
                     }
                 }
             } else {
