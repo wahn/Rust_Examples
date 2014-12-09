@@ -130,16 +130,15 @@ fn main() {
                     let code: &str = slice.slice(0, 4); // first 4 chars
                     println!("code = {}", code);
                     let mut len: uint = 0;
-                    println!("bhead8[4] = {}", bhead8[4] as uint);
-                    println!("bhead8[5] = {}", bhead8[5] as uint);
-                    println!("bhead8[6] = {}", bhead8[6] as uint);
-                    println!("bhead8[7] = {}", bhead8[7] as uint);
                     len += (bhead8[4] as uint) <<  0;
                     len += (bhead8[5] as uint) <<  8;
                     len += (bhead8[6] as uint) << 16;
                     len += (bhead8[7] as uint) << 24;
                     println!("len = {}", len);
                     file.read_exact(len);
+                    if code == "ENDB" && len == 0 {
+                        break;
+                    }
                 }
             } else {
                 println!("ERROR: not a Blender file.");
