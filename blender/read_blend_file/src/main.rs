@@ -27,7 +27,7 @@ fn main() {
             };
             let mut buf = [0u8, ..12];
             match file.read(buf) {
-                Err(why) => fail!("couldn't read {}: {}", display, why.desc),
+                Err(why) => println!("{}", why),
                 Ok(_) => (),
             }
             // pack those 12 bytes into a string ...
@@ -95,8 +95,7 @@ fn main() {
                     // read_file_dna
                     let mut bhead8 = [0u8, ..24]; // 4 * int + 64-bit pointer
                     match file.read(bhead8) {
-                        Err(why) => fail!("couldn't read {}: {}",
-                                          display, why.desc),
+                        Err(why) => println!("{}", why),
                         Ok(_) => (),
                     }
                     // pack those 24 bytes into a string ...
@@ -121,8 +120,7 @@ fn main() {
                         // SDNA
                         let mut char4 = [0u8, ..4];
                         match file.read(char4) {
-                            Err(why) => fail!("couldn't read {}: {}",
-                                              display, why.desc),
+                            Err(why) => println!("{}", why),
                             Ok(_) => (),
                         }
                         counter += 4;
@@ -137,8 +135,7 @@ fn main() {
                             // NAME
                             let mut char4 = [0u8, ..4];
                             match file.read(char4) {
-                                Err(why) => fail!("couldn't read {}: {}",
-                                                  display, why.desc),
+                                Err(why) => println!("{}", why),
                                 Ok(_) => (),
                             }
                             counter += 4;
@@ -153,8 +150,7 @@ fn main() {
                                 // nr_names
                                 let mut char4 = [0u8, ..4];
                                 match file.read(char4) {
-                                    Err(why) => fail!("couldn't read {}: {}",
-                                                      display, why.desc),
+                                    Err(why) => println!("{}", why),
                                     Ok(_) => (),
                                 }
                                 counter += 4;
