@@ -95,7 +95,8 @@ fn main() {
                     // read_file_dna
                     let mut bhead8 = [0u8, ..24]; // 4 * int + 64-bit pointer
                     match file.read(bhead8) {
-                        Err(why) => fail!("couldn't open {}: {}", display, why.desc),
+                        Err(why) => fail!("couldn't read {}: {}",
+                                          display, why.desc),
                         Ok(_) => (),
                     }
                     // pack those 24 bytes into a string ...
@@ -112,9 +113,63 @@ fn main() {
                     len += (bhead8[6] as uint) << 16;
                     len += (bhead8[7] as uint) << 24;
                     println!("len = {}", len);
-                    file.read_exact(len);
                     if code == "ENDB" && len == 0 {
                         break;
+                    } else if code == "DNA1" {
+                        // DNA_sdna_from_data
+                        let mut counter = 0u;
+                        // SDNA
+                        let mut char4 = [0u8, ..4];
+                        match file.read(char4) {
+                            Err(why) => fail!("couldn't read {}: {}",
+                                              display, why.desc),
+                            Ok(_) => (),
+                        }
+                        counter += 4;
+                        let mut str4 = String::new();
+                        for n in range(0u, 4) {
+                            str4.push(char4[n] as char);
+                        }
+                        let slice = str4.as_slice();
+                        let code: &str = slice.slice(0, 4);
+                        println!("  code = {}", code);
+                        if code == "SDNA" {
+                            // NAME
+                            let mut char4 = [0u8, ..4];
+                            match file.read(char4) {
+                                Err(why) => fail!("couldn't read {}: {}",
+                                                  display, why.desc),
+                                Ok(_) => (),
+                            }
+                            counter += 4;
+                            let mut str4 = String::new();
+                            for n in range(0u, 4) {
+                                str4.push(char4[n] as char);
+                            }
+                            let slice = str4.as_slice();
+                            let code: &str = slice.slice(0, 4);
+                            println!("  code = {}", code);
+                            if code == "NAME" {
+                                // nr_names
+                                let mut char4 = [0u8, ..4];
+                                match file.read(char4) {
+                                    Err(why) => fail!("couldn't read {}: {}",
+                                                      display, why.desc),
+                                    Ok(_) => (),
+                                }
+                                counter += 4;
+                                let mut nr_names: uint = 0;
+                                nr_names += (char4[0] as uint) <<  0;
+                                nr_names += (char4[1] as uint) <<  8;
+                                nr_names += (char4[2] as uint) << 16;
+                                nr_names += (char4[3] as uint) << 24;
+                                println!("  nr_names = {}", nr_names);
+                            }
+                        }
+                        // read remaining stuff
+                        file.read_exact(len - counter);
+                    } else {
+                        file.read_exact(len);
                     }
                 }
             } else {
