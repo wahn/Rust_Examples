@@ -121,7 +121,7 @@ fn main() {
                         Err(why) => fail!("couldn't open {}: {}", display, why.desc),
                         Ok(_) => (),
                     }
-                    // pack those 12 bytes into a string ...
+                    // pack those 24 bytes into a string ...
                     let mut bhead = String::new();
                     for n in range(0u, 24) {
                         bhead.push(bhead8[n] as char);
