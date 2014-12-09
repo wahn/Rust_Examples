@@ -208,14 +208,16 @@ fn main() {
                                     loop {
                                         let mut name = String::new();
                                         loop {
-                                            // expect strings with '\0' as terminator
+                                            // expect strings with
+                                            // '\0' as terminator
                                             let io_result = file.read_byte();
                                             let byte: u8 = io_result.unwrap();
                                             counter += 1;
                                             if byte != 0 {
                                                 name.push(byte as char);
                                             } else {
-                                                println!("    type = '{}'", name);
+                                                println!("    type = '{}'",
+                                                         name);
                                                 nr += 1;
                                                 break;
                                             }
