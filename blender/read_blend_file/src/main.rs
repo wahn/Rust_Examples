@@ -173,14 +173,69 @@ fn main() {
                                     }
                                 } // nr_names loop
                                 // assume fill bytes with '\0'
+                                let mut last_byte;
                                 loop {
                                     let io_result = file.read_byte();
                                     let byte: u8 = io_result.unwrap();
                                     counter += 1;
                                     if byte != 0 {
+                                        last_byte = byte;
                                         break;
                                     }
+                                } // fill bytes
+                                // TYPE
+                                let mut char3 = [0u8, ..3];
+                                match file.read(char3) {
+                                    Err(why) => println!("{}", why),
+                                    Ok(_) => (),
                                 }
+                                counter += 3;
+                                let mut str4 = String::new();
+                                str4.push(last_byte as char);
+                                for n in range(0u, 3) {
+                                    str4.push(char3[n] as char);
+                                }
+                                let slice = str4.as_slice();
+                                let code: &str = slice.slice(0, 4);
+                                println!("  code = {}", code);
+                                if code == "TYPE" {
+                                    // nr_types
+                                    let io_result = file.read_le_u32();
+                                    let nr_types: u32 = io_result.unwrap();
+                                    counter += 4;
+                                    println!("  nr_types = {}", nr_types);
+                                    let mut nr = 0u32;
+                                    loop {
+                                        let mut name = String::new();
+                                        loop {
+                                            // expect strings with '\0' as terminator
+                                            let io_result = file.read_byte();
+                                            let byte: u8 = io_result.unwrap();
+                                            counter += 1;
+                                            if byte != 0 {
+                                                name.push(byte as char);
+                                            } else {
+                                                println!("    type = '{}'", name);
+                                                nr += 1;
+                                                break;
+                                            }
+                                        } // type loop
+                                        if nr >= nr_types {
+                                            break;
+                                        }
+                                    } // nr_types loop
+                                    // assume fill bytes with '\0'
+                                    let mut last_byte;
+                                    loop {
+                                        let io_result = file.read_byte();
+                                        let byte: u8 = io_result.unwrap();
+                                        counter += 1;
+                                        if byte != 0 {
+                                            last_byte = byte;
+                                            break;
+                                        }
+                                    } // fill bytes
+                                }                                
                             }
                         }
                         // read remaining stuff
