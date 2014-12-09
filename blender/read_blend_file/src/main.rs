@@ -113,30 +113,34 @@ fn main() {
                     num.push(buf[n] as char);
                 }
                 println!("num = {}", num);
-                // read_file_dna
-                let mut bhead8 = [0u8, ..24]; // 4 * int + 64-bit pointer
-                match file.read(bhead8) {
-                    Err(why) => fail!("couldn't open {}: {}", display, why.desc),
-                    Ok(_) => (),
+                // assumes 64-bit pointers (in file as well as on platform)
+                loop {
+                    // read_file_dna
+                    let mut bhead8 = [0u8, ..24]; // 4 * int + 64-bit pointer
+                    match file.read(bhead8) {
+                        Err(why) => fail!("couldn't open {}: {}", display, why.desc),
+                        Ok(_) => (),
+                    }
+                    // pack those 12 bytes into a string ...
+                    let mut bhead = String::new();
+                    for n in range(0u, 24) {
+                        bhead.push(bhead8[n] as char);
+                    }
+                    let slice = bhead.as_slice();
+                    let code: &str = slice.slice(0, 4); // first 4 chars
+                    println!("code = {}", code);
+                    let mut len: uint = 0;
+                    println!("bhead8[4] = {}", bhead8[4] as uint);
+                    println!("bhead8[5] = {}", bhead8[5] as uint);
+                    println!("bhead8[6] = {}", bhead8[6] as uint);
+                    println!("bhead8[7] = {}", bhead8[7] as uint);
+                    len += (bhead8[4] as uint) <<  0;
+                    len += (bhead8[5] as uint) <<  8;
+                    len += (bhead8[6] as uint) << 16;
+                    len += (bhead8[7] as uint) << 24;
+                    println!("len = {}", len);
+                    file.read_exact(len);
                 }
-                // pack those 12 bytes into a string ...
-                let mut bhead = String::new();
-                for n in range(0u, 24) {
-                    bhead.push(bhead8[n] as char);
-                }
-                let slice = bhead.as_slice();
-                let code: &str = slice.slice(0, 4); // first 4 chars
-                println!("code = {}", code);
-                let mut len: int = 0;
-                println!("bhead8[4] = {}", bhead8[4] as int);
-                println!("bhead8[5] = {}", bhead8[5] as int);
-                println!("bhead8[6] = {}", bhead8[6] as int);
-                println!("bhead8[7] = {}", bhead8[7] as int);
-                len += (bhead8[4] as int) <<  0;
-                len += (bhead8[5] as int) <<  8;
-                len += (bhead8[6] as int) << 16;
-                len += (bhead8[7] as int) << 24;
-                println!("len = {}", len);
             } else {
                 println!("ERROR: not a Blender file.");
             }
