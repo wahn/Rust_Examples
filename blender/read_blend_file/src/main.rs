@@ -152,6 +152,35 @@ fn main() {
                                 let nr_names: u32 = io_result.unwrap();
                                 counter += 4;
                                 println!("  nr_names = {}", nr_names);
+                                let mut nr = 0u32;
+                                loop {
+                                    let mut name = String::new();
+                                    loop {
+                                        // expect strings with '\0' as terminator
+                                        let io_result = file.read_byte();
+                                        let byte: u8 = io_result.unwrap();
+                                        counter += 1;
+                                        if byte != 0 {
+                                            name.push(byte as char);
+                                        } else {
+                                            println!("    name = '{}'", name);
+                                            nr += 1;
+                                            break;
+                                        }
+                                    } // name loop
+                                    if nr >= nr_names {
+                                        break;
+                                    }
+                                } // nr_names loop
+                                // assume fill bytes with '\0'
+                                loop {
+                                    let io_result = file.read_byte();
+                                    let byte: u8 = io_result.unwrap();
+                                    counter += 1;
+                                    if byte != 0 {
+                                        break;
+                                    }
+                                }
                             }
                         }
                         // read remaining stuff
