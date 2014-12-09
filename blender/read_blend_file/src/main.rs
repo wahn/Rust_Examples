@@ -148,17 +148,9 @@ fn main() {
                             println!("  code = {}", code);
                             if code == "NAME" {
                                 // nr_names
-                                let mut char4 = [0u8, ..4];
-                                match file.read(char4) {
-                                    Err(why) => println!("{}", why),
-                                    Ok(_) => (),
-                                }
+                                let io_result = file.read_le_u32();
+                                let nr_names: u32 = io_result.unwrap();
                                 counter += 4;
-                                let mut nr_names: uint = 0;
-                                nr_names += (char4[0] as uint) <<  0;
-                                nr_names += (char4[1] as uint) <<  8;
-                                nr_names += (char4[2] as uint) << 16;
-                                nr_names += (char4[3] as uint) << 24;
                                 println!("  nr_names = {}", nr_names);
                             }
                         }
