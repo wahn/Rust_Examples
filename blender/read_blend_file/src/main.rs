@@ -50,7 +50,7 @@ fn main() {
             };
             let mut buf = [0u8, ..12];
             match file.read(buf) {
-                Err(why) => fail!("couldn't open {}: {}", display, why.desc),
+                Err(why) => fail!("couldn't read {}: {}", display, why.desc),
                 Ok(_) => (),
             }
             // pack those 12 bytes into a string ...
