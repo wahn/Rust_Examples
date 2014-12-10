@@ -288,12 +288,38 @@ fn main() {
                                         let code: &str = slice.slice(0, 4);
                                         println!("  code = {}", code);
                                         if code == "STRC" {
+                                            // nr_structs
+                                            let io_result = file.read_le_u32();
+                                            let nr_structs: u32 = io_result.unwrap();
+                                            counter += 4;
+                                            println!("    nr_structs = {}", nr_structs);
+                                            nr = 0u32;
+                                            loop {
+                                                // sp0
+                                                let io_result = file.read_le_u16();
+                                                let _sp0: u16 = io_result.unwrap();
+                                                counter += 2;
+                                                // sp1
+                                                let io_result = file.read_le_u16();
+                                                let sp1: u16 = io_result.unwrap();
+                                                counter += 2;
+                                                for _n in range(0u16, 2 * sp1) {
+                                                    let io_result = file.read_le_u16();
+                                                    let _u: u16 = io_result.unwrap();
+                                                    counter += 2;
+                                                }
+                                                nr += 1;
+                                                if nr >= nr_structs {
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                         // read remaining stuff
+                        println!("skip {} bytes", len - counter)
                         let _dummy = file.read_exact(len - counter);
                     } else {
                         let _dummy = file.read_exact(len);
