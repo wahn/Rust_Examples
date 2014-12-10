@@ -237,7 +237,60 @@ fn main() {
                                             break;
                                         }
                                     } // fill bytes
-                                }                                
+                                    // TLEN
+                                    let mut char3 = [0u8, ..3];
+                                    match file.read(char3) {
+                                        Err(why) => println!("{}", why),
+                                        Ok(_) => (),
+                                    }
+                                    counter += 3;
+                                    let mut str4 = String::new();
+                                    str4.push(last_byte as char);
+                                    for n in range(0u, 3) {
+                                        str4.push(char3[n] as char);
+                                    }
+                                    let slice = str4.as_slice();
+                                    let code: &str = slice.slice(0, 4);
+                                    println!("  code = {}", code);
+                                    if code == "TLEN" {
+                                        // typelens
+                                        let io_result = file.read_le_u16();
+                                        let typelens: u16 = io_result.unwrap();
+                                        counter += 2;
+                                        println!("    typelens = {}", typelens);
+                                        // skip nr_types times u16 values
+                                        let _dummy = file.read_exact(2u *
+                                                                     nr_types as
+                                                                     uint);
+                                        counter += 2u * nr_types as uint;
+                                        // check next byte
+                                        let io_result = file.read_byte();
+                                        last_byte = io_result.unwrap();
+                                        counter += 1;
+                                        if last_byte == 0 {
+                                            let io_result = file.read_byte();
+                                            last_byte = io_result.unwrap();
+                                            counter += 1;
+                                        }
+                                        // STRC
+                                        let mut char3 = [0u8, ..3];
+                                        match file.read(char3) {
+                                            Err(why) => println!("{}", why),
+                                            Ok(_) => (),
+                                        }
+                                        counter += 3;
+                                        let mut str4 = String::new();
+                                        str4.push(last_byte as char);
+                                        for n in range(0u, 3) {
+                                            str4.push(char3[n] as char);
+                                        }
+                                        let slice = str4.as_slice();
+                                        let code: &str = slice.slice(0, 4);
+                                        println!("  code = {}", code);
+                                        if code == "STRC" {
+                                        }
+                                    }
+                                }
                             }
                         }
                         // read remaining stuff
