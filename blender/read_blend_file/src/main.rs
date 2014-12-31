@@ -322,7 +322,72 @@ fn main() {
                         println!("skip {} bytes", len - counter)
                         let _dummy = file.read_exact(len - counter);
                     } else {
-                        let _dummy = file.read_exact(len);
+                        let tc: &str = slice.slice(0, 2); // first 2 chars
+                        if tc == "CA" {
+                            let mut counter = 0u;
+                            // struct ID (see DNA_ID.h)
+                            let _next = file.read_le_u64();
+                            counter += 8;
+                            let _prev = file.read_le_u64();
+                            counter += 8;
+                            let _newid = file.read_le_u64();
+                            counter += 8;
+                            let _lib = file.read_le_u64();
+                            counter += 8;
+                            let mut bname = [0u8, ..66];
+                            match file.read(bname) {
+                                Err(why) => println!("{}", why),
+                                Ok(_) => (),
+                            }
+                            // pack those 66 bytes into a string ...
+                            let mut name = String::new();
+                            for n in range(0u, 66) {
+                                if bname[n] == 0u8 {
+                                    // ... but stop as soon as you see '\0'
+                                    break;
+                                } else {
+                                    name.push(bname[n] as char);
+                                }
+                            }
+                            counter += 66;
+                            let _flag = file.read_le_u16();
+                            counter += 2;
+                            let _us = file.read_le_u32();
+                            counter += 4;
+                            let _icon_id = file.read_le_u32();
+                            counter += 4;
+                            let _pad2 = file.read_le_u32();
+                            counter += 4;
+                            let _properties = file.read_le_u64();
+                            counter += 8;
+                            // struct Camera (see DNA_camera_types.h)
+                            let _adt = file.read_le_u64();
+                            counter += 8;
+                            let io_result = file.read_u8();
+                            let cam_type: u8 = io_result.unwrap();
+                            counter += 1;
+                            let _dtx = file.read_u8();
+                            counter += 1;
+                            let _flag = file.read_le_u16();
+                            counter += 2;
+                            let _passepartalpha = file.read_le_f32();
+                            counter += 4;
+                            let _clipsta = file.read_le_f32();
+                            counter += 4;
+                            let _clipend = file.read_le_f32();
+                            counter += 4;
+                            let io_result = file.read_le_f32();
+                            let lens: f32 = io_result.unwrap();
+                            counter += 4;
+                            let _dummy = file.read_exact(len - counter);
+                            if cam_type == 0u8 {
+                                println!("Camera({}, {}, {})", name, "CAM_PERSP", lens)
+                            } else {
+                                println!("Camera({}, {}, {})", name, cam_type, lens)
+                            }
+                        } else {
+                            let _dummy = file.read_exact(len);
+                        }
                     }
                 }
             } else {
