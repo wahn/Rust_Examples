@@ -34,8 +34,7 @@ fn main() {
                 header.push(*e as char);
             }
             // ... to be able to compare them
-            let slice = header.as_slice();
-            let blender: &str = slice.slice(0, 7); // first 7 chars
+            let blender: &str = header.slice(0, 7); // first 7 chars
             if blender == "BLENDER" {
                 println!("INFO: a Blender file.");
                 let ptr_size = pointer_size();
@@ -83,7 +82,7 @@ fn main() {
                 }
                 println!("switch_endian = {}", switch_endian);
                 // get the version number
-                let num: &str = slice.slice(9, 12); // last 3 chars
+                let num: &str = header.slice(9, 12); // last 3 chars
                 println!("num = {}", num);
                 // assumes 64-bit pointers (in file as well as on platform)
                 loop {
@@ -95,8 +94,7 @@ fn main() {
                     for e in bhead8.iter() {
                         bhead.push(*e as char);
                     }
-                    let slice = bhead.as_slice();
-                    let code: &str = slice.slice(0, 4); // first 4 chars
+                    let code: &str = bhead.slice(0, 4); // first 4 chars
                     println!("code = {}", code);
                     let mut len: u32 = 0;
                     len += (bhead8[4] as u32) <<  0;
@@ -117,8 +115,7 @@ fn main() {
                         for e in char4.iter() {
                             str4.push(*e as char);
                         }
-                        let slice = str4.as_slice();
-                        let code: &str = slice.slice(0, 4);
+                        let code: &str = str4.slice(0, 4);
                         println!("  code = {}", code);
                         if code == "SDNA" {
                             // NAME
@@ -129,8 +126,7 @@ fn main() {
                             for e in char4.iter() {
                                 str4.push(*e as char);
                             }
-                            let slice = str4.as_slice();
-                            let code: &str = slice.slice(0, 4);
+                            let code: &str = str4.slice(0, 4);
                             println!("  code = {}", code);
                             if code == "NAME" {
                                 // nr_names
@@ -178,8 +174,7 @@ fn main() {
                                 for e in char3.iter() {
                                     str4.push(*e as char);
                                 }
-                                let slice = str4.as_slice();
-                                let code: &str = slice.slice(0, 4);
+                                let code: &str = str4.slice(0, 4);
                                 println!("  code = {}", code);
                                 if code == "TYPE" {
                                     // nr_types
@@ -229,8 +224,7 @@ fn main() {
                                     for e in char3.iter() {
                                         str4.push(*e as char);
                                     }
-                                    let slice = str4.as_slice();
-                                    let code: &str = slice.slice(0, 4);
+                                    let code: &str = str4.slice(0, 4);
                                     println!("  code = {}", code);
                                     if code == "TLEN" {
                                         // typelens
@@ -261,8 +255,7 @@ fn main() {
                                         for e in char3.iter() {
                                             str4.push(*e as char);
                                         }
-                                        let slice = str4.as_slice();
-                                        let code: &str = slice.slice(0, 4);
+                                        let code: &str = str4.slice(0, 4);
                                         println!("  code = {}", code);
                                         if code == "STRC" {
                                             // nr_structs
@@ -299,7 +292,7 @@ fn main() {
                         println!("skip {} bytes", len - counter);
                         let _dummy = file.read_exact((len - counter) as usize);
                     } else {
-                        let tc: &str = slice.slice(0, 2); // first 2 chars
+                        let tc: &str = bhead.slice(0, 2); // first 2 chars
                         if tc == "CA" {
                             let mut counter = 0u32;
                             // struct ID (see DNA_ID.h)
