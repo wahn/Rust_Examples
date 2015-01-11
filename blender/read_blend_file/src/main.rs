@@ -1,12 +1,13 @@
 use std::io::File;
 use std::mem;
+use std::num::Int;
 use std::os;
 
 // https://stackoverflow.com/questions/24633784/is-there-a-gzip-library-available-for-rust
 
-fn pointer_size() -> uint {
+fn pointer_size() -> usize {
     let tmp = 0u8;
-    let boxed = box tmp;
+    let boxed = Box::new(tmp);
     mem::size_of_val(&boxed)
 }
 
@@ -22,18 +23,15 @@ fn main() {
             let path = Path::new(slice);
             let display = path.display();
             let mut file = match File::open(&path) {
-                Err(why) => fail!("couldn't open {}: {}", display, why.desc),
+                Err(why) => panic!("couldn't open {}: {}", display, why.desc),
                 Ok(file) => file,
             };
-            let mut buf = [0u8, ..12];
-            match file.read(buf) {
-                Err(why) => println!("{}", why),
-                Ok(_) => (),
-            }
+            let io_result = file.read_exact(12);
+            let buf = io_result.unwrap();
             // pack those 12 bytes into a string ...
             let mut header = String::new();
-            for n in range(0u, 12) {
-                header.push(buf[n] as char);
+            for e in buf.iter() {
+                header.push(*e as char);
             }
             // ... to be able to compare them
             let slice = header.as_slice();
@@ -85,63 +83,51 @@ fn main() {
                 }
                 println!("switch_endian = {}", switch_endian);
                 // get the version number
-                let mut num = String::new();
-                for n in range(9u, 12) {
-                    num.push(buf[n] as char);
-                }
+                let num: &str = slice.slice(9, 12); // last 3 chars
                 println!("num = {}", num);
                 // assumes 64-bit pointers (in file as well as on platform)
                 loop {
                     // read_file_dna
-                    let mut bhead8 = [0u8, ..24]; // 4 * int + 64-bit pointer
-                    match file.read(bhead8) {
-                        Err(why) => println!("{}", why),
-                        Ok(_) => (),
-                    }
+                    let io_result = file.read_exact(24); // 4 * int + 64-bit pointer
+                    let bhead8 = io_result.unwrap();
                     // pack those 24 bytes into a string ...
                     let mut bhead = String::new();
-                    for n in range(0u, 24) {
-                        bhead.push(bhead8[n] as char);
+                    for e in bhead8.iter() {
+                        bhead.push(*e as char);
                     }
                     let slice = bhead.as_slice();
                     let code: &str = slice.slice(0, 4); // first 4 chars
                     println!("code = {}", code);
-                    let mut len: uint = 0;
-                    len += (bhead8[4] as uint) <<  0;
-                    len += (bhead8[5] as uint) <<  8;
-                    len += (bhead8[6] as uint) << 16;
-                    len += (bhead8[7] as uint) << 24;
+                    let mut len: u32 = 0;
+                    len += (bhead8[4] as u32) <<  0;
+                    len += (bhead8[5] as u32) <<  8;
+                    len += (bhead8[6] as u32) << 16;
+                    len += (bhead8[7] as u32) << 24;
                     println!("len = {}", len);
                     if code == "ENDB" && len == 0 {
                         break;
                     } else if code == "DNA1" {
                         // DNA_sdna_from_data
-                        let mut counter = 0u;
+                        let mut counter = 0u32;
                         // SDNA
-                        let mut char4 = [0u8, ..4];
-                        match file.read(char4) {
-                            Err(why) => println!("{}", why),
-                            Ok(_) => (),
-                        }
+                        let io_result = file.read_exact(4);
+                        let char4 = io_result.unwrap();
                         counter += 4;
                         let mut str4 = String::new();
-                        for n in range(0u, 4) {
-                            str4.push(char4[n] as char);
+                        for e in char4.iter() {
+                            str4.push(*e as char);
                         }
                         let slice = str4.as_slice();
                         let code: &str = slice.slice(0, 4);
                         println!("  code = {}", code);
                         if code == "SDNA" {
                             // NAME
-                            let mut char4 = [0u8, ..4];
-                            match file.read(char4) {
-                                Err(why) => println!("{}", why),
-                                Ok(_) => (),
-                            }
+                            let io_result = file.read_exact(4);
+                            let char4 = io_result.unwrap();
                             counter += 4;
                             let mut str4 = String::new();
-                            for n in range(0u, 4) {
-                                str4.push(char4[n] as char);
+                            for e in char4.iter() {
+                                str4.push(*e as char);
                             }
                             let slice = str4.as_slice();
                             let code: &str = slice.slice(0, 4);
@@ -184,16 +170,13 @@ fn main() {
                                     }
                                 } // fill bytes
                                 // TYPE
-                                let mut char3 = [0u8, ..3];
-                                match file.read(char3) {
-                                    Err(why) => println!("{}", why),
-                                    Ok(_) => (),
-                                }
+                                let io_result = file.read_exact(3);
+                                let char3 = io_result.unwrap();
                                 counter += 3;
                                 let mut str4 = String::new();
                                 str4.push(last_byte as char);
-                                for n in range(0u, 3) {
-                                    str4.push(char3[n] as char);
+                                for e in char3.iter() {
+                                    str4.push(*e as char);
                                 }
                                 let slice = str4.as_slice();
                                 let code: &str = slice.slice(0, 4);
@@ -238,16 +221,13 @@ fn main() {
                                         }
                                     } // fill bytes
                                     // TLEN
-                                    let mut char3 = [0u8, ..3];
-                                    match file.read(char3) {
-                                        Err(why) => println!("{}", why),
-                                        Ok(_) => (),
-                                    }
+                                    let io_result = file.read_exact(3);
+                                    let char3 = io_result.unwrap();
                                     counter += 3;
                                     let mut str4 = String::new();
                                     str4.push(last_byte as char);
-                                    for n in range(0u, 3) {
-                                        str4.push(char3[n] as char);
+                                    for e in char3.iter() {
+                                        str4.push(*e as char);
                                     }
                                     let slice = str4.as_slice();
                                     let code: &str = slice.slice(0, 4);
@@ -259,10 +239,10 @@ fn main() {
                                         counter += 2;
                                         println!("    typelens = {}", typelens);
                                         // skip nr_types times u16 values
-                                        let _dummy = file.read_exact(2u *
-                                                                     nr_types as
-                                                                     uint);
-                                        counter += 2u * nr_types as uint;
+                                        let _dummy = file.read_exact((2u32 *
+                                                                     nr_types) as
+                                                                     usize);
+                                        counter += 2u32 * nr_types as u32;
                                         // check next byte
                                         let io_result = file.read_byte();
                                         last_byte = io_result.unwrap();
@@ -273,16 +253,13 @@ fn main() {
                                             counter += 1;
                                         }
                                         // STRC
-                                        let mut char3 = [0u8, ..3];
-                                        match file.read(char3) {
-                                            Err(why) => println!("{}", why),
-                                            Ok(_) => (),
-                                        }
+                                        let io_result = file.read_exact(3);
+                                        let char3 = io_result.unwrap();
                                         counter += 3;
                                         let mut str4 = String::new();
                                         str4.push(last_byte as char);
-                                        for n in range(0u, 3) {
-                                            str4.push(char3[n] as char);
+                                        for e in char3.iter() {
+                                            str4.push(*e as char);
                                         }
                                         let slice = str4.as_slice();
                                         let code: &str = slice.slice(0, 4);
@@ -319,12 +296,12 @@ fn main() {
                             }
                         }
                         // read remaining stuff
-                        println!("skip {} bytes", len - counter)
-                        let _dummy = file.read_exact(len - counter);
+                        println!("skip {} bytes", len - counter);
+                        let _dummy = file.read_exact((len - counter) as usize);
                     } else {
                         let tc: &str = slice.slice(0, 2); // first 2 chars
                         if tc == "CA" {
-                            let mut counter = 0u;
+                            let mut counter = 0u32;
                             // struct ID (see DNA_ID.h)
                             let _next = file.read_le_u64();
                             counter += 8;
@@ -334,19 +311,16 @@ fn main() {
                             counter += 8;
                             let _lib = file.read_le_u64();
                             counter += 8;
-                            let mut bname = [0u8, ..66];
-                            match file.read(bname) {
-                                Err(why) => println!("{}", why),
-                                Ok(_) => (),
-                            }
+                            let io_result = file.read_exact(66);
+                            let bname = io_result.unwrap();
                             // pack those 66 bytes into a string ...
                             let mut name = String::new();
-                            for n in range(0u, 66) {
-                                if bname[n] == 0u8 {
+                            for e in bname.iter() {
+                                if *e == 0u8 {
                                     // ... but stop as soon as you see '\0'
                                     break;
                                 } else {
-                                    name.push(bname[n] as char);
+                                    name.push(*e as char);
                                 }
                             }
                             counter += 66;
@@ -379,14 +353,14 @@ fn main() {
                             let io_result = file.read_le_f32();
                             let lens: f32 = io_result.unwrap();
                             counter += 4;
-                            let _dummy = file.read_exact(len - counter);
+                            let _dummy = file.read_exact((len - counter) as usize);
                             if cam_type == 0u8 {
                                 println!("Camera({}, {}, {})", name, "CAM_PERSP", lens)
                             } else {
                                 println!("Camera({}, {}, {})", name, cam_type, lens)
                             }
                         } else {
-                            let _dummy = file.read_exact(len);
+                            let _dummy = file.read_exact(len as usize);
                         }
                     }
                 }
