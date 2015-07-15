@@ -2,3 +2,6 @@
 name = "blend2render"
 version = "0.1.0"
 authors = ["Jan Walter <jan@janwalter.com>"]
+
+[dependencies]
+getopts="0.2"
