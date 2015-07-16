@@ -3,11 +3,17 @@ use getopts::Options;
 use std::env;
 use std::fs::File;
 use std::io;
+use std::io::Read;
 
 fn read_blend_file(inp: &str) -> io::Result<()> {
     // open file
     let file = try!(File::open(inp));
-    // TODO: read 12 bytes from the Blender file
+    // read 12 bytes from the Blender file
+    let mut take = file.take(12u64);
+    let mut header = String::new();
+    try!(take.read_to_string(&mut header));
+    println!("header = \"{}\"", header);
+    // TODO: compare first 7 chars to "BLENDER"
     Ok(())
 }
 
