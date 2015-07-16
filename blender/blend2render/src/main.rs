@@ -5,8 +5,6 @@ use std::fs::File;
 use std::io;
 use std::io::Read;
 
-enum ParseError { InvalidHeader }
-
 fn read_blend_file(inp: &str) -> io::Result<()> {
     // open file
     let file = try!(File::open(inp));
