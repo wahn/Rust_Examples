@@ -80,7 +80,11 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
                 }
             }
             println!("switch_endian = {}", switch_endian);
-            // TODO: get the version number
+            // get the version number
+            let last3c = vec!(bytes[9], bytes[10], bytes[11]);
+            let version = String::from_utf8(last3c).unwrap(); // last 3 chars
+            println!("version = {}", version);
+            // WORK: read remaining file
         } else {
             println!("ERROR: FILE is not a Blender file");
         }
