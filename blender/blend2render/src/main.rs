@@ -4,6 +4,13 @@ use std::env;
 use std::fs::File;
 use std::io;
 use std::io::Read;
+use std::mem;
+
+fn pointer_size() -> usize {
+    let tmp = 0u8;
+    let boxed = Box::new(tmp);
+    mem::size_of_val(&boxed)
+}
 
 fn read_blend_file(inp: &str) -> io::Result<()> {
     // open file
@@ -27,7 +34,25 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
             let bytes = header.into_bytes();
             // check 7th char of header
             println!("7th char of header = '{}'", bytes[7] as char);
-            // TODO: check for 32-bit pointers vs. 64-bit pointers
+            // check for 32-bit pointers vs. 64-bit pointers
+            let ptr_size = pointer_size();
+            println!("size of pointer in bytes: {}", ptr_size);
+            let mut ptr_size_differs = false;
+            if bytes[7] as char == '_' {
+                // 32-bit pointers expected
+                if ptr_size != 4 {
+                    ptr_size_differs = true;
+                }
+                println!("32-bit pointers in file, pointer size differs? {}",
+                         ptr_size_differs);
+            } else {
+                // 64-bit pointers expected
+                if ptr_size != 8 {
+                        ptr_size_differs = true;
+                }
+                println!("64-bit pointers in file, pointer size differs? {}",
+                         ptr_size_differs);
+            }
         }
     } else {
         println!("WARNING: FILE is not a Blender file");
