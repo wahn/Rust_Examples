@@ -53,9 +53,11 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
                 println!("64-bit pointers in file, pointer size differs? {}",
                          ptr_size_differs);
             }
+        } else {
+            println!("ERROR: FILE is not a Blender file");
         }
     } else {
-        println!("WARNING: FILE is not a Blender file");
+        println!("ERROR: FILE is not a Blender file");
     }
     Ok(())
 }
