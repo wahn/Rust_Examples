@@ -32,8 +32,8 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
 
             // switch to byte copy of String representation
             let bytes = header.into_bytes();
-            // check 7th char of header
-            println!("7th char of header = '{}'", bytes[7] as char);
+            // check 8th char of header
+            println!("8th char of header = '{}'", bytes[7] as char);
             // check for 32-bit pointers vs. 64-bit pointers
             let ptr_size = pointer_size();
             println!("size of pointer in bytes: {}", ptr_size);
