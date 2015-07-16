@@ -15,11 +15,18 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
     println!("header = \"{}\"", header);
     // compare first 7 chars to "BLENDER"
     if header.len() >= 7 {
-        let mut blender = header;
+        // create copy of header without moving value
+        let mut blender = String::new();
+        blender = blender + &header;
         blender.truncate(7); // first 7 chars
         if blender == "BLENDER" {
             println!("starts with \"BLENDER\" ...");
             // TODO: check version (next 5 chars in header)
+
+            // switch to byte copy of String representation
+            let bytes = header.into_bytes();
+            // check 7th char of header
+            println!("7th char of header = '{}'", bytes[7] as char);
             // TODO: check for 32-bit pointers vs. 64-bit pointers
         }
     } else {
