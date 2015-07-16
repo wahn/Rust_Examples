@@ -5,6 +5,8 @@ use std::fs::File;
 use std::io;
 use std::io::Read;
 
+enum ParseError { InvalidHeader }
+
 fn read_blend_file(inp: &str) -> io::Result<()> {
     // open file
     let file = try!(File::open(inp));
@@ -13,7 +15,18 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
     let mut header = String::new();
     try!(take.read_to_string(&mut header));
     println!("header = \"{}\"", header);
-    // TODO: compare first 7 chars to "BLENDER"
+    // compare first 7 chars to "BLENDER"
+    if header.len() >= 7 {
+        let mut blender = header;
+        blender.truncate(7); // first 7 chars
+        if blender == "BLENDER" {
+            println!("starts with \"BLENDER\" ...");
+            // TODO: check version (next 5 chars in header)
+            // TODO: check for 32-bit pointers vs. 64-bit pointers
+        }
+    } else {
+        println!("WARNING: FILE is not a Blender file");
+    }
     Ok(())
 }
 
