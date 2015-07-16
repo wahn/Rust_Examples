@@ -68,7 +68,10 @@ fn do_work(inp: &str, out: Option<String>) {
         Some(x) => println!("output file name: {}", x),
         None => println!("no output file name"),
     }
-    read_blend_file(inp);
+    match read_blend_file(inp) {
+        Ok(_) => { ; }
+        Err(f) => { panic!(f.to_string()) }
+    };
 }
 
 fn print_usage(program: &str, opts: Options) {
