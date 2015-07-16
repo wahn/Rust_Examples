@@ -2,8 +2,14 @@ extern crate getopts;
 use getopts::Options;
 use std::env;
 use std::fs::File;
-use std::io::BufReader;
-use std::path::Path;
+use std::io;
+
+fn read_blend_file(inp: &str) -> io::Result<()> {
+    // open file
+    let file = try!(File::open(inp));
+    // TODO: read 12 bytes from the Blender file
+    Ok(())
+}
 
 fn do_work(inp: &str, out: Option<String>) {
     println!("FILE = {}", inp);
@@ -11,10 +17,7 @@ fn do_work(inp: &str, out: Option<String>) {
         Some(x) => println!("output file name: {}", x),
         None => println!("no output file name"),
     }
-    // open file
-    let path = Path::new(inp);
-    let file = BufReader::new(File::open(&path).unwrap());
-    // TODO: read 12 bytes from the Blender file
+    read_blend_file(inp);
 }
 
 fn print_usage(program: &str, opts: Options) {
