@@ -108,56 +108,62 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
 }
 
 fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
-    // read_file_dna
-    // 4 * int + 64-bit pointer
-    let mut buf = [0u8; 24];
-    let bytes_read = file.read(&mut buf).unwrap();
-    if bytes_read != buf.len() {
-        println!("{} bytes read, but {} expected ...", bytes_read, buf.len());
-        return Ok(());
-    }
-    let mut bhead = String::new();
-    for e in buf.iter() {
-        bhead.push(*e as char);
-    }
-    let mut code = String::new();
-    code.push_str(&bhead); // copy
-    code.truncate(4); // first 4 chars
-    println!("code = {}", code);
-    // first int is 'len'
-    let mut len: u32 = 0;
-    len += (buf[4] as u32) <<  0;
-    len += (buf[5] as u32) <<  8;
-    len += (buf[6] as u32) << 16;
-    len += (buf[7] as u32) << 24;
-    println!("len = {}", len);
-    // TODO: if code == "ENDB" && len == 0 { ... }
-    if code == "ENDB" && len == 0 {
-        println!("TODO: code == \"{}\"", code);
-    } else if code == "DNA1" {
-        println!("TODO: code == \"{}\"", code);
-    } else {
-        let mut tc = String::new();
-        tc.push_str(&bhead); // copy
-        tc.truncate(2); // first 4 chars
-        if tc == "CA" {
-            println!("TODO: tc == \"{}\"", tc);
+    loop {
+        // read_file_dna
+        // 4 * int + 64-bit pointer
+        let mut buf = [0u8; 24];
+        let bytes_read = file.read(&mut buf).unwrap();
+        if bytes_read != buf.len() {
+            println!("{} bytes read, but {} expected ...",
+                     bytes_read, buf.len());
+            return Ok(());
+        }
+        let mut bhead = String::new();
+        for e in buf.iter() {
+            bhead.push(*e as char);
+        }
+        let mut code = String::new();
+        code.push_str(&bhead); // copy
+        code.truncate(4); // first 4 chars
+        println!("code = {}", code);
+        // first int is 'len'
+        let mut len: u32 = 0;
+        len += (buf[4] as u32) <<  0;
+        len += (buf[5] as u32) <<  8;
+        len += (buf[6] as u32) << 16;
+        len += (buf[7] as u32) << 24;
+        println!("len = {}", len);
+        // TODO: if code == "ENDB" && len == 0 { ... }
+        if code == "ENDB" && len == 0 {
+            println!("TODO: code == \"{}\"", code);
+            break;
+        } else if code == "DNA1" {
+            println!("TODO: code == \"{}\"", code);
+            break;
         } else {
-            let mut dummy: Vec<u8> = Vec::with_capacity(len as usize);
-            for i in 0..len {
-                dummy.push(i as u8);
-            }
-            let mut buf = &mut dummy;
-            let bytes_read = file.read(buf).unwrap();
-            if bytes_read != buf.len() {
-                println!("{} bytes read, but {} expected ...", bytes_read, buf.len());
-                return Ok(());
+            let mut tc = String::new();
+            tc.push_str(&bhead); // copy
+            tc.truncate(2); // first 4 chars
+            if tc == "CA" {
+                println!("TODO: tc == \"{}\"", tc);
+                break;
             } else {
-                println!("{} bytes read ...", bytes_read);
+                let mut dummy: Vec<u8> = Vec::with_capacity(len as usize);
+                for i in 0..len {
+                    dummy.push(i as u8);
+                }
+                let mut buf = &mut dummy;
+                let bytes_read = file.read(buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                } else {
+                    println!("{} bytes read ...", bytes_read);
+                }
             }
         }
     }
-    // WORK: read remaining file
     Ok(())
 }
 
