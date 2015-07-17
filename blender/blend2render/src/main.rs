@@ -116,6 +116,13 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
     code.push_str(&bhead); // copy
     code.truncate(4); // first 4 chars
     println!("code = {}", code);
+    // first int is 'len'
+    let mut len: u32 = 0;
+    len += (buf[4] as u32) <<  0;
+    len += (buf[5] as u32) <<  8;
+    len += (buf[6] as u32) << 16;
+    len += (buf[7] as u32) << 24;
+    println!("len = {}", len);
     // WORK: read remaining file
     Ok(())
 }
