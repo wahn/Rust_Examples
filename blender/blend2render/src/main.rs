@@ -17,7 +17,11 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
     let mut file = File::open(inp).unwrap();
     // read 12 bytes from the Blender file
     let mut buf = [0u8; 12];
-    file.read(&mut buf).unwrap();
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        println!("{} bytes read, but {} expected ...", bytes_read, buf.len());
+        return Ok(());
+    }
     let mut header = String::new();
     for e in buf.iter() {
         header.push(*e as char);
@@ -107,7 +111,11 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
     // read_file_dna
     // 4 * int + 64-bit pointer
     let mut buf = [0u8; 24];
-    file.read(&mut buf).unwrap();
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        println!("{} bytes read, but {} expected ...", bytes_read, buf.len());
+        return Ok(());
+    }
     let mut bhead = String::new();
     for e in buf.iter() {
         bhead.push(*e as char);
