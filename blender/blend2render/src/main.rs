@@ -243,6 +243,77 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                     return Ok(());
                 }
                 counter += 8;
+                // struct Camera (see DNA_camera_types.h)
+                // adt
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // cam_type
+                let mut buf = [0u8; 1];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 1;
+                let cam_type: u8 = buf[0];
+                // dtx
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 1;
+                // flag
+                let mut buf = [0u8; 2];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 2;
+                // passepartalpha
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // clipsta
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // clipend
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // lens
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let lens: f32 = unsafe { mem::transmute(buf) };
                 // WORK
                 println!("{} bytes read ...", counter);
                 // read remaining bytes, but don't use them (yet)
@@ -260,7 +331,11 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 } else {
                     println!("{} bytes read ...", bytes_read);
                 }
-                // TODO: if cam_type == 0u8
+                if cam_type == 0u8 {
+                    println!("Camera({}, {}, {})", name, "CAM_PERSP", lens)
+                } else {
+                    println!("Camera({}, {}, {})", name, cam_type, lens)
+                }
                 break;
             } else {
                 let mut dummy: Vec<u8> = Vec::with_capacity(len as usize);
