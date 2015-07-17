@@ -16,7 +16,7 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
     // open file
     let mut file = File::open(inp).unwrap();
     // read 12 bytes from the Blender file
-    let mut buf=[0u8;12];
+    let mut buf = [0u8; 12];
     file.read(&mut buf).unwrap();
     let mut header = String::new();
     for e in buf.iter() {
@@ -88,6 +88,7 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
             if ptr_size == 8 && (ptr_size_differs | switch_endian) == false {
                 // assumes 64-bit pointers (in file as well as on platform)
                 // we also don't handle endian switching (yet)
+                return read_remaining_blend_file(file);
             } else {
                 println!("TODO: ptr_size = {}", ptr_size);
                 println!("TODO: ptr_size_differs = {}", ptr_size_differs);
@@ -99,6 +100,23 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
     } else {
         println!("ERROR: FILE is not a Blender file");
     }
+    Ok(())
+}
+
+fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
+    // read_file_dna
+    // 4 * int + 64-bit pointer
+    let mut buf = [0u8; 24];
+    file.read(&mut buf).unwrap();
+    let mut bhead = String::new();
+    for e in buf.iter() {
+        bhead.push(*e as char);
+    }
+    let mut code = String::new();
+    code.push_str(&bhead); // copy
+    code.truncate(4); // first 4 chars
+    println!("code = {}", code);
+    // WORK: read remaining file
     Ok(())
 }
 
