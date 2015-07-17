@@ -14,11 +14,14 @@ fn pointer_size() -> usize {
 
 fn read_blend_file(inp: &str) -> io::Result<()> {
     // open file
-    let file = try!(File::open(inp));
+    let mut file = File::open(inp).unwrap();
     // read 12 bytes from the Blender file
-    let mut take = file.take(12u64);
+    let mut buf=[0u8;12];
+    file.read(&mut buf).unwrap();
     let mut header = String::new();
-    try!(take.read_to_string(&mut header));
+    for e in buf.iter() {
+        header.push(*e as char);
+    }
     println!("header = \"{}\"", header);
     // compare first 7 chars to "BLENDER"
     if header.len() >= 7 {
@@ -28,8 +31,6 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
         blender.truncate(7); // first 7 chars
         if blender == "BLENDER" {
             println!("starts with \"BLENDER\" ...");
-            // TODO: check version (next 5 chars in header)
-
             // switch to byte copy of String representation
             let bytes = header.into_bytes();
             // check 8th char of header
@@ -84,7 +85,14 @@ fn read_blend_file(inp: &str) -> io::Result<()> {
             let last3c = vec!(bytes[9], bytes[10], bytes[11]);
             let version = String::from_utf8(last3c).unwrap(); // last 3 chars
             println!("version = {}", version);
-            // WORK: read remaining file
+            if ptr_size == 8 && (ptr_size_differs | switch_endian) == false {
+                // assumes 64-bit pointers (in file as well as on platform)
+                // we also don't handle endian switching (yet)
+            } else {
+                println!("TODO: ptr_size = {}", ptr_size);
+                println!("TODO: ptr_size_differs = {}", ptr_size_differs);
+                println!("TODO: switch_endian = {}", switch_endian);
+            }
         } else {
             println!("ERROR: FILE is not a Blender file");
         }
