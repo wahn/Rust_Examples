@@ -145,7 +145,58 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
             tc.push_str(&bhead); // copy
             tc.truncate(2); // first 4 chars
             if tc == "CA" {
-                println!("TODO: tc == \"{}\"", tc);
+                let mut counter = 0u32;
+                // struct ID (see DNA_ID.h)
+                let mut buf = [0u8; 8];
+                // _next
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // _prev
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // _newid
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // _lib
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                println!("{} bytes read ...", 4 * 8);
+                // WORK
+                let mut dummy: Vec<u8> = Vec::with_capacity((len - counter)
+                                                            as usize);
+                for i in 0..(len - counter) {
+                    dummy.push(i as u8);
+                }
+                let mut buf = &mut dummy;
+                let bytes_read = file.read(buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                } else {
+                    println!("{} bytes read ...", bytes_read);
+                }
+                // TODO: if cam_type == 0u8
                 break;
             } else {
                 let mut dummy: Vec<u8> = Vec::with_capacity(len as usize);
