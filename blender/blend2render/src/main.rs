@@ -180,8 +180,29 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                     return Ok(());
                 }
                 counter += 8;
-                println!("{} bytes read ...", 4 * 8);
+                // read 66 bytes
+                let mut buf = [0u8; 66];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 66;
+                // pack those 66 bytes into a string ...
+                let mut name = String::new();
+                for e in buf.iter() {
+                    if *e == 0u8 {
+                        // ... but stop as soon as you see '\0'
+                        break;
+                    } else {
+                        name.push(*e as char);
+                    }
+                }
+                println!("name = {}", name);
                 // WORK
+                println!("{} bytes read ...", counter);
+                // read remaining bytes, but don't use them (yet)
                 let mut dummy: Vec<u8> = Vec::with_capacity((len - counter)
                                                             as usize);
                 for i in 0..(len - counter) {
