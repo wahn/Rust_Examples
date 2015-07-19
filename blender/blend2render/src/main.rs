@@ -6,6 +6,8 @@ use std::io;
 use std::io::Read;
 use std::mem;
 
+pub const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
 fn pointer_size() -> usize {
     let tmp = 0u8;
     let boxed = Box::new(tmp);
@@ -374,6 +376,10 @@ fn print_usage(program: &str, opts: Options) {
     print!("{}", opts.usage(&brief));
 }
 
+fn print_version(program: &str) {
+    println!("{} {}", program, VERSION);
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let program = args[0].clone();
@@ -381,12 +387,16 @@ fn main() {
     let mut opts = Options::new();
     opts.optopt("o", "", "set output file name", "NAME");
     opts.optflag("h", "help", "print this help menu");
+    opts.optflag("v", "version", "print version number");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => { m }
         Err(f) => { panic!(f.to_string()) }
     };
     if matches.opt_present("h") {
         print_usage(&program, opts);
+        return;
+    } else if matches.opt_present("v") {
+        print_version(&program);
         return;
     }
     let output = matches.opt_str("o");
