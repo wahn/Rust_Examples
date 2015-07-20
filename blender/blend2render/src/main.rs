@@ -254,6 +254,1319 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                     Err(f) => { panic!(f.to_string()) }
                 };
                 println!("name = {}", name);
+                // struct Object (see DNA_object_types.h)
+                // adt
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // sculpt
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // type
+                let mut buf = [0u8; 2];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 2;
+                // partype
+                let mut buf = [0u8; 2];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 2;
+                // par1
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // par2
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // par3
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // parsubstr (64 bytes)
+                let mut buf = [0u8; 64];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 64;
+                // pack those 64 bytes into a string ...
+                let mut parsubstr = String::new();
+                for e in buf.iter() {
+                    if *e == 0u8 {
+                        // ... but stop as soon as you see '\0'
+                        break;
+                    } else {
+                        parsubstr.push(*e as char);
+                    }
+                }
+                //println!("parsubstr = \"{}\"", parsubstr);
+                // parent
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // track
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // proxy
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // proxy_group
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // proxy_from
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // ipo
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // bb
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // action
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // poselib
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // pose
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // data
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // gpd
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // avs (see bAnimVizSettings in DNA_action_types.h)
+                // 4*4 + 8*2 + 4*4 = 48 bytes
+                let mut buf = [0u8; 48];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 48;
+                // mpath
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // 4 ListBase entries (2 pointers each - DNA_listBase.h)
+                // 8*2*4 = 64 bytes
+                let mut buf = [0u8; 64];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 64;
+                // mode
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // restore_mode
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // mat
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // matbits
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // totcol
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // actcol
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // loc[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("loc[3] = ({}, {}, {})", x, y, z);
+                // dloc[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("dloc[3] = ({}, {}, {})", x, y, z);
+                // orig[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("orig[3] = ({}, {}, {})", x, y, z);
+                // size[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("size[3] = ({}, {}, {})", x, y, z);
+                // dsize[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("dsize[3] = ({}, {}, {})", x, y, z);
+                // dscale[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("dscale[3] = ({}, {}, {})", x, y, z);
+                // rot[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("rot[3] = ({}, {}, {})", x, y, z);
+                // drot[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("drot[3] = ({}, {}, {})", x, y, z);
+                // quat[4]
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("quat[4] = ({}, {}, {}, {})", a, b, c, d);
+                // dquat[4]
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("dquat[4] = ({}, {}, {}, {})", a, b, c, d);
+                // rotAxis[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("rotAxis[3] = ({}, {}, {})", x, y, z);
+                // drotAxis[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                let x: f32 = unsafe { mem::transmute(xbuf) };
+                let y: f32 = unsafe { mem::transmute(ybuf) };
+                let z: f32 = unsafe { mem::transmute(zbuf) };
+                println!("drotAxis[3] = ({}, {}, {})", x, y, z);
+                // obmat[4][4]
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("obmat[4][4] =\n    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                // parentinv[4][4]
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("parentinv[4][4] =\n    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                // constinv[4][4]
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("constinv[4][4] =\n    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                // imat[4][4]
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("imat[4][4] =\n    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                // imat_ren[4][4]
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("imat_ren[4][4] =\n    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                let mut abuf = [0u8; 4];
+                let bytes_read = file.read(&mut abuf).unwrap();
+                if bytes_read != abuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, abuf.len());
+                    return Ok(());
+                }
+                let mut bbuf = [0u8; 4];
+                let bytes_read = file.read(&mut bbuf).unwrap();
+                if bytes_read != bbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, bbuf.len());
+                    return Ok(());
+                }
+                let mut cbuf = [0u8; 4];
+                let bytes_read = file.read(&mut cbuf).unwrap();
+                if bytes_read != cbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, cbuf.len());
+                    return Ok(());
+                }
+                let mut dbuf = [0u8; 4];
+                let bytes_read = file.read(&mut dbuf).unwrap();
+                if bytes_read != dbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, dbuf.len());
+                    return Ok(());
+                }
+                counter += 16;
+                let a: f32 = unsafe { mem::transmute(abuf) };
+                let b: f32 = unsafe { mem::transmute(bbuf) };
+                let c: f32 = unsafe { mem::transmute(cbuf) };
+                let d: f32 = unsafe { mem::transmute(dbuf) };
+                println!("    ({}, {}, {}, {})", a, b, c, d);
+                // 
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let lay: u32 = unsafe { mem::transmute(buf) };
+                println!("lay = {}", lay);
+                // ignore remaining bytes (for now)
+                println!("len - counter = {}", len - counter);
                 // read remaining bytes, but don't use them (yet)
                 let mut dummy: Vec<u8> = Vec::with_capacity((len - counter)
                                                             as usize);
