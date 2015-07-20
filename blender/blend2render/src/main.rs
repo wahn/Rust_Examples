@@ -154,49 +154,6 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                     Err(f) => { panic!(f.to_string()) }
                 };
                 println!("name = {}", name);
-                // flag
-                let mut buf = [0u8; 2];
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 2;
-                // us
-                let mut buf = [0u8; 4];
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 4;
-                // icon_id
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 4;
-                // pad2
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 4;
-                // properties
-                let mut buf = [0u8; 8];
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
                 // struct Camera (see DNA_camera_types.h)
                 // adt
                 let mut buf = [0u8; 8];
@@ -268,7 +225,6 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 }
                 counter += 4;
                 let lens: f32 = unsafe { mem::transmute(buf) };
-                // WORK
                 //println!("{} bytes read ...", counter);
                 // read remaining bytes, but don't use them (yet)
                 let mut dummy: Vec<u8> = Vec::with_capacity((len - counter)
@@ -435,6 +391,49 @@ fn read_struct_id(mut file: &File,
             (*name).push(*e as char);
         }
     }
+    // flag
+    let mut buf = [0u8; 2];
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 2;
+    // us
+    let mut buf = [0u8; 4];
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 4;
+    // icon_id
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 4;
+    // pad2
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 4;
+    // properties
+    let mut buf = [0u8; 8];
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 8;
     Ok(())
 }
 
