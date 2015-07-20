@@ -159,8 +159,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = [0u8; 8];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 }
                 counter += 8;
@@ -168,8 +168,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = [0u8; 1];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 }
                 counter += 1;
@@ -177,8 +177,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 // dtx
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 }
                 counter += 1;
@@ -186,8 +186,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = [0u8; 2];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 }
                 counter += 2;
@@ -195,32 +195,32 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 }
                 counter += 4;
                 // clipsta
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 }
                 counter += 4;
                 // clipend
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 }
                 counter += 4;
                 // lens
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 }
                 counter += 4;
@@ -235,8 +235,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = &mut dummy;
                 let bytes_read = file.read(buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 } else {
                     //println!("{} bytes read ...", bytes_read);
@@ -263,8 +263,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = &mut dummy;
                 let bytes_read = file.read(buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 } else {
                     //println!("{} bytes read ...", bytes_read);
@@ -286,8 +286,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = &mut dummy;
                 let bytes_read = file.read(buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 } else {
                     //println!("{} bytes read ...", bytes_read);
@@ -309,8 +309,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = &mut dummy;
                 let bytes_read = file.read(buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 } else {
                     //println!("{} bytes read ...", bytes_read);
@@ -323,8 +323,8 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let mut buf = &mut dummy;
                 let bytes_read = file.read(buf).unwrap();
                 if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
                     return Ok(());
                 } else {
                     //println!("{} bytes read ...", bytes_read);
@@ -344,32 +344,32 @@ fn read_struct_id(mut file: &File,
     // next
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 8;
     // prev
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 8;
     // newid
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 8;
     // lib
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 8;
@@ -377,8 +377,8 @@ fn read_struct_id(mut file: &File,
     let mut buf = [0u8; 66];
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 66;
@@ -395,8 +395,8 @@ fn read_struct_id(mut file: &File,
     let mut buf = [0u8; 2];
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 2;
@@ -404,24 +404,24 @@ fn read_struct_id(mut file: &File,
     let mut buf = [0u8; 4];
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 4;
     // icon_id
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 4;
     // pad2
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 4;
@@ -429,8 +429,8 @@ fn read_struct_id(mut file: &File,
     let mut buf = [0u8; 8];
     let bytes_read = file.read(&mut buf).unwrap();
     if bytes_read != buf.len() {
-        // println!("{} bytes read, but {} expected ...",
-        //          bytes_read, buf.len());
+        println!("{} bytes read, but {} expected ...",
+                 bytes_read, buf.len());
         return Ok(());
     }
     *counter += 8;
