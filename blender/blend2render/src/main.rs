@@ -869,6 +869,28 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let y: f32 = unsafe { mem::transmute(ybuf) };
                 let z: f32 = unsafe { mem::transmute(zbuf) };
                 println!("drotAxis[3] = ({}, {}, {})", x, y, z);
+                // rotAngle
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let rotAngle: f32 = unsafe { mem::transmute(buf) };
+                println!("rotAngle = {}", rotAngle);
+                // drotAngle
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let drotAngle: f32 = unsafe { mem::transmute(buf) };
+                println!("drotAngle = {}", drotAngle);
                 // obmat[4][4]
                 let mut abuf = [0u8; 4];
                 let bytes_read = file.read(&mut abuf).unwrap();
