@@ -1554,7 +1554,7 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let c: f32 = unsafe { mem::transmute(cbuf) };
                 let d: f32 = unsafe { mem::transmute(dbuf) };
                 println!("    ({}, {}, {}, {})", a, b, c, d);
-                // 
+                // lay
                 let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
