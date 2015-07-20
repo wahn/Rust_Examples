@@ -148,59 +148,11 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
             tc.truncate(2); // first 4 chars
             if tc == "CA" {
                 let mut counter = 0u32;
-                // struct ID (see DNA_ID.h)
-                let mut buf = [0u8; 8];
-                // next
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // prev
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // newid
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // lib
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // read 66 bytes
-                let mut buf = [0u8; 66];
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 66;
-                // pack those 66 bytes into a string ...
                 let mut name = String::new();
-                for e in buf.iter() {
-                    if *e == 0u8 {
-                        // ... but stop as soon as you see '\0'
-                        break;
-                    } else {
-                        name.push(*e as char);
-                    }
-                }
+                match read_struct_id(&file, &mut counter, &mut name) {
+                    Ok(_) => { ; }
+                    Err(f) => { panic!(f.to_string()) }
+                };
                 println!("name = {}", name);
                 // flag
                 let mut buf = [0u8; 2];
@@ -340,59 +292,11 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 }
             } else if tc == "OB" {
                 let mut counter = 0u32;
-                // struct ID (see DNA_ID.h)
-                let mut buf = [0u8; 8];
-                // next
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // prev
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // newid
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // lib
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // read 66 bytes
-                let mut buf = [0u8; 66];
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 66;
-                // pack those 66 bytes into a string ...
                 let mut name = String::new();
-                for e in buf.iter() {
-                    if *e == 0u8 {
-                        // ... but stop as soon as you see '\0'
-                        break;
-                    } else {
-                        name.push(*e as char);
-                    }
-                }
+                match read_struct_id(&file, &mut counter, &mut name) {
+                    Ok(_) => { ; }
+                    Err(f) => { panic!(f.to_string()) }
+                };
                 println!("name = {}", name);
                 // read remaining bytes, but don't use them (yet)
                 let mut dummy: Vec<u8> = Vec::with_capacity((len - counter)
@@ -411,59 +315,11 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 }
             } else if tc == "MA" {
                 let mut counter = 0u32;
-                // struct ID (see DNA_ID.h)
-                let mut buf = [0u8; 8];
-                // next
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // prev
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // newid
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // lib
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // read 66 bytes
-                let mut buf = [0u8; 66];
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 66;
-                // pack those 66 bytes into a string ...
                 let mut name = String::new();
-                for e in buf.iter() {
-                    if *e == 0u8 {
-                        // ... but stop as soon as you see '\0'
-                        break;
-                    } else {
-                        name.push(*e as char);
-                    }
-                }
+                match read_struct_id(&file, &mut counter, &mut name) {
+                    Ok(_) => { ; }
+                    Err(f) => { panic!(f.to_string()) }
+                };
                 println!("name = {}", name);
                 // read remaining bytes, but don't use them (yet)
                 let mut dummy: Vec<u8> = Vec::with_capacity((len - counter)
@@ -482,59 +338,11 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 }
             } else if tc == "ME" {
                 let mut counter = 0u32;
-                // struct ID (see DNA_ID.h)
-                let mut buf = [0u8; 8];
-                // next
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // prev
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // newid
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // lib
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 8;
-                // read 66 bytes
-                let mut buf = [0u8; 66];
-                let bytes_read = file.read(&mut buf).unwrap();
-                if bytes_read != buf.len() {
-                    // println!("{} bytes read, but {} expected ...",
-                    //          bytes_read, buf.len());
-                    return Ok(());
-                }
-                counter += 66;
-                // pack those 66 bytes into a string ...
                 let mut name = String::new();
-                for e in buf.iter() {
-                    if *e == 0u8 {
-                        // ... but stop as soon as you see '\0'
-                        break;
-                    } else {
-                        name.push(*e as char);
-                    }
-                }
+                match read_struct_id(&file, &mut counter, &mut name) {
+                    Ok(_) => { ; }
+                    Err(f) => { panic!(f.to_string()) }
+                };
                 println!("name = {}", name);
                 // read remaining bytes, but don't use them (yet)
                 let mut dummy: Vec<u8> = Vec::with_capacity((len - counter)
@@ -566,6 +374,65 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                     //println!("{} bytes read ...", bytes_read);
                 }
             }
+        }
+    }
+    Ok(())
+}
+
+fn read_struct_id(mut file: &File,
+                  // return values below
+                  counter: &mut u32,
+                  name: &mut String) -> io::Result<()> {
+    // struct ID (see DNA_ID.h)
+    let mut buf = [0u8; 8];
+    // next
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 8;
+    // prev
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 8;
+    // newid
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 8;
+    // lib
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 8;
+    // read 66 bytes
+    let mut buf = [0u8; 66];
+    let bytes_read = file.read(&mut buf).unwrap();
+    if bytes_read != buf.len() {
+        // println!("{} bytes read, but {} expected ...",
+        //          bytes_read, buf.len());
+        return Ok(());
+    }
+    *counter += 66;
+    // pack those 66 bytes into a string ...
+    for e in buf.iter() {
+        if *e == 0u8 {
+            // ... but stop as soon as you see '\0'
+            break;
+        } else {
+            (*name).push(*e as char);
         }
     }
     Ok(())
