@@ -1,3 +1,6 @@
+extern crate rand;
+
+use rand::Rng;
 use std::io;
 
 enum Card {
@@ -43,9 +46,15 @@ enum Player {
 
 fn main() {
     loop {
-        println!("input:");
+        // randomly select player
+        let player_number = rand::thread_rng().gen_range(0, 3);
+        match player_number {
+            0 => println!("player A:"),
+            1 => println!("player B:"),
+            2 => println!("player C:"),
+            _ => break,
+        }
         let mut input = String::new();
-
         io::stdin().read_line(&mut input)
             .ok()
             .expect("failed to read line");
@@ -53,7 +62,6 @@ fn main() {
             Ok(num) => num,
             Err(_) => break,
         };
-
         println!("your input: {}", input);
     }
 }
