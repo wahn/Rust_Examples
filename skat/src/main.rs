@@ -1,3 +1,5 @@
+use std::io;
+
 enum Card {
     ClubsAce,
     ClubsTen,
@@ -40,5 +42,18 @@ enum Player {
 }
 
 fn main() {
-    println!("Hello, world!");
+    loop {
+        println!("input:");
+        let mut input = String::new();
+
+        io::stdin().read_line(&mut input)
+            .ok()
+            .expect("failed to read line");
+        let input: u8 = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => break,
+        };
+
+        println!("your input: {}", input);
+    }
 }
