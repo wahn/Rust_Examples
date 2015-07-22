@@ -1914,7 +1914,7 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 }
                 counter += 88;
                 // struct GameSettings (see DNA_material_types.h)
-                // 4*4 + = 16 bytes
+                // 4*4 = 16 bytes
                 let mut buf = [0u8; 16];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
@@ -2033,6 +2033,360 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                     Err(f) => { panic!(f.to_string()) }
                 };
                 println!("name = {}", name);
+                // struct Mesh (see DNA_mesh_types.h)
+                // adt
+                let mut buf = [0u8; 8];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // bb
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // ipo
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // key
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mat
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mselect
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mpoly
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mtpoly
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mloop
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mloopuv
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mloopcol
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mface
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mtface
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // tface
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mvert
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // medge
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // dvert
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // mcol
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // texcomesh
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // edit_btmesh
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 8;
+                // struct CustomData (see DNA_customdata_types.h)
+                // vdata
+                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
+                let mut buf = [0u8; 82];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 82;
+                // edata
+                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
+                let mut buf = [0u8; 82];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 82;
+                // fdata
+                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
+                let mut buf = [0u8; 82];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 82;
+                // pdata
+                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
+                let mut buf = [0u8; 82];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 82;
+                // ldata
+                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
+                let mut buf = [0u8; 82];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 82;
+                // totvert
+                let mut buf = [0u8; 4];
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let totvert: u32 = unsafe { mem::transmute(buf) };
+                println!("totvert = {}", totvert);
+                // totedge
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let totedge: u32 = unsafe { mem::transmute(buf) };
+                println!("totedge = {}", totedge);
+                // totface
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let totface: u32 = unsafe { mem::transmute(buf) };
+                println!("totface = {}", totface);
+                // totselect
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let totselect: u32 = unsafe { mem::transmute(buf) };
+                println!("totselect = {}", totselect);
+                // totpoly
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let totpoly: u32 = unsafe { mem::transmute(buf) };
+                println!("totpoly = {}", totpoly);
+                // totloop
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                let totloop: u32 = unsafe { mem::transmute(buf) };
+                println!("totloop = {}", totloop);
+                // act_face
+                let bytes_read = file.read(&mut buf).unwrap();
+                if bytes_read != buf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, buf.len());
+                    return Ok(());
+                }
+                counter += 4;
+                // loc[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                // size[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                // rot[3]
+                let mut xbuf = [0u8; 4];
+                let bytes_read = file.read(&mut xbuf).unwrap();
+                if bytes_read != xbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, xbuf.len());
+                    return Ok(());
+                }
+                let mut ybuf = [0u8; 4];
+                let bytes_read = file.read(&mut ybuf).unwrap();
+                if bytes_read != ybuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, ybuf.len());
+                    return Ok(());
+                }
+                let mut zbuf = [0u8; 4];
+                let bytes_read = file.read(&mut zbuf).unwrap();
+                if bytes_read != zbuf.len() {
+                    println!("{} bytes read, but {} expected ...",
+                             bytes_read, zbuf.len());
+                    return Ok(());
+                }
+                counter += 12;
+                // WORK
+                // ignore remaining bytes (for now)
+                println!("len - counter = {}", len - counter);
                 // read remaining bytes, but don't use them (yet)
                 let mut dummy: Vec<u8> = Vec::with_capacity((len - counter)
                                                             as usize);
