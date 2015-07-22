@@ -2091,6 +2091,7 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                     return Ok(());
                 }
                 counter += 8;
+                // mtpoly
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
@@ -2195,7 +2196,7 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 }
                 counter += 8;
                 // struct CustomData (see DNA_customdata_types.h)
-                // 8 + 42 * 4 + 4*4 + 2*8 = 208
+                // 8 + 42 * 4 + 4*4 + 2*8 = 208 bytes
                 // vdata
                 let mut buf = [0u8; 208];
                 let bytes_read = file.read(&mut buf).unwrap();
@@ -2285,7 +2286,6 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 counter += 4;
                 let totselect: u32 = unsafe { mem::transmute(buf) };
                 println!("totselect = {}", totselect);
-
                 // totpoly
                 let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
