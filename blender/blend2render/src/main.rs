@@ -2091,7 +2091,6 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                     return Ok(());
                 }
                 counter += 8;
-                // mtpoly
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
@@ -2196,57 +2195,53 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 }
                 counter += 8;
                 // struct CustomData (see DNA_customdata_types.h)
+                // 8 + 42 * 4 + 4*4 + 2*8 = 208
                 // vdata
-                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
-                let mut buf = [0u8; 82];
+                let mut buf = [0u8; 208];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
                              bytes_read, buf.len());
                     return Ok(());
                 }
-                counter += 82;
+                counter += 208;
                 // edata
-                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
-                let mut buf = [0u8; 82];
+                let mut buf = [0u8; 208];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
                              bytes_read, buf.len());
                     return Ok(());
                 }
-                counter += 82;
+                counter += 208;
                 // fdata
-                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
-                let mut buf = [0u8; 82];
+                let mut buf = [0u8; 208];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
                              bytes_read, buf.len());
                     return Ok(());
                 }
-                counter += 82;
+                counter += 208;
                 // pdata
-                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
-                let mut buf = [0u8; 82];
+                let mut buf = [0u8; 208];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
                              bytes_read, buf.len());
                     return Ok(());
                 }
-                counter += 82;
+                counter += 208;
                 // ldata
-                // 1*8 + 42 + 4*4 + 2*8 = 82 bytes
-                let mut buf = [0u8; 82];
+                let mut buf = [0u8; 208];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
                              bytes_read, buf.len());
                     return Ok(());
                 }
-                counter += 82;
-                // totvert
+                counter += 208;
+
                 let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
@@ -2258,6 +2253,7 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let totvert: u32 = unsafe { mem::transmute(buf) };
                 println!("totvert = {}", totvert);
                 // totedge
+                let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
@@ -2268,6 +2264,7 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let totedge: u32 = unsafe { mem::transmute(buf) };
                 println!("totedge = {}", totedge);
                 // totface
+                let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
@@ -2278,6 +2275,7 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let totface: u32 = unsafe { mem::transmute(buf) };
                 println!("totface = {}", totface);
                 // totselect
+                let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
@@ -2287,7 +2285,9 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 counter += 4;
                 let totselect: u32 = unsafe { mem::transmute(buf) };
                 println!("totselect = {}", totselect);
+
                 // totpoly
+                let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
@@ -2298,6 +2298,7 @@ fn read_remaining_blend_file(mut file: File) -> io::Result<()> {
                 let totpoly: u32 = unsafe { mem::transmute(buf) };
                 println!("totpoly = {}", totpoly);
                 // totloop
+                let mut buf = [0u8; 4];
                 let bytes_read = file.read(&mut buf).unwrap();
                 if bytes_read != buf.len() {
                     println!("{} bytes read, but {} expected ...",
