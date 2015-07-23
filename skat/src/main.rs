@@ -74,11 +74,12 @@ fn main() {
     // (see http://www.termsys.demon.co.uk/vtansi.htm#colors)
     let esc_char = vec![27];
     let esc = String::from_utf8(esc_char).unwrap();
+    let reset: u8 = 0;
     let bright: u8 = 1;
     let black: u8 = 30;
     let red: u8 = 31;
-    println!("{}[{};{}m{}{}[0m", esc, bright, black, clubs_jack, esc);
-    println!("{}[{};{}m{}{}[0m", esc, bright, red, hearts_jack, esc);
+    println!("{}[{};{}m{}{}[{}m", esc, bright, black, clubs_jack, esc, reset);
+    println!("{}[{};{}m{}{}[{}m", esc, bright, red, hearts_jack, esc, reset);
     // randomly select player
     let player_number: u8 = rand::thread_rng().gen_range(0, 3);
     match player_number {
