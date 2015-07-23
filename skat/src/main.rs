@@ -69,6 +69,8 @@ fn main() {
     // just for fun
     let chars = vec![74, 226, 153, 163];
     let clubs_jack: String = String::from_utf8(chars).unwrap();
+    let chars = vec![74, 226, 153, 165];
+    let hearts_jack: String = String::from_utf8(chars).unwrap();
     // (see http://www.termsys.demon.co.uk/vtansi.htm#colors)
     let esc_char = vec![27];
     let esc = String::from_utf8(esc_char).unwrap();
@@ -76,7 +78,7 @@ fn main() {
     let black: u8 = 30;
     let red: u8 = 31;
     println!("{}[{};{}m{}{}[0m", esc, bright, black, clubs_jack, esc);
-    println!("{}[{};{}m{}{}[0m", esc, bright, red, clubs_jack, esc);
+    println!("{}[{};{}m{}{}[0m", esc, bright, red, hearts_jack, esc);
     // randomly select player
     let player_number: u8 = rand::thread_rng().gen_range(0, 3);
     match player_number {
