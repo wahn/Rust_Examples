@@ -1,0 +1,4 @@
+[root]
+name = "simple_ray_tracer"
+version = "0.0.1"
+
