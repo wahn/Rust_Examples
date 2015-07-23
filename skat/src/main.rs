@@ -45,15 +45,15 @@ enum Player {
 }
 
 fn main() {
+    // randomly select player
+    let player_number = rand::thread_rng().gen_range(0, 3);
+    match player_number {
+        0 => println!("player A:"),
+        1 => println!("player B:"),
+        2 => println!("player C:"),
+        _ => panic!("Uknown player {}", player_number),
+    }
     loop {
-        // randomly select player
-        let player_number = rand::thread_rng().gen_range(0, 3);
-        match player_number {
-            0 => println!("player A:"),
-            1 => println!("player B:"),
-            2 => println!("player C:"),
-            _ => break,
-        }
         let mut input = String::new();
         io::stdin().read_line(&mut input)
             .ok()
