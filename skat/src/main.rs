@@ -46,7 +46,7 @@ enum Game {
     Null,
 }
 
-enum Player {
+enum PlayerId {
     A,
     B,
     C,
@@ -288,18 +288,18 @@ fn print_card(card: u8) {
 
 fn main() {
     // randomly select player
-    let player_number: u8 = rand::thread_rng().gen_range(0, 3);
-    match player_number {
+    let player_id: u8 = rand::thread_rng().gen_range(0, 3);
+    match player_id {
         0 => println!("player A:"),
         1 => println!("player B:"),
         2 => println!("player C:"),
-        _ => panic!("Unknown player {}", player_number),
+        _ => panic!("Unknown player {}", player_id),
     }
     loop {
-        // player player_number is dealing
-        deal(player_number);
+        // player with player_id is dealing
+        deal(player_id);
         // bid
-        let (player, bid) = bid(player_number);
+        let (player, bid) = bid(player_id);
         // announce
         let game = announce(player);
         // play 10 tricks in a row
