@@ -52,6 +52,31 @@ enum PlayerId {
     C,
 }
 
+struct Player {
+    id: u8,
+    cards: Vec<u8>,
+}
+
+struct PlayerBuilder {
+    id: u8,
+    cards: Vec<u8>,
+}
+
+impl PlayerBuilder {
+    fn new() -> PlayerBuilder {
+        PlayerBuilder { cards: Vec::new(), id: 3, }
+    }
+
+    fn id(&mut self, newId: u8) -> &mut PlayerBuilder {
+        self.id = newId;
+        self
+    }
+
+    fn finalize(&self) -> Player {
+        Player { id: self.id, cards: self.cards.to_vec(), }
+    }
+}
+
 fn announce(player: u8) -> Game {
     Game::Suit
 }
@@ -64,6 +89,7 @@ fn bid(dealer: u8) -> (u8, u8) {
 }
 
 fn deal(dealer: u8) {
+    let dealer = PlayerBuilder::new();
     let mut cards: Vec<u8> = Vec::new();
     // print sorted cards
     for n in 0..32 {
