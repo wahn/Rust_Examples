@@ -65,198 +65,196 @@ fn bid(dealer: u8) -> (u8, u8) {
 
 fn deal(dealer: u8) {
     let mut cards: Vec<u8> = Vec::new();
+    // print sorted cards
     for n in 0..32 {
         cards.push(n);
     }
-    // print clubs
+    for n in 0..8 {
+        print_card(n);
+    };
+    println!("");
+    for n in 8..16 {
+        print_card(n);
+    }
+    println!("");
+    for n in 16..24 {
+        print_card(n);
+    };
+    println!("");
+    for n in 24..32 {
+        print_card(n);
+    };
+    println!("");
+}
+
+fn print_card(card: u8) {
     let club    = "♣";
     let spade   = "♠";
     let heart   = "♥";
     let diamond = "♦";
-    for n in 0..8 {
-        match n {
-            0 => {
-                let mut ace = "A".to_string();
-                ace.push_str(club);
-                print!("{} ", Black.bold().paint(&ace));
-            },
-            1 => {
-                let mut ten = "10".to_string();
-                ten.push_str(club);
-                print!("{} ", Black.bold().paint(&ten));
-            },
-            2 => {
-                let mut king = "K".to_string();
-                king.push_str(club);
-                print!("{} ", Black.bold().paint(&king));
-            },
-            3 => {
-                let mut queen = "Q".to_string();
-                queen.push_str(club);
-                print!("{} ", Black.bold().paint(&queen));
-            },
-            4 => {
-                let mut jack = "J".to_string();
-                jack.push_str(club);
-                print!("{} ", Black.bold().paint(&jack));
-            },
-            5 => {
-                let mut nine = "9".to_string();
-                nine.push_str(club);
-                print!("{} ", Black.bold().paint(&nine));
-            },
-            6 => {
-                let mut eight = "8".to_string();
-                eight.push_str(club);
-                print!("{} ", Black.bold().paint(&eight));
-            },
-            7 => {
-                let mut seven = "7".to_string();
-                seven.push_str(club);
-                print!("{} ", Black.bold().paint(&seven));
-            },
-            _ => panic!("Unknown card"),
-        }
-    };
-    println!("");
-    for n in 8..16 {
-        match n {
-            8 => {
-                let mut ace = "A".to_string();
-                ace.push_str(spade);
-                print!("{} ", Green.bold().paint(&ace));
-            },
-            9 => {
-                let mut ten = "10".to_string();
-                ten.push_str(spade);
-                print!("{} ", Green.bold().paint(&ten));
-            },
-            10 => {
-                let mut king = "K".to_string();
-                king.push_str(spade);
-                print!("{} ", Green.bold().paint(&king));
-            },
-            11 => {
-                let mut queen = "Q".to_string();
-                queen.push_str(spade);
-                print!("{} ", Green.bold().paint(&queen));
-            },
-            12 => {
-                let mut jack = "J".to_string();
-                jack.push_str(spade);
-                print!("{} ", Green.bold().paint(&jack));
-            },
-            13 => {
-                let mut nine = "9".to_string();
-                nine.push_str(spade);
-                print!("{} ", Green.bold().paint(&nine));
-            },
-            14 => {
-                let mut eight = "8".to_string();
-                eight.push_str(spade);
-                print!("{} ", Green.bold().paint(&eight));
-            },
-            15 => {
-                let mut seven = "7".to_string();
-                seven.push_str(spade);
-                print!("{} ", Green.bold().paint(&seven));
-            },
-            _ => panic!("Unknown card"),
-        }
-    };
-    println!("");
-    for n in 16..24 {
-        match n {
-            16 => {
-                let mut ace = "A".to_string();
-                ace.push_str(heart);
-                print!("{} ", Red.bold().paint(&ace));
-            },
-            17 => {
-                let mut ten = "10".to_string();
-                ten.push_str(heart);
-                print!("{} ", Red.bold().paint(&ten));
-            },
-            18 => {
-                let mut king = "K".to_string();
-                king.push_str(heart);
-                print!("{} ", Red.bold().paint(&king));
-            },
-            19 => {
-                let mut queen = "Q".to_string();
-                queen.push_str(heart);
-                print!("{} ", Red.bold().paint(&queen));
-            },
-            20 => {
-                let mut jack = "J".to_string();
-                jack.push_str(heart);
-                print!("{} ", Red.bold().paint(&jack));
-            },
-            21 => {
-                let mut nine = "9".to_string();
-                nine.push_str(heart);
-                print!("{} ", Red.bold().paint(&nine));
-            },
-            22 => {
-                let mut eight = "8".to_string();
-                eight.push_str(heart);
-                print!("{} ", Red.bold().paint(&eight));
-            },
-            23 => {
-                let mut seven = "7".to_string();
-                seven.push_str(heart);
-                print!("{} ", Red.bold().paint(&seven));
-            },
-            _ => panic!("Unknown card"),
-        }
-    };
-    println!("");
-    for n in 24..32 {
-        match n {
-            24 => {
-                let mut ace = "A".to_string();
-                ace.push_str(diamond);
-                print!("{} ", Yellow.bold().paint(&ace));
-            },
-            25 => {
-                let mut ten = "10".to_string();
-                ten.push_str(diamond);
-                print!("{} ", Yellow.bold().paint(&ten));
-            },
-            26 => {
-                let mut king = "K".to_string();
-                king.push_str(diamond);
-                print!("{} ", Yellow.bold().paint(&king));
-            },
-            27 => {
-                let mut queen = "Q".to_string();
-                queen.push_str(diamond);
-                print!("{} ", Yellow.bold().paint(&queen));
-            },
-            28 => {
-                let mut jack = "J".to_string();
-                jack.push_str(diamond);
-                print!("{} ", Yellow.bold().paint(&jack));
-            },
-            29 => {
-                let mut nine = "9".to_string();
-                nine.push_str(diamond);
-                print!("{} ", Yellow.bold().paint(&nine));
-            },
-            30 => {
-                let mut eight = "8".to_string();
-                eight.push_str(diamond);
-                print!("{} ", Yellow.bold().paint(&eight));
-            },
-            31 => {
-                let mut seven = "7".to_string();
-                seven.push_str(diamond);
-                print!("{} ", Yellow.bold().paint(&seven));
-            },
-            _ => panic!("Unknown card"),
-        }
-    };
-    println!("");
+    match card {
+        0 => {
+            let mut ace = "A".to_string();
+            ace.push_str(club);
+            print!("{} ", Black.bold().paint(&ace));
+        },
+        1 => {
+            let mut ten = "10".to_string();
+            ten.push_str(club);
+            print!("{} ", Black.bold().paint(&ten));
+        },
+        2 => {
+            let mut king = "K".to_string();
+            king.push_str(club);
+            print!("{} ", Black.bold().paint(&king));
+        },
+        3 => {
+            let mut queen = "Q".to_string();
+            queen.push_str(club);
+            print!("{} ", Black.bold().paint(&queen));
+        },
+        4 => {
+            let mut jack = "J".to_string();
+            jack.push_str(club);
+            print!("{} ", Black.bold().paint(&jack));
+        },
+        5 => {
+            let mut nine = "9".to_string();
+            nine.push_str(club);
+            print!("{} ", Black.bold().paint(&nine));
+        },
+        6 => {
+            let mut eight = "8".to_string();
+            eight.push_str(club);
+            print!("{} ", Black.bold().paint(&eight));
+        },
+        7 => {
+            let mut seven = "7".to_string();
+            seven.push_str(club);
+            print!("{} ", Black.bold().paint(&seven));
+        },
+        8 => {
+            let mut ace = "A".to_string();
+            ace.push_str(spade);
+            print!("{} ", Green.bold().paint(&ace));
+        },
+        9 => {
+            let mut ten = "10".to_string();
+            ten.push_str(spade);
+            print!("{} ", Green.bold().paint(&ten));
+        },
+        10 => {
+            let mut king = "K".to_string();
+            king.push_str(spade);
+            print!("{} ", Green.bold().paint(&king));
+        },
+        11 => {
+            let mut queen = "Q".to_string();
+            queen.push_str(spade);
+            print!("{} ", Green.bold().paint(&queen));
+        },
+        12 => {
+            let mut jack = "J".to_string();
+            jack.push_str(spade);
+            print!("{} ", Green.bold().paint(&jack));
+        },
+        13 => {
+            let mut nine = "9".to_string();
+            nine.push_str(spade);
+            print!("{} ", Green.bold().paint(&nine));
+        },
+        14 => {
+            let mut eight = "8".to_string();
+            eight.push_str(spade);
+            print!("{} ", Green.bold().paint(&eight));
+        },
+        15 => {
+            let mut seven = "7".to_string();
+            seven.push_str(spade);
+            print!("{} ", Green.bold().paint(&seven));
+        },
+        16 => {
+            let mut ace = "A".to_string();
+            ace.push_str(heart);
+            print!("{} ", Red.bold().paint(&ace));
+        },
+        17 => {
+            let mut ten = "10".to_string();
+            ten.push_str(heart);
+            print!("{} ", Red.bold().paint(&ten));
+        },
+        18 => {
+            let mut king = "K".to_string();
+            king.push_str(heart);
+            print!("{} ", Red.bold().paint(&king));
+        },
+        19 => {
+            let mut queen = "Q".to_string();
+            queen.push_str(heart);
+            print!("{} ", Red.bold().paint(&queen));
+        },
+        20 => {
+            let mut jack = "J".to_string();
+            jack.push_str(heart);
+            print!("{} ", Red.bold().paint(&jack));
+        },
+        21 => {
+            let mut nine = "9".to_string();
+            nine.push_str(heart);
+            print!("{} ", Red.bold().paint(&nine));
+        },
+        22 => {
+            let mut eight = "8".to_string();
+            eight.push_str(heart);
+            print!("{} ", Red.bold().paint(&eight));
+        },
+        23 => {
+            let mut seven = "7".to_string();
+            seven.push_str(heart);
+            print!("{} ", Red.bold().paint(&seven));
+        },
+        24 => {
+            let mut ace = "A".to_string();
+            ace.push_str(diamond);
+            print!("{} ", Yellow.bold().paint(&ace));
+        },
+        25 => {
+            let mut ten = "10".to_string();
+            ten.push_str(diamond);
+            print!("{} ", Yellow.bold().paint(&ten));
+        },
+        26 => {
+            let mut king = "K".to_string();
+            king.push_str(diamond);
+            print!("{} ", Yellow.bold().paint(&king));
+        },
+        27 => {
+            let mut queen = "Q".to_string();
+            queen.push_str(diamond);
+            print!("{} ", Yellow.bold().paint(&queen));
+        },
+        28 => {
+            let mut jack = "J".to_string();
+            jack.push_str(diamond);
+            print!("{} ", Yellow.bold().paint(&jack));
+        },
+        29 => {
+            let mut nine = "9".to_string();
+            nine.push_str(diamond);
+            print!("{} ", Yellow.bold().paint(&nine));
+        },
+        30 => {
+            let mut eight = "8".to_string();
+            eight.push_str(diamond);
+            print!("{} ", Yellow.bold().paint(&eight));
+        },
+        31 => {
+            let mut seven = "7".to_string();
+            seven.push_str(diamond);
+            print!("{} ", Yellow.bold().paint(&seven));
+        },
+        _ => panic!("Unknown card"),
+    }
 }
 
 fn main() {
