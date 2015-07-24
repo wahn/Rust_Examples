@@ -86,22 +86,32 @@ fn deal(dealer: u8) {
     };
     println!("");
     println!("");
-    // TODO: shuffle cards
+    // shuffle cards
+    let mut upper: u8 = 32;
+    let mut shuffled: Vec<u8> = Vec::new();
+    for n in 0..32 {
+        // randomly select card
+        let pile_index: u8 = rand::thread_rng().gen_range(0, upper - n);
+        // remove selected card from old pile
+        let card = cards.remove(pile_index as usize);
+        // add selected card to new pile
+        shuffled.push(card);
+    }
     // print shuffled cards (per player plus Skat)
     for n in 0..10 {
-        print_card(n);
+        print_card(shuffled[n]);
     };
     println!("");
     for n in 10..20 {
-        print_card(n);
+        print_card(shuffled[n]);
     }
     println!("");
     for n in 20..30 {
-        print_card(n);
+        print_card(shuffled[n]);
     };
     println!("");
     for n in 30..32 {
-        print_card(n);
+        print_card(shuffled[n]);
     };
     println!("");
 }
