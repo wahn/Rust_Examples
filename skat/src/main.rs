@@ -110,27 +110,10 @@ fn bid(dealer: u8) -> (u8, u8) {
 
 fn deal(dealerId: u8) {
     let mut cards: Vec<u8> = Vec::new();
-    // print sorted cards
+    // initialize cards
     for n in 0..32 {
         cards.push(n);
     }
-    for n in 0..8 {
-        print_card(n);
-    };
-    println!("");
-    for n in 8..16 {
-        print_card(n);
-    }
-    println!("");
-    for n in 16..24 {
-        print_card(n);
-    };
-    println!("");
-    for n in 24..32 {
-        print_card(n);
-    };
-    println!("");
-    println!("");
     // shuffle cards
     let mut upper: u8 = 32;
     let mut shuffled: Vec<u8> = Vec::new();
@@ -159,19 +142,40 @@ fn deal(dealerId: u8) {
     // let the dealer print his own cards
     dealer.print_cards();
     println!("");
-    // print shuffled cards (per player plus Skat)
-    for n in 0..10 {
-        print_card(shuffled[n]);
-    };
+    // create the left player (will play first card)
+    let left = PlayerBuilder::new()
+        .id((dealerId + 1) % 3)
+        .add(shuffled[10])
+        .add(shuffled[11])
+        .add(shuffled[12])
+        .add(shuffled[13])
+        .add(shuffled[14])
+        .add(shuffled[15])
+        .add(shuffled[16])
+        .add(shuffled[17])
+        .add(shuffled[18])
+        .add(shuffled[19])
+        .finalize();
+    left.print_cards();
     println!("");
-    for n in 10..20 {
-        print_card(shuffled[n]);
-    }
+    // create the right player (will play bid first)
+    let right = PlayerBuilder::new()
+        .id((dealerId + 2) % 3)
+        .add(shuffled[10])
+        .add(shuffled[11])
+        .add(shuffled[12])
+        .add(shuffled[13])
+        .add(shuffled[14])
+        .add(shuffled[15])
+        .add(shuffled[16])
+        .add(shuffled[17])
+        .add(shuffled[18])
+        .add(shuffled[19])
+        .finalize();
+    right.print_cards();
     println!("");
-    for n in 20..30 {
-        print_card(shuffled[n]);
-    };
-    println!("");
+    // Skat
+    println!("Skat:");
     for n in 30..32 {
         print_card(shuffled[n]);
     };
@@ -351,12 +355,6 @@ fn print_card(card: u8) {
 fn main() {
     // randomly select player
     let player_id: u8 = rand::thread_rng().gen_range(0, 3);
-    match player_id {
-        0 => println!("player A:"),
-        1 => println!("player B:"),
-        2 => println!("player C:"),
-        _ => panic!("Unknown player {}", player_id),
-    }
     loop {
         // player with player_id is dealing
         deal(player_id);
