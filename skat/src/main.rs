@@ -52,6 +52,10 @@ enum Player {
     C,
 }
 
+fn announce(player: u8) -> Game {
+    Game::Suit
+}
+
 fn bid(dealer: u8) -> (u8, u8) {
     let winner: u8 = dealer;
     let highest: u8 = 18;
@@ -253,10 +257,6 @@ fn deal(dealer: u8) {
         }
     };
     println!("");
-}
-
-fn announce(player: u8) -> Game {
-    Game::Suit
 }
 
 fn main() {
