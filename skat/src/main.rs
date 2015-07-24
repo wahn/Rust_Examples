@@ -67,6 +67,11 @@ impl PlayerBuilder {
         PlayerBuilder { cards: Vec::new(), id: 3, }
     }
 
+    fn add(&mut self, newCard: u8) -> &mut PlayerBuilder {
+        self.cards.push(newCard);
+        self
+    }
+
     fn id(&mut self, newId: u8) -> &mut PlayerBuilder {
         self.id = newId;
         self
@@ -88,8 +93,7 @@ fn bid(dealer: u8) -> (u8, u8) {
     (winner, highest)
 }
 
-fn deal(dealer: u8) {
-    let dealer = PlayerBuilder::new();
+fn deal(dealerId: u8) {
     let mut cards: Vec<u8> = Vec::new();
     // print sorted cards
     for n in 0..32 {
@@ -123,6 +127,20 @@ fn deal(dealer: u8) {
         // add selected card to new pile
         shuffled.push(card);
     }
+    // create dealer with the first 10 cards
+    let dealer = PlayerBuilder::new()
+        .id(dealerId)
+        .add(shuffled[0])
+        .add(shuffled[1])
+        .add(shuffled[2])
+        .add(shuffled[3])
+        .add(shuffled[4])
+        .add(shuffled[5])
+        .add(shuffled[6])
+        .add(shuffled[7])
+        .add(shuffled[8])
+        .add(shuffled[9])
+        .finalize();
     // print shuffled cards (per player plus Skat)
     for n in 0..10 {
         print_card(shuffled[n]);
