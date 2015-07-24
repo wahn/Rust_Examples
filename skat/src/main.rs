@@ -69,8 +69,11 @@ fn announce(player: u8) -> Game {
 
 fn main() {
     // just for fun
-    let clubs_jack  = "J♣"; // Emacs 'M-x insert-char' followed by BLACK CLUB SUIT
-    let hearts_jack = "J♥"; // Emacs 'M-x insert-char' followed by BLACK HEART SUIT
+
+    // Emacs 'M-x insert-char' followed by BLACK CLUB SUIT
+    let clubs_jack  = "J♣";
+    // Emacs 'M-x insert-char' followed by BLACK HEART SUIT
+    let hearts_jack = "J♥";
     println!("{}", Black.bold().paint(clubs_jack));
     println!("{}", Red.bold().paint(hearts_jack));
     // randomly select player
