@@ -57,6 +57,21 @@ struct Player {
     cards: Vec<u8>,
 }
 
+impl Player {
+    fn print_cards(&self) {
+        match self.id {
+            0 => println!("player A:"),
+            1 => println!("player B:"),
+            2 => println!("player C:"),
+            _ => panic!("Unknown player {}", self.id),
+            }
+        for index in 0..10 {
+            print!("{}:", index);
+            print_card(self.cards[index]);
+        }
+    }
+}
+
 struct PlayerBuilder {
     id: u8,
     cards: Vec<u8>,
@@ -141,6 +156,9 @@ fn deal(dealerId: u8) {
         .add(shuffled[8])
         .add(shuffled[9])
         .finalize();
+    // let the dealer print his own cards
+    dealer.print_cards();
+    println!("");
     // print shuffled cards (per player plus Skat)
     for n in 0..10 {
         print_card(shuffled[n]);
