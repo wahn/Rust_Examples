@@ -212,8 +212,6 @@ fn bid(dealer: &Player,
        responder: &Player,
        bidder: &Player) -> (u8, u8) {
     let mut winner: u8;
-    let mut lowest: u8 = 0;
-    let mut highest: u8 = 0;
     // bidder sees his cards first
     bidder.print_cards();
     println!("");
@@ -258,20 +256,6 @@ fn bid(dealer: &Player,
         }
     }
     println!("responder: {}", responder_bid);
-    // who wins bidding so far?
-    if bidder_bid > responder_bid {
-        winner  = bidder.id;
-        highest = bidder_bid;
-        lowest  = responder_bid;
-    } else {
-        winner  = responder.id;
-        highest = responder_bid;
-        if responder_bid >= 18u8 {
-            lowest  = 18u8;
-        } else {
-            lowest  = bidder_bid;
-        }
-    }
     // ask dealer last
     dealer.print_cards();
     println!("");
@@ -294,20 +278,70 @@ fn bid(dealer: &Player,
         }
     }
     println!("dealer: {}", dealer_bid);
-    // who wins bidding (finally)?
+    // who wins bidding?
+    let mut lowest: u8 = 0;
+    // first between bidder and responder
+    if bidder_bid > responder_bid {
+        // bidder wins (so far)
+        lowest = 18u8; // bidder said at least 18
+        if responder_bid > lowest {
+            lowest = responder_bid;
+        }
+        winner = bidder.id;
+    } else {
+        // special case: both bids are 0 (pass)
+        if bidder_bid == 0u8 && responder_bid == 0u8 {
+            if dealer_bid == 0u8 {
+                // nobody wants to play
+                return (dealer.id, 0u8);
+            } else {
+                // dealer wants to play and all others passed
+                lowest = 18u8; // dealer said at least 18
+                winner = dealer.id;
+                let winner_name = match winner {
+                    0 => "A",
+                    1 => "B",
+                    2 => "C",
+                    _ => panic!("Unknown player {}", winner),
+                };
+                println!("Player {} wins bidding with {} ...",
+                         winner_name, lowest);
+                return (winner, lowest);
+            }
+        } else { // responder_bid > bidder_bid
+            lowest = bidder_bid; // can still be 0
+            if bidder_bid == 0u8 {
+                lowest = 18u8; // responder said at least 18
+            }
+            // responder wins (so far)
+            winner = responder.id;
+        }
+    }
+    // now dealer gets his chance
     if winner == responder.id {
-        // responder didn't pass and has to be the highest bidder to win
-        if highest > dealer_bid {
-            // responder is already the winner
+        // responder didn't pass and said at least 18, dealer listens
+        if dealer_bid > responder_bid {
+            if responder_bid > lowest {
+                lowest = responder_bid;
+            }
+            winner = dealer.id;
+        } else {
             if dealer_bid > lowest {
                 lowest = dealer_bid;
             }
-            if lowest == 0 && responder_bid >= 18u8 {
-                lowest  = 18u8;
+            winner = responder.id;
+        }
+    } else { // winner == bidder.id
+        // responder passed, dealer can pass or has to say more than bidder
+        if dealer_bid > bidder_bid {
+            // dealer wins
+            lowest = responder_bid;
+            if responder_bid == 0u8 {
+                lowest = 18u8; // dealer said at least 18
             }
-            // did dealer say anything?
-            if dealer_bid >= lowest {
-                // responder had to say more than dealer
+            if bidder_bid > lowest {
+                // dealer has to say more than bidder
+                lowest = bidder_bid;
                 loop {
                     lowest += 1;
                     if is_valid(lowest) {
@@ -315,44 +349,12 @@ fn bid(dealer: &Player,
                     }
                 }
             }
+            winner = dealer.id;
         } else {
-            // dealer wins
-            winner  = dealer.id;
-            highest = dealer_bid;
-            if responder_bid > lowest {
-                lowest = responder_bid;
-            }
-            if lowest == 0 && dealer_bid >= 18u8 {
-                lowest  = 18u8;
-            }
-        }
-    } else {
-        // responder passed, dealer has to be the highest bidder to win
-        if dealer_bid > highest {
-            // dealer wins
-            winner  = dealer.id;
-            highest = dealer_bid;
-            if bidder_bid > lowest {
-                lowest = bidder_bid;
-            }
-            // dealer had to say more than bidder
-            loop {
-                lowest += 1;
-                if is_valid(lowest) {
-                    break;
-                }
-            }
-            if lowest == 0 && dealer_bid >= 18u8 {
-                lowest  = 18u8;
-            }
-        } else {
-            // bidder is already the winner
             if dealer_bid > lowest {
                 lowest = dealer_bid;
             }
-            if lowest == 0 && bidder_bid >= 18u8 {
-                lowest  = 18u8;
-            }
+            winner = bidder.id;
         }
     }
     let winner_name = match winner {
