@@ -98,14 +98,13 @@ impl Player {
                 _ => panic!("Unknown card"),
             }
         }
+        // order Jacks
+        sorted.sort();
+        // order suits
         clubs.sort();
-        //clubs.reverse();
         spades.sort();
-        //spades.reverse();
         hearts.sort();
-        //hearts.reverse();
         diamonds.sort();
-        //diamonds.reverse();
         // then add the suit with the highest count
         let empty: Vec<u8> = Vec::new();
         let mut highest: &Vec<u8> = &empty;
