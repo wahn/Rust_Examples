@@ -302,15 +302,18 @@ fn bid(dealer: &Player,
             if dealer_bid > lowest {
                 lowest = dealer_bid;
             }
-            // responder had to say more than dealer
-            loop {
-                lowest += 1;
-                if is_valid(lowest) {
-                    break;
-                }
-            }
             if lowest == 0 && responder_bid >= 18u8 {
                 lowest  = 18u8;
+            }
+            // did dealer say anything?
+            if dealer_bid >= lowest {
+                // responder had to say more than dealer
+                loop {
+                    lowest += 1;
+                    if is_valid(lowest) {
+                        break;
+                    }
+                }
             }
         } else {
             // dealer wins
