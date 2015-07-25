@@ -6,38 +6,38 @@ use rand::Rng;
 use std::io;
 
 enum Card {
-    ClubsAce,
-    ClubsTen,
-    ClubsKing,
-    ClubsQueen,
-    ClubsJack,
-    ClubsNine,
-    ClubsEight,
-    ClubsSeven,
-    SpadesAce,
-    SpadesTen,
-    SpadesKing,
-    SpadesQueen,
-    SpadesJack,
-    SpadesNine,
-    SpadesEight,
-    SpadesSeven,
-    HeartsAce,
-    HeartsTen,
-    HeartsKing,
-    HeartsQueen,
-    HeartsJack,
-    HeartsNine,
-    HeartsEight,
-    HeartsSeven,
-    DiamondsAce,
-    DiamondsTen,
-    DiamondsKing,
-    DiamondsQueen,
-    DiamondsJack,
-    DiamondsNine,
-    DiamondsEight,
-    DiamondsSeven,
+    ClubsAce,      //  0
+    ClubsTen,      //  1
+    ClubsKing,     //  2
+    ClubsQueen,    //  3
+    ClubsJack,     //  4
+    ClubsNine,     //  5
+    ClubsEight,    //  6
+    ClubsSeven,    //  7
+    SpadesAce,     //  8
+    SpadesTen,     //  9
+    SpadesKing,    // 10
+    SpadesQueen,   // 11
+    SpadesJack,    // 12
+    SpadesNine,    // 13
+    SpadesEight,   // 14
+    SpadesSeven,   // 15
+    HeartsAce,     // 16
+    HeartsTen,     // 17
+    HeartsKing,    // 18
+    HeartsQueen,   // 19
+    HeartsJack,    // 20
+    HeartsNine,    // 21
+    HeartsEight,   // 22
+    HeartsSeven,   // 23
+    DiamondsAce,   // 24
+    DiamondsTen,   // 25
+    DiamondsKing,  // 26
+    DiamondsQueen, // 27
+    DiamondsJack,  // 28
+    DiamondsNine,  // 29
+    DiamondsEight, // 30
+    DiamondsSeven, // 31
 }
 
 enum Game {
@@ -69,6 +69,114 @@ impl Player {
             print!("{}:", index);
             print_card(self.cards[index]);
         }
+    }
+    fn sort_cards(&mut self) {
+        let mut sorted: Vec<u8> = Vec::new();
+        let mut clubs: Vec<u8> = Vec::new();
+        let mut spades: Vec<u8> = Vec::new();
+        let mut hearts: Vec<u8> = Vec::new();
+        let mut diamonds: Vec<u8> = Vec::new();
+        // first find Jacks
+        for n in 0..10 {
+            match self.cards[n] {
+                // ClubsJack
+                4 => sorted.push(self.cards[n]),
+                // SpadesJack
+                12 => sorted.push(self.cards[n]),
+                // HeartsJack
+                20 => sorted.push(self.cards[n]),
+                // DiamondsJack
+                28 => sorted.push(self.cards[n]),
+                // Clubs
+                0 ... 7 => clubs.push(self.cards[n]),
+                // Spades
+                8 ... 15 => spades.push(self.cards[n]),
+                // Hearts
+                16 ... 23 => hearts.push(self.cards[n]),
+                // Diamonds
+                24 ... 31 => diamonds.push(self.cards[n]),
+                _ => panic!("Unknown card"),
+            }
+        }
+        clubs.sort();
+        //clubs.reverse();
+        spades.sort();
+        //spades.reverse();
+        hearts.sort();
+        //hearts.reverse();
+        diamonds.sort();
+        //diamonds.reverse();
+        // then add the suit with the highest count
+        let empty: Vec<u8> = Vec::new();
+        let mut highest: &Vec<u8> = &empty;
+        let mut max: u8 = 0u8;
+        if clubs.len() > max as usize {
+            max = clubs.len() as u8;
+            highest = &clubs;
+        }
+        if spades.len() > max as usize {
+            max = spades.len() as u8;
+            highest = &spades;
+        }
+        if hearts.len() > max as usize {
+            max = hearts.len() as u8;
+            highest = &hearts;
+        }
+        if diamonds.len() > max as usize {
+            max = diamonds.len() as u8;
+            highest = &diamonds;
+        }
+        // append highest
+        if highest == &clubs {
+            // append clubs
+            for n in 0..clubs.len() {
+                sorted.push(clubs[n]);
+            }
+        }
+        if highest == &spades {
+            // append spades
+            for n in 0..spades.len() {
+                sorted.push(spades[n]);
+            }
+        }
+        if highest == &hearts {
+            // append hearts
+            for n in 0..hearts.len() {
+                sorted.push(hearts[n]);
+            }
+        }
+        if highest == &diamonds {
+            // append diamonds
+            for n in 0..diamonds.len() {
+                sorted.push(diamonds[n]);
+            }
+        }
+        // append others
+        if highest != &clubs {
+            // append clubs
+            for n in 0..clubs.len() {
+                sorted.push(clubs[n]);
+            }
+        }
+        if highest != &spades {
+            // append spades
+            for n in 0..spades.len() {
+                sorted.push(spades[n]);
+            }
+        }
+        if highest != &hearts {
+            // append hearts
+            for n in 0..hearts.len() {
+                sorted.push(hearts[n]);
+            }
+        }
+        if highest != &diamonds {
+            // append diamonds
+            for n in 0..diamonds.len() {
+                sorted.push(diamonds[n]);
+            }
+        }
+        self.cards = sorted;
     }
 }
 
@@ -126,7 +234,7 @@ fn deal(dealerId: u8) {
         shuffled.push(card);
     }
     // create dealer with the first 10 cards
-    let dealer = PlayerBuilder::new()
+    let mut dealer = PlayerBuilder::new()
         .id(dealerId)
         .add(shuffled[0])
         .add(shuffled[1])
@@ -141,9 +249,12 @@ fn deal(dealerId: u8) {
         .finalize();
     // let the dealer print his own cards
     dealer.print_cards();
+    dealer.sort_cards();
+    println!("");
+    dealer.print_cards();
     println!("");
     // create the left player (will play first card)
-    let left = PlayerBuilder::new()
+    let mut left = PlayerBuilder::new()
         .id((dealerId + 1) % 3)
         .add(shuffled[10])
         .add(shuffled[11])
@@ -157,9 +268,12 @@ fn deal(dealerId: u8) {
         .add(shuffled[19])
         .finalize();
     left.print_cards();
+    left.sort_cards();
+    println!("");
+    left.print_cards();
     println!("");
     // create the right player (will play bid first)
-    let right = PlayerBuilder::new()
+    let mut right = PlayerBuilder::new()
         .id((dealerId + 2) % 3)
         .add(shuffled[10])
         .add(shuffled[11])
@@ -172,6 +286,9 @@ fn deal(dealerId: u8) {
         .add(shuffled[18])
         .add(shuffled[19])
         .finalize();
+    right.print_cards();
+    right.sort_cards();
+    println!("");
     right.print_cards();
     println!("");
     // Skat
