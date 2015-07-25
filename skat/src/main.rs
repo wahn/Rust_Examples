@@ -318,7 +318,15 @@ fn deal(dealerId: u8) -> (Player, Player, Player) {
 }
 
 fn is_valid(bid: u8) -> bool {
-    true
+    let mut valid = false;
+    // Suit game
+    if (bid % 12) == 0 { valid = true; }
+    if (bid % 11) == 0 { valid = true; }
+    if (bid % 10) == 0 { valid = true; }
+    if (bid %  9) == 0 { valid = true; }
+    // TODO: Grand game
+    // TODO: Null game
+    valid
 }
 
 fn print_card(card: u8) {
