@@ -211,8 +211,9 @@ fn announce(player: u8) -> Game {
 fn bid(dealer: &Player,
        responder: &Player,
        bidder: &Player) -> (u8, u8) {
-    let winner: u8 = dealer.id;
-    let highest: u8 = 18;
+    let mut winner: u8;
+    let mut lowest: u8 = 0;
+    let mut highest: u8 = 0;
     // bidder sees his cards first
     bidder.print_cards();
     println!("");
@@ -235,8 +236,116 @@ fn bid(dealer: &Player,
         }
     }
     println!("bidder: {}", bidder_bid);
-    // WORK
-    (winner, highest)
+    // responder is next
+    responder.print_cards();
+    println!("");
+    // ask for input
+    let mut responder_bid: u8 = 0u8;
+    loop {
+        println!("bid:");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input)
+            .ok()
+            .expect("failed to read line");
+        responder_bid = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+        if is_valid(responder_bid) {
+            break;
+        } else {
+            continue;
+        }
+    }
+    println!("responder: {}", responder_bid);
+    // who wins bidding so far?
+    if bidder_bid > responder_bid {
+        winner  = bidder.id;
+        highest = bidder_bid;
+        lowest  = responder_bid;
+    } else {
+        winner  = responder.id;
+        highest = responder_bid;
+        if responder_bid >= 18u8 {
+            lowest  = 18u8;
+        } else {
+            lowest  = bidder_bid;
+        }
+    }
+    // ask dealer last
+    dealer.print_cards();
+    println!("");
+    // ask for input
+    let mut dealer_bid: u8 = 0u8;
+    loop {
+        println!("bid:");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input)
+            .ok()
+            .expect("failed to read line");
+        dealer_bid = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+        if is_valid(dealer_bid) {
+            break;
+        } else {
+            continue;
+        }
+    }
+    println!("dealer: {}", dealer_bid);
+    // who wins bidding (finally)?
+    if winner == responder.id {
+        // responder didn't pass and has to be the highest bidder to win
+        if highest > dealer_bid {
+            // responder is already the winner
+            if dealer_bid > lowest {
+                lowest = dealer_bid;
+            }
+            if lowest == 0 && responder_bid >= 18u8 {
+                lowest  = 18u8;
+            }
+        } else {
+            // dealer wins
+            winner  = dealer.id;
+            highest = dealer_bid;
+            if responder_bid > lowest {
+                lowest = responder_bid;
+            }
+            if lowest == 0 && dealer_bid >= 18u8 {
+                lowest  = 18u8;
+            }
+        }
+    } else {
+        // responder passed, dealer has to be the highest bidder to win
+        if dealer_bid > highest {
+            // dealer wins
+            winner  = dealer.id;
+            highest = dealer_bid;
+            if bidder_bid > lowest {
+                lowest = bidder_bid;
+            }
+            if lowest == 0 && dealer_bid >= 18u8 {
+                lowest  = 18u8;
+            }
+        } else {
+            // bidder is already the winner
+            if dealer_bid > lowest {
+                lowest = dealer_bid;
+            }
+            if lowest == 0 && bidder_bid >= 18u8 {
+                lowest  = 18u8;
+            }
+        }
+    }
+    let winner_name = match winner {
+        0 => "A",
+        1 => "B",
+        2 => "C",
+        _ => panic!("Unknown player {}", winner),
+    };
+    println!("Player {} wins bidding with {} ...", winner_name, lowest);
+    (winner, lowest)
 }
 
 fn deal(dealerId: u8) -> (Player, Player, Player) {
