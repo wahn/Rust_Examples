@@ -64,7 +64,7 @@ impl Player {
             1 => println!("player B:"),
             2 => println!("player C:"),
             _ => panic!("Unknown player {}", self.id),
-            }
+        }
         for index in 0..10 {
             print!("{}:", index);
             print_card(self.cards[index]);
@@ -214,7 +214,25 @@ fn bid(dealer: &Player,
        bidder: &Player) -> (u8, u8) {
     let winner: u8 = dealer.id;
     let highest: u8 = 18;
-    // TODO
+    // bidder sees his cards first
+    bidder.print_cards();
+    println!("");
+    // ask for input
+    let mut bidder_bid: u8 = 0u8;
+    loop {
+        println!("bid:");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input)
+            .ok()
+            .expect("failed to read line");
+        bidder_bid = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+        break;
+    }
+    println!("bidder: {}", bidder_bid);
+    // WORK
     (winner, highest)
 }
 
