@@ -204,6 +204,41 @@ impl PlayerBuilder {
     }
 }
 
+struct Skat {
+    first:  u8,
+    second: u8,
+}
+
+impl Skat {
+    fn print_cards(&self) {
+        println!("Skat:");
+        print_card(self.first);
+        print_card(self.second);
+        println!("");
+    }
+}
+
+struct SkatBuilder {
+    first:  u8,
+    second: u8,
+}
+
+impl SkatBuilder {
+    fn new() -> SkatBuilder {
+        SkatBuilder { first: 0u8, second: 0u8, }
+    }
+
+    fn add(&mut self, f: u8, s: u8) -> &mut SkatBuilder {
+        self.first  = f;
+        self.second = s;
+        self
+    }
+
+    fn finalize(&self) -> Skat {
+        Skat { first: self.first, second: self.second, }
+    }
+}
+
 fn announce(player: u8) -> Game {
     Game::Suit
 }
@@ -367,7 +402,7 @@ fn bid(dealer: &Player,
     (winner, lowest)
 }
 
-fn deal(dealerId: u8) -> (Player, Player, Player) {
+fn deal(dealerId: u8) -> (Player, Player, Player, Skat) {
     let mut cards: Vec<u8> = (0..32).collect();
     // shuffle cards
     let mut upper: u8 = 32;
@@ -436,12 +471,13 @@ fn deal(dealerId: u8) -> (Player, Player, Player) {
     right.print_cards();
     println!("");
     // Skat
-    println!("Skat:");
-    for n in 30..32 {
-        print_card(shuffled[n]);
-    };
+    let mut skat = SkatBuilder::new()
+        .add(shuffled[30], shuffled[31])
+        .finalize();
     println!("");
-    (dealer, left, right)
+    skat.print_cards();
+    println!("");
+    (dealer, left, right, skat)
 }
 
 fn is_valid(bid: u8) -> bool {
@@ -645,7 +681,8 @@ fn main() {
         // player with player_id is dealing
         let (dealer,
              responder,
-             bidder) = deal(player_id);
+             bidder,
+             skat) = deal(player_id);
         // bid
         let (declarer_id, game_value) = bid(&dealer,
                                             &responder,
@@ -661,6 +698,18 @@ fn main() {
         }
         declarer.print_cards();
         println!("");
+        println!("Do you want to see the Skat? Press '1' for yes:");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input)
+            .ok()
+            .expect("failed to read line");
+        let input: u8 = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => break,
+        };
+        if input == 1 {
+            skat.print_cards();
+        }
         // announce
         let game = announce(declarer_id);
         // play 10 tricks in a row
