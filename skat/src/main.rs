@@ -319,6 +319,12 @@ fn deal(dealerId: u8) -> (Player, Player, Player) {
 
 fn is_valid(bid: u8) -> bool {
     let mut valid = false;
+    // Null game (have to be checked first)
+    let nulls = [23, 35, 46, 59];
+    valid = match nulls.iter().find(|&&x| x == bid) {
+        Some(_) => true,
+        None    => false,
+    };
     // Suit game
     if (bid % 12) == 0 { valid = true; }
     if (bid % 11) == 0 { valid = true; }
@@ -332,7 +338,6 @@ fn is_valid(bid: u8) -> bool {
     // 7 * 24 = 4 Jacks, Game, Schneider, Schwarz
     let highest: u8 = 168;
     if bid > highest { valid = false; }
-    // TODO: Null game
     valid
 }
 
