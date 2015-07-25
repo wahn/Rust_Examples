@@ -216,7 +216,7 @@ fn bid(dealer: u8) -> (u8, u8) {
     (winner, highest)
 }
 
-fn deal(dealerId: u8) {
+fn deal(dealerId: u8) -> (Player, Player, Player) {
     let mut cards: Vec<u8> = (0..32).collect();
     // shuffle cards
     let mut upper: u8 = 32;
@@ -290,6 +290,7 @@ fn deal(dealerId: u8) {
         print_card(shuffled[n]);
     };
     println!("");
+    (dealer, left, right)
 }
 
 fn print_card(card: u8) {
@@ -467,7 +468,9 @@ fn main() {
     let player_id: u8 = rand::thread_rng().gen_range(0, 3);
     loop {
         // player with player_id is dealing
-        deal(player_id);
+        let (dealer,
+             responder,
+             bidder) = deal(player_id);
         // bid
         let (player, bid) = bid(player_id);
         // announce
