@@ -324,7 +324,10 @@ fn is_valid(bid: u8) -> bool {
     if (bid % 11) == 0 { valid = true; }
     if (bid % 10) == 0 { valid = true; }
     if (bid %  9) == 0 { valid = true; }
-    // TODO: Grand game
+    // Grand game
+    if (bid % 24) == 0 { valid = true; }
+    let highest: u8 = 7 * 24; // 4 Jacks, Game, Schneider, Schwarz
+    if bid > highest { valid = false; }
     // TODO: Null game
     valid
 }
