@@ -5,52 +5,52 @@ use ansi_term::Colour::*;
 use rand::Rng;
 use std::io;
 
-enum Card {
-    ClubsAce,      //  0
-    ClubsTen,      //  1
-    ClubsKing,     //  2
-    ClubsQueen,    //  3
-    ClubsJack,     //  4
-    ClubsNine,     //  5
-    ClubsEight,    //  6
-    ClubsSeven,    //  7
-    SpadesAce,     //  8
-    SpadesTen,     //  9
-    SpadesKing,    // 10
-    SpadesQueen,   // 11
-    SpadesJack,    // 12
-    SpadesNine,    // 13
-    SpadesEight,   // 14
-    SpadesSeven,   // 15
-    HeartsAce,     // 16
-    HeartsTen,     // 17
-    HeartsKing,    // 18
-    HeartsQueen,   // 19
-    HeartsJack,    // 20
-    HeartsNine,    // 21
-    HeartsEight,   // 22
-    HeartsSeven,   // 23
-    DiamondsAce,   // 24
-    DiamondsTen,   // 25
-    DiamondsKing,  // 26
-    DiamondsQueen, // 27
-    DiamondsJack,  // 28
-    DiamondsNine,  // 29
-    DiamondsEight, // 30
-    DiamondsSeven, // 31
-}
+// enum Card {
+//     ClubsAce,      //  0
+//     ClubsTen,      //  1
+//     ClubsKing,     //  2
+//     ClubsQueen,    //  3
+//     ClubsJack,     //  4
+//     ClubsNine,     //  5
+//     ClubsEight,    //  6
+//     ClubsSeven,    //  7
+//     SpadesAce,     //  8
+//     SpadesTen,     //  9
+//     SpadesKing,    // 10
+//     SpadesQueen,   // 11
+//     SpadesJack,    // 12
+//     SpadesNine,    // 13
+//     SpadesEight,   // 14
+//     SpadesSeven,   // 15
+//     HeartsAce,     // 16
+//     HeartsTen,     // 17
+//     HeartsKing,    // 18
+//     HeartsQueen,   // 19
+//     HeartsJack,    // 20
+//     HeartsNine,    // 21
+//     HeartsEight,   // 22
+//     HeartsSeven,   // 23
+//     DiamondsAce,   // 24
+//     DiamondsTen,   // 25
+//     DiamondsKing,  // 26
+//     DiamondsQueen, // 27
+//     DiamondsJack,  // 28
+//     DiamondsNine,  // 29
+//     DiamondsEight, // 30
+//     DiamondsSeven, // 31
+// }
 
-enum Game {
-    Suit,
-    Grand,
-    Null,
-}
+// enum Game {
+//     Suit,
+//     Grand,
+//     Null,
+// }
 
-enum PlayerId {
-    A,
-    B,
-    C,
-}
+// enum PlayerId {
+//     A,
+//     B,
+//     C,
+// }
 
 struct Player {
     id: u8,
@@ -122,7 +122,7 @@ impl Player {
             highest = &hearts;
         }
         if diamonds.len() > max as usize {
-            max = diamonds.len() as u8;
+            // max = diamonds.len() as u8;
             highest = &diamonds;
         }
         // append highest
@@ -189,13 +189,13 @@ impl PlayerBuilder {
         PlayerBuilder { cards: Vec::new(), id: 3, }
     }
 
-    fn add(&mut self, newCard: u8) -> &mut PlayerBuilder {
-        self.cards.push(newCard);
+    fn add(&mut self, new_card: u8) -> &mut PlayerBuilder {
+        self.cards.push(new_card);
         self
     }
 
-    fn id(&mut self, newId: u8) -> &mut PlayerBuilder {
-        self.id = newId;
+    fn id(&mut self, new_id: u8) -> &mut PlayerBuilder {
+        self.id = new_id;
         self
     }
 
@@ -239,9 +239,9 @@ impl SkatBuilder {
     }
 }
 
-fn announce(player: u8) -> Game {
-    Game::Suit
-}
+// fn announce(player: u8) -> Game {
+//     Game::Suit
+// }
 
 fn bid(dealer: &Player,
        responder: &Player,
@@ -251,7 +251,7 @@ fn bid(dealer: &Player,
     bidder.print_cards();
     println!("");
     // ask for input
-    let mut bidder_bid: u8 = 0u8;
+    let mut bidder_bid: u8;
     loop {
         println!("bid:");
         let mut input = String::new();
@@ -273,7 +273,7 @@ fn bid(dealer: &Player,
     responder.print_cards();
     println!("");
     // ask for input
-    let mut responder_bid: u8 = 0u8;
+    let mut responder_bid: u8;
     loop {
         println!("bid:");
         let mut input = String::new();
@@ -295,7 +295,7 @@ fn bid(dealer: &Player,
     dealer.print_cards();
     println!("");
     // ask for input
-    let mut dealer_bid: u8 = 0u8;
+    let mut dealer_bid: u8;
     loop {
         println!("bid:");
         let mut input = String::new();
@@ -314,7 +314,7 @@ fn bid(dealer: &Player,
     }
     println!("dealer: {}", dealer_bid);
     // who wins bidding?
-    let mut lowest: u8 = 0;
+    let mut lowest: u8;
     // first between bidder and responder
     if bidder_bid > responder_bid {
         // bidder wins (so far)
@@ -402,10 +402,10 @@ fn bid(dealer: &Player,
     (winner, lowest)
 }
 
-fn deal(dealerId: u8) -> (Player, Player, Player, Skat) {
+fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
     let mut cards: Vec<u8> = (0..32).collect();
     // shuffle cards
-    let mut upper: u8 = 32;
+    let upper: u8 = 32;
     let mut shuffled: Vec<u8> = Vec::new();
     for n in 0..32 {
         // randomly select card
@@ -417,7 +417,7 @@ fn deal(dealerId: u8) -> (Player, Player, Player, Skat) {
     }
     // create dealer with the first 10 cards
     let mut dealer = PlayerBuilder::new()
-        .id(dealerId)
+        .id(dealer_id)
         .add(shuffled[0])
         .add(shuffled[1])
         .add(shuffled[2])
@@ -436,7 +436,7 @@ fn deal(dealerId: u8) -> (Player, Player, Player, Skat) {
     println!("");
     // create the left player (will play first card)
     let mut left = PlayerBuilder::new()
-        .id((dealerId + 1) % 3)
+        .id((dealer_id + 1) % 3)
         .add(shuffled[10])
         .add(shuffled[11])
         .add(shuffled[12])
@@ -454,7 +454,7 @@ fn deal(dealerId: u8) -> (Player, Player, Player, Skat) {
     println!("");
     // create the right player (will play bid first)
     let mut right = PlayerBuilder::new()
-        .id((dealerId + 2) % 3)
+        .id((dealer_id + 2) % 3)
         .add(shuffled[20])
         .add(shuffled[21])
         .add(shuffled[22])
@@ -471,7 +471,7 @@ fn deal(dealerId: u8) -> (Player, Player, Player, Skat) {
     right.print_cards();
     println!("");
     // Skat
-    let mut skat = SkatBuilder::new()
+    let skat = SkatBuilder::new()
         .add(shuffled[30], shuffled[31])
         .finalize();
     println!("");
@@ -481,7 +481,7 @@ fn deal(dealerId: u8) -> (Player, Player, Player, Skat) {
 }
 
 fn is_valid(bid: u8) -> bool {
-    let mut valid = false;
+    let mut valid;
     // Null game (have to be checked first)
     let nulls = [23, 35, 46, 59];
     valid = match nulls.iter().find(|&&x| x == bid) {
@@ -705,13 +705,13 @@ fn main() {
             .expect("failed to read line");
         let input: u8 = match input.trim().parse() {
             Ok(num) => num,
-            Err(_) => break,
+            Err(_) => 0,
         };
         if input == 1 {
             skat.print_cards();
         }
         // announce
-        let game = announce(declarer_id);
+        // WORK: let game = announce(declarer_id);
         // play 10 tricks in a row
         for trick in 0..10 {
             println!("trick #{}:", trick);
