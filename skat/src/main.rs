@@ -209,8 +209,10 @@ fn announce(player: u8) -> Game {
     Game::Suit
 }
 
-fn bid(dealer: u8) -> (u8, u8) {
-    let winner: u8 = dealer;
+fn bid(dealer: &Player,
+       responder: &Player,
+       bidder: &Player) -> (u8, u8) {
+    let winner: u8 = dealer.id;
     let highest: u8 = 18;
     // TODO
     (winner, highest)
@@ -472,9 +474,11 @@ fn main() {
              responder,
              bidder) = deal(player_id);
         // bid
-        let (player, bid) = bid(player_id);
+        let (declarer_id, game_value) = bid(&dealer,
+                                            &responder,
+                                            &bidder);
         // announce
-        let game = announce(player);
+        let game = announce(declarer_id);
         // play 10 tricks in a row
         for trick in 0..10 {
             println!("trick #{}:", trick);
