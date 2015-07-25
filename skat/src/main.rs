@@ -217,11 +217,7 @@ fn bid(dealer: u8) -> (u8, u8) {
 }
 
 fn deal(dealerId: u8) {
-    let mut cards: Vec<u8> = Vec::new();
-    // initialize cards
-    for n in 0..32 {
-        cards.push(n);
-    }
+    let mut cards: Vec<u8> = (0..32).collect();
     // shuffle cards
     let mut upper: u8 = 32;
     let mut shuffled: Vec<u8> = Vec::new();
