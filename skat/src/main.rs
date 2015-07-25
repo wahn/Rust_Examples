@@ -229,7 +229,11 @@ fn bid(dealer: &Player,
             Ok(num) => num,
             Err(_) => continue,
         };
-        break;
+        if is_valid(bidder_bid) {
+            break;
+        } else {
+            continue;
+        }
     }
     println!("bidder: {}", bidder_bid);
     // WORK
@@ -311,6 +315,10 @@ fn deal(dealerId: u8) -> (Player, Player, Player) {
     };
     println!("");
     (dealer, left, right)
+}
+
+fn is_valid(bid: u8) -> bool {
+    true
 }
 
 fn print_card(card: u8) {
