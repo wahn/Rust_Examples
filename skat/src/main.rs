@@ -645,6 +645,17 @@ fn main() {
         let (declarer_id, game_value) = bid(&dealer,
                                             &responder,
                                             &bidder);
+        // print cards before announcing the game
+        let mut declarer: &Player = &dealer; // assumes bid() returns a valid id
+        if dealer.id == declarer_id {
+            declarer = &dealer;
+        } else if responder.id == declarer_id {
+            declarer = &responder;
+        } else if bidder.id == declarer_id {
+            declarer = &bidder;
+        }
+        declarer.print_cards();
+        println!("");
         // announce
         let game = announce(declarer_id);
         // play 10 tricks in a row
