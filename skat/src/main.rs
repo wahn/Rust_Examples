@@ -248,7 +248,6 @@ fn deal(dealerId: u8) {
         .add(shuffled[9])
         .finalize();
     // let the dealer print his own cards
-    dealer.print_cards();
     dealer.sort_cards();
     println!("");
     dealer.print_cards();
@@ -267,7 +266,6 @@ fn deal(dealerId: u8) {
         .add(shuffled[18])
         .add(shuffled[19])
         .finalize();
-    left.print_cards();
     left.sort_cards();
     println!("");
     left.print_cards();
@@ -275,18 +273,17 @@ fn deal(dealerId: u8) {
     // create the right player (will play bid first)
     let mut right = PlayerBuilder::new()
         .id((dealerId + 2) % 3)
-        .add(shuffled[10])
-        .add(shuffled[11])
-        .add(shuffled[12])
-        .add(shuffled[13])
-        .add(shuffled[14])
-        .add(shuffled[15])
-        .add(shuffled[16])
-        .add(shuffled[17])
-        .add(shuffled[18])
-        .add(shuffled[19])
+        .add(shuffled[20])
+        .add(shuffled[21])
+        .add(shuffled[22])
+        .add(shuffled[23])
+        .add(shuffled[24])
+        .add(shuffled[25])
+        .add(shuffled[26])
+        .add(shuffled[27])
+        .add(shuffled[28])
+        .add(shuffled[29])
         .finalize();
-    right.print_cards();
     right.sort_cards();
     println!("");
     right.print_cards();
