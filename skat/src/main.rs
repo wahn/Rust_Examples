@@ -676,7 +676,7 @@ fn print_card(card: u8) {
 
 fn main() {
     // randomly select player
-    let player_id: u8 = rand::thread_rng().gen_range(0, 3);
+    let mut player_id: u8 = rand::thread_rng().gen_range(0, 3);
     loop {
         // player with player_id is dealing
         let (dealer,
@@ -739,5 +739,7 @@ fn main() {
         if input != 1 {
             break;
         }
+        // next round
+        player_id = (player_id + 1) % 3;
     }
 }
