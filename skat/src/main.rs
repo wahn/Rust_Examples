@@ -70,18 +70,6 @@ impl Player {
             print_card(self.cards[index]);
         }
     }
-    fn sort_cards_for(&// mut
-                      self, game: char) {
-        match game {
-            'g' => println!("Grand"),
-            'n' => println!("Null"),
-            'c' => println!("Clubs"),
-            's' => println!("Spades"),
-            'h' => println!("Hearts"),
-            'd' => println!("Diamonds"),
-            _   => panic!("Unknown game {}", game),
-        }
-    }
     fn sort_cards(&mut self) {
         let mut sorted: Vec<u8> = Vec::new();
         let mut clubs: Vec<u8> = Vec::new();
@@ -188,6 +176,18 @@ impl Player {
             }
         }
         self.cards = sorted;
+    }
+    fn sort_cards_for(&// mut
+                      self, game: char) {
+        match game {
+            'g' => println!("Grand"),
+            'n' => println!("Null"),
+            'c' => println!("Clubs"),
+            's' => println!("Spades"),
+            'h' => println!("Hearts"),
+            'd' => println!("Diamonds"),
+            _   => panic!("Unknown game {}", game),
+        }
     }
 }
 
