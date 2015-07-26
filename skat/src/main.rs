@@ -179,13 +179,291 @@ impl Player {
     }
     fn sort_cards_for(&// mut
                       self, game: char) {
+        let mut sorted: Vec<u8> = Vec::new();
+        let mut clubs: Vec<u8> = Vec::new();
+        let mut spades: Vec<u8> = Vec::new();
+        let mut hearts: Vec<u8> = Vec::new();
+        let mut diamonds: Vec<u8> = Vec::new();
         match game {
-            'g' => println!("Grand"),
-            'n' => println!("Null"),
-            'c' => println!("Clubs"),
-            's' => println!("Spades"),
-            'h' => println!("Hearts"),
-            'd' => println!("Diamonds"),
+            'g' => {
+                println!("Grand");
+                // first find Jacks
+                for n in 0..10 {
+                    match self.cards[n] {
+                        // ClubsJack
+                        4 => sorted.push(self.cards[n]),
+                        // SpadesJack
+                        12 => sorted.push(self.cards[n]),
+                        // HeartsJack
+                        20 => sorted.push(self.cards[n]),
+                        // DiamondsJack
+                        28 => sorted.push(self.cards[n]),
+                        // Clubs
+                        0 ... 7 => clubs.push(self.cards[n]),
+                        // Spades
+                        8 ... 15 => spades.push(self.cards[n]),
+                        // Hearts
+                        16 ... 23 => hearts.push(self.cards[n]),
+                        // Diamonds
+                        24 ... 31 => diamonds.push(self.cards[n]),
+                        _ => panic!("Unknown card"),
+                    }
+                }
+                // order Jacks
+                sorted.sort();
+                // order suits
+                clubs.sort();
+                spades.sort();
+                hearts.sort();
+                diamonds.sort();
+                // append clubs
+                for n in 0..clubs.len() {
+                    sorted.push(clubs[n]);
+                }
+                // append spades
+                for n in 0..spades.len() {
+                    sorted.push(spades[n]);
+                }
+                // append hearts
+                for n in 0..hearts.len() {
+                    sorted.push(hearts[n]);
+                }
+                // append diamonds
+                for n in 0..diamonds.len() {
+                    sorted.push(diamonds[n]);
+                }
+            },
+            'n' => {
+                println!("Null");
+                for n in 0..10 {
+                    match self.cards[n] {
+                        // Clubs
+                        0 ... 7 => clubs.push(self.cards[n]),
+                        // Spades
+                        8 ... 15 => spades.push(self.cards[n]),
+                        // Hearts
+                        16 ... 23 => hearts.push(self.cards[n]),
+                        // Diamonds
+                        24 ... 31 => diamonds.push(self.cards[n]),
+                        _ => panic!("Unknown card"),
+                    }
+                }
+                // order Jacks
+                sorted.sort();
+                // order suits
+                clubs.sort();
+                spades.sort();
+                hearts.sort();
+                diamonds.sort();
+                // append clubs
+                for n in 0..clubs.len() {
+                    sorted.push(clubs[n]);
+                }
+                // append hearts
+                for n in 0..hearts.len() {
+                    sorted.push(hearts[n]);
+                }
+                // append spades
+                for n in 0..spades.len() {
+                    sorted.push(spades[n]);
+                }
+                // append diamonds
+                for n in 0..diamonds.len() {
+                    sorted.push(diamonds[n]);
+                }
+            },
+            'c' => {
+                println!("Clubs");
+                // first find Jacks
+                for n in 0..10 {
+                    match self.cards[n] {
+                        // ClubsJack
+                        4 => sorted.push(self.cards[n]),
+                        // SpadesJack
+                        12 => sorted.push(self.cards[n]),
+                        // HeartsJack
+                        20 => sorted.push(self.cards[n]),
+                        // DiamondsJack
+                        28 => sorted.push(self.cards[n]),
+                        // Clubs
+                        0 ... 7 => clubs.push(self.cards[n]),
+                        // Spades
+                        8 ... 15 => spades.push(self.cards[n]),
+                        // Hearts
+                        16 ... 23 => hearts.push(self.cards[n]),
+                        // Diamonds
+                        24 ... 31 => diamonds.push(self.cards[n]),
+                        _ => panic!("Unknown card"),
+                    }
+                }
+                // order Jacks
+                sorted.sort();
+                // order suits
+                clubs.sort();
+                spades.sort();
+                hearts.sort();
+                diamonds.sort();
+                // append clubs
+                for n in 0..clubs.len() {
+                    sorted.push(clubs[n]);
+                }
+                // append hearts
+                for n in 0..hearts.len() {
+                    sorted.push(hearts[n]);
+                }
+                // append spades
+                for n in 0..spades.len() {
+                    sorted.push(spades[n]);
+                }
+                // append diamonds
+                for n in 0..diamonds.len() {
+                    sorted.push(diamonds[n]);
+                }
+            },
+            's' => {
+                println!("Spades");
+                // first find Jacks
+                for n in 0..10 {
+                    match self.cards[n] {
+                        // ClubsJack
+                        4 => sorted.push(self.cards[n]),
+                        // SpadesJack
+                        12 => sorted.push(self.cards[n]),
+                        // HeartsJack
+                        20 => sorted.push(self.cards[n]),
+                        // DiamondsJack
+                        28 => sorted.push(self.cards[n]),
+                        // Clubs
+                        0 ... 7 => clubs.push(self.cards[n]),
+                        // Spades
+                        8 ... 15 => spades.push(self.cards[n]),
+                        // Hearts
+                        16 ... 23 => hearts.push(self.cards[n]),
+                        // Diamonds
+                        24 ... 31 => diamonds.push(self.cards[n]),
+                        _ => panic!("Unknown card"),
+                    }
+                }
+                // order Jacks
+                sorted.sort();
+                // order suits
+                clubs.sort();
+                spades.sort();
+                hearts.sort();
+                diamonds.sort();
+                // append spades
+                for n in 0..spades.len() {
+                    sorted.push(spades[n]);
+                }
+                // append hearts
+                for n in 0..hearts.len() {
+                    sorted.push(hearts[n]);
+                }
+                // append clubs
+                for n in 0..clubs.len() {
+                    sorted.push(clubs[n]);
+                }
+                // append diamonds
+                for n in 0..diamonds.len() {
+                    sorted.push(diamonds[n]);
+                }
+            },
+            'h' => {
+                println!("Hearts");
+                // first find Jacks
+                for n in 0..10 {
+                    match self.cards[n] {
+                        // ClubsJack
+                        4 => sorted.push(self.cards[n]),
+                        // SpadesJack
+                        12 => sorted.push(self.cards[n]),
+                        // HeartsJack
+                        20 => sorted.push(self.cards[n]),
+                        // DiamondsJack
+                        28 => sorted.push(self.cards[n]),
+                        // Clubs
+                        0 ... 7 => clubs.push(self.cards[n]),
+                        // Spades
+                        8 ... 15 => spades.push(self.cards[n]),
+                        // Hearts
+                        16 ... 23 => hearts.push(self.cards[n]),
+                        // Diamonds
+                        24 ... 31 => diamonds.push(self.cards[n]),
+                        _ => panic!("Unknown card"),
+                    }
+                }
+                // order Jacks
+                sorted.sort();
+                // order suits
+                clubs.sort();
+                spades.sort();
+                hearts.sort();
+                diamonds.sort();
+                // append hearts
+                for n in 0..hearts.len() {
+                    sorted.push(hearts[n]);
+                }
+                // append clubs
+                for n in 0..clubs.len() {
+                    sorted.push(clubs[n]);
+                }
+                // append diamonds
+                for n in 0..diamonds.len() {
+                    sorted.push(diamonds[n]);
+                }
+                // append spades
+                for n in 0..spades.len() {
+                    sorted.push(spades[n]);
+                }
+            },
+            'd' => {
+                println!("Diamonds");
+                // first find Jacks
+                for n in 0..10 {
+                    match self.cards[n] {
+                        // ClubsJack
+                        4 => sorted.push(self.cards[n]),
+                        // SpadesJack
+                        12 => sorted.push(self.cards[n]),
+                        // HeartsJack
+                        20 => sorted.push(self.cards[n]),
+                        // DiamondsJack
+                        28 => sorted.push(self.cards[n]),
+                        // Clubs
+                        0 ... 7 => clubs.push(self.cards[n]),
+                        // Spades
+                        8 ... 15 => spades.push(self.cards[n]),
+                        // Hearts
+                        16 ... 23 => hearts.push(self.cards[n]),
+                        // Diamonds
+                        24 ... 31 => diamonds.push(self.cards[n]),
+                        _ => panic!("Unknown card"),
+                    }
+                }
+                // order Jacks
+                sorted.sort();
+                // order suits
+                clubs.sort();
+                spades.sort();
+                hearts.sort();
+                diamonds.sort();
+                // append diamonds
+                for n in 0..diamonds.len() {
+                    sorted.push(diamonds[n]);
+                }
+                // append clubs
+                for n in 0..clubs.len() {
+                    sorted.push(clubs[n]);
+                }
+                // append hearts
+                for n in 0..hearts.len() {
+                    sorted.push(hearts[n]);
+                }
+                // append spades
+                for n in 0..spades.len() {
+                    sorted.push(spades[n]);
+                }
+            },
             _   => panic!("Unknown game {}", game),
         }
     }
