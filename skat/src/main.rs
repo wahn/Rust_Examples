@@ -70,6 +70,18 @@ impl Player {
             print_card(self.cards[index]);
         }
     }
+    fn sort_cards_for(&// mut
+                      self, game: char) {
+        match game {
+            'g' => println!("Grand"),
+            'n' => println!("Null"),
+            'c' => println!("Clubs"),
+            's' => println!("Spades"),
+            'h' => println!("Hearts"),
+            'd' => println!("Diamonds"),
+            _   => panic!("Unknown game {}", game),
+        }
+    }
     fn sort_cards(&mut self) {
         let mut sorted: Vec<u8> = Vec::new();
         let mut clubs: Vec<u8> = Vec::new();
@@ -258,6 +270,37 @@ fn bid(dealer: &Player,
         io::stdin().read_line(&mut input)
             .ok()
             .expect("failed to read line");
+        if input == "g\n".to_string() {
+            println!("sort for Grand ...");
+            let g: char = 'g';
+            bidder.sort_cards_for(g);
+            continue;
+        } else if input == "n\n".to_string() {
+            println!("sort for Null ...");
+            let g: char = 'n';
+            bidder.sort_cards_for(g);
+            continue;
+        } else if input == "c\n".to_string() {
+            println!("sort for Clubs ...");
+            let g: char = 'c';
+            bidder.sort_cards_for(g);
+            continue;
+        } else if input == "s\n".to_string() {
+            println!("sort for Spades ...");
+            let g: char = 's';
+            bidder.sort_cards_for(g);
+            continue;
+        } else if input == "h\n".to_string() {
+            println!("sort for Hearts ...");
+            let g: char = 'h';
+            bidder.sort_cards_for(g);
+            continue;
+        } else if input == "d\n".to_string() {
+            println!("sort for Diamonds ...");
+            let g: char = 'd';
+            bidder.sort_cards_for(g);
+            continue;
+        }
         bidder_bid = match input.trim().parse() {
             Ok(num) => num,
             Err(_) => continue,
