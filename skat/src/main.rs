@@ -70,6 +70,7 @@ impl Player {
             print_card(self.cards[index]);
         }
     }
+
     fn sort_cards(&mut self) {
         let mut sorted: Vec<u8> = Vec::new();
         let mut clubs: Vec<u8> = Vec::new();
@@ -177,6 +178,7 @@ impl Player {
         }
         self.cards = sorted;
     }
+
     fn sort_cards_for(&mut self, game: char) {
         let mut sorted: Vec<u8> = Vec::new();
         let mut clubs: Vec<u8> = Vec::new();
@@ -276,7 +278,7 @@ impl Player {
             'c' => {
                 // println!("Clubs");
 
-// first find Jacks
+                // first find Jacks
                 for n in 0..10 {
                     match self.cards[n] {
                         // ClubsJack
@@ -490,11 +492,79 @@ impl PlayerBuilder {
         self
     }
 
+    fn drop1(&mut self) -> &mut PlayerBuilder {
+        self.cards.sort();
+        self.print_cards();
+        println!("");
+        loop {
+            println!("drop:");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            let input: u8 = match input.trim().parse() {
+                Ok(num) => num,
+                Err(_) => 0,
+            };
+            match input {
+                0 ... 11 => {
+                    println!("{} chosen ...", input);
+                    self.cards.remove(input as usize);
+                    break;
+                },
+                _ => continue,
+            }
+        }
+        self
+    }
+    
+    fn drop2(&mut self) -> &mut PlayerBuilder {
+        self.cards.sort();
+        self.print_cards();
+        println!("");
+        loop {
+            println!("drop:");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            let input: u8 = match input.trim().parse() {
+                Ok(num) => num,
+                Err(_) => 0,
+            };
+            match input {
+                0 ... 10 => {
+                    println!("{} chosen ...", input);
+                    self.cards.remove(input as usize);
+                    break;
+                },
+                _ => continue,
+            }
+        }
+        self.print_cards();
+        println!("");
+        self
+    }
+    
     fn id(&mut self, new_id: u8) -> &mut PlayerBuilder {
         self.id = new_id;
         self
     }
 
+    fn print_cards(&self) {
+        let len = self.cards.len();
+        for index in 0..len {
+            print!("{}:", index);
+            print_card(self.cards[index]);
+        }
+    }
+
+    fn take(&mut self, skat: &Skat) -> &mut PlayerBuilder {
+        self.cards.push(skat.first);
+        self.cards.push(skat.second);
+        self
+    }
+    
     fn finalize(&self) -> Player {
         Player { id: self.id, cards: self.cards.to_vec(), }
     }
@@ -1114,8 +1184,31 @@ fn main() {
             Ok(num) => num,
             Err(_) => 0,
         };
+        let mut playerBuilder = &mut PlayerBuilder::new();
+        playerBuilder
+            // copy cards from declarer
+            .add(declarer.cards[0])
+            .add(declarer.cards[1])
+            .add(declarer.cards[2])
+            .add(declarer.cards[3])
+            .add(declarer.cards[4])
+            .add(declarer.cards[5])
+            .add(declarer.cards[6])
+            .add(declarer.cards[7])
+            .add(declarer.cards[8])
+            .add(declarer.cards[9]);
         if input == 1 {
             skat.print_cards();
+            playerBuilder
+                // take skat
+                .take(&skat)
+                // drop (interactively) two cards
+                .drop1()
+                .drop2();
+        }
+        let declarer = &playerBuilder.finalize();
+        if input == 1 {
+            // TODO: sort (again) after dropping cards
         }
         // announce
         // WORK: let game = announce(declarer_id);
