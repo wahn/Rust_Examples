@@ -517,7 +517,7 @@ impl PlayerBuilder {
         }
         self
     }
-    
+
     fn drop2(&mut self) -> &mut PlayerBuilder {
         self.cards.sort();
         self.print_cards();
@@ -545,7 +545,7 @@ impl PlayerBuilder {
         println!("");
         self
     }
-    
+
     fn id(&mut self, new_id: u8) -> &mut PlayerBuilder {
         self.id = new_id;
         self
@@ -564,7 +564,7 @@ impl PlayerBuilder {
         self.cards.push(skat.second);
         self
     }
-    
+
     fn finalize(&self) -> Player {
         Player { id: self.id, cards: self.cards.to_vec(), }
     }
