@@ -58,6 +58,56 @@ struct Player {
 }
 
 impl Player {
+    fn allow_sorting(&mut self)
+    {
+        loop {
+            println!("sort for?");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            if input == "g\n".to_string() {
+                println!("sort for Grand ...");
+                let g: char = 'g';
+                self.sort_cards_for(g);
+                self.print_cards();
+                println!("");
+            } else if input == "n\n".to_string() {
+                println!("sort for Null ...");
+                let g: char = 'n';
+                self.sort_cards_for(g);
+                self.print_cards();
+                println!("");
+            } else if input == "c\n".to_string() {
+                println!("sort for Clubs ...");
+                let g: char = 'c';
+                self.sort_cards_for(g);
+                self.print_cards();
+                println!("");
+            } else if input == "s\n".to_string() {
+                println!("sort for Spades ...");
+                let g: char = 's';
+                self.sort_cards_for(g);
+                self.print_cards();
+                println!("");
+            } else if input == "h\n".to_string() {
+                println!("sort for Hearts ...");
+                let g: char = 'h';
+                self.sort_cards_for(g);
+                self.print_cards();
+                println!("");
+            } else if input == "d\n".to_string() {
+                println!("sort for Diamonds ...");
+                let g: char = 'd';
+                self.sort_cards_for(g);
+                self.print_cards();
+                println!("");
+            } else {
+                break;
+            }
+        }
+    }
+
     fn print_cards(&self) {
         match self.id {
             0 => println!("player A:"),
@@ -688,37 +738,37 @@ fn bid(dealer: &mut Player,
             let g: char = 'g';
             responder.sort_cards_for(g);
             responder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "n\n".to_string() {
             println!("sort for Null ...");
             let g: char = 'n';
             responder.sort_cards_for(g);
             responder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "c\n".to_string() {
             println!("sort for Clubs ...");
             let g: char = 'c';
             responder.sort_cards_for(g);
             responder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "s\n".to_string() {
             println!("sort for Spades ...");
             let g: char = 's';
             responder.sort_cards_for(g);
             responder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "h\n".to_string() {
             println!("sort for Hearts ...");
             let g: char = 'h';
             responder.sort_cards_for(g);
             responder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "d\n".to_string() {
             println!("sort for Diamonds ...");
             let g: char = 'd';
             responder.sort_cards_for(g);
             responder.print_cards();
-            println!("bid:");
+            println!("");
         }
         responder_bid = match input.trim().parse() {
             Ok(num) => num,
@@ -1186,6 +1236,7 @@ fn main() {
         };
         let mut playerBuilder = &mut PlayerBuilder::new();
         playerBuilder
+            .id(declarer.id)
             // copy cards from declarer
             .add(declarer.cards[0])
             .add(declarer.cards[1])
@@ -1206,9 +1257,10 @@ fn main() {
                 .drop1()
                 .drop2();
         }
-        let declarer = &playerBuilder.finalize();
+        let mut declarer = &mut playerBuilder.finalize();
         if input == 1 {
-            // TODO: sort (again) after dropping cards
+            // sort (again) after dropping cards
+            declarer.allow_sorting();
         }
         // announce
         // WORK: let game = announce(declarer_id);
