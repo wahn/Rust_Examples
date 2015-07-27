@@ -309,20 +309,100 @@ impl Player {
                 hearts.sort();
                 diamonds.sort();
                 // append clubs
+                let mut pushed_ten = false;
+                let mut ten_found = false;
+                let mut ten = 1; // ClubsTen
                 for n in 0..clubs.len() {
-                    sorted.push(clubs[n]);
+                    // change position for 10
+                    if clubs[n] != ten {
+                        if clubs[n] >= 5 {
+                            if ten_found && !pushed_ten {
+                                sorted.push(ten);
+                                pushed_ten = true;
+                            }
+                            sorted.push(clubs[n]);
+                        } else {
+                            sorted.push(clubs[n]);
+                        }
+                    } else {
+                        // we have a 10 in current set?
+                        ten_found = true;
+                    }
+                }
+                if ten_found && !pushed_ten {
+                    sorted.push(ten);
                 }
                 // append hearts
+                pushed_ten = false;
+                ten_found = false;
+                ten = 17; // HeartsTen
                 for n in 0..hearts.len() {
-                    sorted.push(hearts[n]);
+                    // change position for 10
+                    if hearts[n] != ten {
+                        if hearts[n] >= 21 {
+                            if ten_found && !pushed_ten {
+                                sorted.push(ten);
+                                pushed_ten = true;
+                            }
+                            sorted.push(hearts[n]);
+                        } else {
+                            sorted.push(hearts[n]);
+                        }
+                    } else {
+                        // we have a 10 in current set?
+                        ten_found = true;
+                    }
+                }
+                if ten_found && !pushed_ten {
+                    sorted.push(ten);
                 }
                 // append spades
+                pushed_ten = false;
+                ten_found = false;
+                ten = 9; // SpadesTen
                 for n in 0..spades.len() {
-                    sorted.push(spades[n]);
+                    // change position for 10
+                    if spades[n] != ten {
+                        if spades[n] >= 13 {
+                            if ten_found && !pushed_ten {
+                                sorted.push(ten);
+                                pushed_ten = true;
+                            }
+                            sorted.push(spades[n]);
+                        } else {
+                            sorted.push(spades[n]);
+                        }
+                    } else {
+                        // we have a 10 in current set?
+                        ten_found = true;
+                    }
+                }
+                if ten_found && !pushed_ten {
+                    sorted.push(ten);
                 }
                 // append diamonds
+                pushed_ten = false;
+                ten_found = false;
+                ten = 25; // DiamondsTen
                 for n in 0..diamonds.len() {
-                    sorted.push(diamonds[n]);
+                    // change position for 10
+                    if diamonds[n] != ten {
+                        if diamonds[n] >= 29 {
+                            if ten_found && !pushed_ten {
+                                sorted.push(ten);
+                                pushed_ten = true;
+                            }
+                            sorted.push(diamonds[n]);
+                        } else {
+                            sorted.push(diamonds[n]);
+                        }
+                    } else {
+                        // we have a 10 in current set?
+                        ten_found = true;
+                    }
+                }
+                if ten_found && !pushed_ten {
+                    sorted.push(ten);
                 }
             },
             'c' => {
@@ -669,7 +749,7 @@ fn bid(dealer: &mut Player,
     // ask for input
     let mut bidder_bid: u8;
     loop {
-        println!("bid:");
+        println!("bid (or [gncshd]):");
         let mut input = String::new();
         io::stdin().read_line(&mut input)
             .ok()
@@ -679,37 +759,37 @@ fn bid(dealer: &mut Player,
             let g: char = 'g';
             bidder.sort_cards_for(g);
             bidder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "n\n".to_string() {
             println!("sort for Null ...");
             let g: char = 'n';
             bidder.sort_cards_for(g);
             bidder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "c\n".to_string() {
             println!("sort for Clubs ...");
             let g: char = 'c';
             bidder.sort_cards_for(g);
             bidder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "s\n".to_string() {
             println!("sort for Spades ...");
             let g: char = 's';
             bidder.sort_cards_for(g);
             bidder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "h\n".to_string() {
             println!("sort for Hearts ...");
             let g: char = 'h';
             bidder.sort_cards_for(g);
             bidder.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "d\n".to_string() {
             println!("sort for Diamonds ...");
             let g: char = 'd';
             bidder.sort_cards_for(g);
             bidder.print_cards();
-            println!("bid:");
+            println!("");
         }
         bidder_bid = match input.trim().parse() {
             Ok(num) => num,
@@ -728,7 +808,7 @@ fn bid(dealer: &mut Player,
     // ask for input
     let mut responder_bid: u8;
     loop {
-        println!("bid:");
+        println!("bid (or [gncshd]):");
         let mut input = String::new();
         io::stdin().read_line(&mut input)
             .ok()
@@ -787,7 +867,7 @@ fn bid(dealer: &mut Player,
     // ask for input
     let mut dealer_bid: u8;
     loop {
-        println!("bid:");
+        println!("bid (or [gncshd]):");
         let mut input = String::new();
         io::stdin().read_line(&mut input)
             .ok()
@@ -797,37 +877,37 @@ fn bid(dealer: &mut Player,
             let g: char = 'g';
             dealer.sort_cards_for(g);
             dealer.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "n\n".to_string() {
             println!("sort for Null ...");
             let g: char = 'n';
             dealer.sort_cards_for(g);
             dealer.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "c\n".to_string() {
             println!("sort for Clubs ...");
             let g: char = 'c';
             dealer.sort_cards_for(g);
             dealer.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "s\n".to_string() {
             println!("sort for Spades ...");
             let g: char = 's';
             dealer.sort_cards_for(g);
             dealer.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "h\n".to_string() {
             println!("sort for Hearts ...");
             let g: char = 'h';
             dealer.sort_cards_for(g);
             dealer.print_cards();
-            println!("bid:");
+            println!("");
         } else if input == "d\n".to_string() {
             println!("sort for Diamonds ...");
             let g: char = 'd';
             dealer.sort_cards_for(g);
             dealer.print_cards();
-            println!("bid:");
+            println!("");
         }
         dealer_bid = match input.trim().parse() {
             Ok(num) => num,
