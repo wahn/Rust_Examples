@@ -109,7 +109,7 @@ impl Player {
         g
     }
 
-    fn announce_game(&mut self, mut sorted_game: char, skat: &Skat) -> Player {
+    fn announce_game(&mut self, mut sorted_game: &mut char, skat: &Skat) -> Player {
         // print cards before announcing the game
         self.print_cards();
         println!("");
@@ -147,11 +147,11 @@ impl Player {
         }
         let mut player = player_builder.finalize();
         if input == 1 {
-            sorted_game = player.allow_sorting();
+            *sorted_game = player.allow_sorting();
         }
         // announce
-        sorted_game = announce(sorted_game);
-        match sorted_game {
+        *sorted_game = announce(*sorted_game as char);
+        match *sorted_game {
             'g' => println!("Grand announced ..."),
             'n' => println!("Null announced ..."),
             'c' => println!("Clubs announced ..."),
@@ -1399,11 +1399,11 @@ fn main() {
                                                              &mut responder,
                                                              &mut bidder);
         if dealer.id == declarer_id {
-            dealer = dealer.announce_game(sorted_game, &skat);
+            dealer = dealer.announce_game(&mut sorted_game, &skat);
         } else if responder.id == declarer_id {
-            responder = responder.announce_game(sorted_game, &skat);
+            responder = responder.announce_game(&mut sorted_game, &skat);
         } else if bidder.id == declarer_id {
-            bidder = bidder.announce_game(sorted_game, &skat);
+            bidder = bidder.announce_game(&mut sorted_game, &skat);
         }
         // all players sort for game
         dealer.sort_cards_for(sorted_game);
