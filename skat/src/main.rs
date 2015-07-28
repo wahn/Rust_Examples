@@ -109,6 +109,60 @@ impl Player {
         g
     }
 
+    fn announce_game(&mut self, mut sorted_game: char, skat: &Skat) -> Player {
+        // print cards before announcing the game
+        self.print_cards();
+        println!("");
+        println!("Do you want to see the Skat? Press '1' for yes:");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input)
+            .ok()
+            .expect("failed to read line");
+        let input: u8 = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => 0,
+        };
+        let mut player_builder = &mut PlayerBuilder::new();
+        player_builder
+            .id(self.id)
+            // copy cards from self
+            .add(self.cards[0])
+            .add(self.cards[1])
+            .add(self.cards[2])
+            .add(self.cards[3])
+            .add(self.cards[4])
+            .add(self.cards[5])
+            .add(self.cards[6])
+            .add(self.cards[7])
+            .add(self.cards[8])
+            .add(self.cards[9]);
+        if input == 1 {
+            skat.print_cards();
+            player_builder
+                // take skat
+                .take(&skat)
+                // drop (interactively) two cards
+                .drop1()
+                .drop2();
+        }
+        let mut player = player_builder.finalize();
+        if input == 1 {
+            sorted_game = player.allow_sorting();
+        }
+        // announce
+        sorted_game = announce(sorted_game);
+        match sorted_game {
+            'g' => println!("Grand announced ..."),
+            'n' => println!("Null announced ..."),
+            'c' => println!("Clubs announced ..."),
+            's' => println!("Spades announced ..."),
+            'h' => println!("Hearts announced ..."),
+            'd' => println!("Diamonds announced ..."),
+            _   => panic!("Unknown game announced"),
+        }
+        player
+    }
+
     fn print_cards(&self) {
         match self.id {
             0 => println!("player A:"),
@@ -1344,65 +1398,29 @@ fn main() {
         let (declarer_id, game_value, mut sorted_game) = bid(&mut dealer,
                                                              &mut responder,
                                                              &mut bidder);
-        // print cards before announcing the game
-        let mut declarer: &Player = &dealer; // assumes bid() returns a valid id
         if dealer.id == declarer_id {
-            declarer = &dealer;
+            dealer = dealer.announce_game(sorted_game, &skat);
         } else if responder.id == declarer_id {
-            declarer = &responder;
+            responder = responder.announce_game(sorted_game, &skat);
         } else if bidder.id == declarer_id {
-            declarer = &bidder;
+            bidder = bidder.announce_game(sorted_game, &skat);
         }
-        declarer.print_cards();
+        // all players sort for game
+        dealer.sort_cards_for(sorted_game);
+        responder.sort_cards_for(sorted_game);
+        bidder.sort_cards_for(sorted_game);
+        // TMP
+        println!("sorted_game = {}", sorted_game);
+        println!("dealer:");
+        dealer.print_cards();
         println!("");
-        println!("Do you want to see the Skat? Press '1' for yes:");
-        let mut input = String::new();
-        io::stdin().read_line(&mut input)
-            .ok()
-            .expect("failed to read line");
-        let input: u8 = match input.trim().parse() {
-            Ok(num) => num,
-            Err(_) => 0,
-        };
-        let mut player_builder = &mut PlayerBuilder::new();
-        player_builder
-            .id(declarer.id)
-            // copy cards from declarer
-            .add(declarer.cards[0])
-            .add(declarer.cards[1])
-            .add(declarer.cards[2])
-            .add(declarer.cards[3])
-            .add(declarer.cards[4])
-            .add(declarer.cards[5])
-            .add(declarer.cards[6])
-            .add(declarer.cards[7])
-            .add(declarer.cards[8])
-            .add(declarer.cards[9]);
-        if input == 1 {
-            skat.print_cards();
-            player_builder
-                // take skat
-                .take(&skat)
-                // drop (interactively) two cards
-                .drop1()
-                .drop2();
-        }
-        let mut declarer = &mut player_builder.finalize();
-        if input == 1 {
-            // sort (again) after dropping cards
-            sorted_game = declarer.allow_sorting();
-        }
-        // announce
-        let game = announce(sorted_game);
-        match game {
-            'g' => println!("Grand announced ..."),
-            'n' => println!("Null announced ..."),
-            'c' => println!("Clubs announced ..."),
-            's' => println!("Spades announced ..."),
-            'h' => println!("Hearts announced ..."),
-            'd' => println!("Diamonds announced ..."),
-            _   => panic!("Unknown game announced"),
-        }
+        println!("responder:");
+        responder.print_cards();
+        println!("");
+        println!("bidder:");
+        bidder.print_cards();
+        println!("");
+        // TMP
         // play 10 tricks in a row
         for trick in 0..10 {
             println!("trick #{}:", trick);
