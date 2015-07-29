@@ -196,7 +196,7 @@ impl Player {
             2 => println!("player C:"),
             _ => panic!("Unknown player {}", self.id),
         }
-        for index in 0..10 {
+        for index in 0..self.cards.len() {
             print!("{}:", index);
             print_card(self.cards[index]);
         }
@@ -1190,6 +1190,7 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
         .finalize();
     println!("");
     skat.print_cards();
+    println!("");
     (dealer, left, right, skat)
 }
 
@@ -1812,7 +1813,9 @@ fn main() {
         let mut leader_id: u8 = responder.id;
         // play 10 tricks in a row
         for trick in 0..10 {
+            println!("#########");
             println!("trick #{}:", trick);
+            println!("#########");
             let mut played_cards: Vec<u8> = Vec::new();
             for player in 0..3 {
                 if dealer.id == leader_id {
@@ -1853,16 +1856,8 @@ fn main() {
             } else if bidder.id == winner_id {
                 bidder.add_trick(&played_cards);
             }
-            // ask for input
-            let mut input = String::new();
-            io::stdin().read_line(&mut input)
-                .ok()
-                .expect("failed to read line");
-            let input: u8 = match input.trim().parse() {
-                Ok(num) => num,
-                Err(_) => break,
-            };
-            // is input valid?
+            // set leader_id
+            leader_id = winner_id;
         };
         println!("New game?");
         let mut input = String::new();
