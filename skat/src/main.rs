@@ -1193,8 +1193,77 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
     (dealer, left, right, skat)
 }
 
-fn who_wins_trick(played_cards: &Vec<u8>) -> u8 {
-    // WORK
+fn who_wins_trick(played_cards: &Vec<u8>,
+                  game: char) -> u8 {
+    if game == 'n' || game == 'g'{
+        println!("TODO: who_wins_trick(..., game = '{}')",
+                 game);
+        return 0u8;
+    }
+    // copy values
+    let mut sorted: Vec<u8> = Vec::new();
+    let mut suit:   Vec<u8> = Vec::new();
+    let mut others: Vec<u8> = Vec::new();
+    for i in 0..3 {
+        let card = played_cards[i];
+        match card {
+            // ClubsJack
+            4 => sorted.push(card),
+            // SpadesJack
+            12 => sorted.push(card),
+            // HeartsJack
+            20 => sorted.push(card),
+            // DiamondsJack
+            28 => sorted.push(card),
+            // Clubs
+            0 ... 7 => {
+                if game == 'c' {
+                    suit.push(card);
+                } else {
+                    others.push(card);
+                }
+            },
+            // Spades
+            8 ... 15 => {
+                if game == 's' {
+                    suit.push(card);
+                } else {
+                    others.push(card);
+                }
+            },
+            // Hearts
+            16 ... 23 => {
+                if game == 'h' {
+                    suit.push(card);
+                } else {
+                    others.push(card);
+                }
+            },
+            // Diamonds
+            24 ... 31 => {
+                if game == 'd' {
+                    suit.push(card);
+                } else {
+                    others.push(card);
+                }
+            },
+            // others
+            _ => others.push(card),
+        }
+    }
+    suit.sort();
+    for i in &suit {
+        sorted.push(*i);
+    }
+    others.sort();
+    for i in &others {
+        sorted.push(*i);
+    }
+    println!("played_cards: {:?}", played_cards);
+    println!("sorted: {:?}", sorted);
+    if sorted[0] == played_cards[0] { return 0u8; }
+    if sorted[0] == played_cards[1] { return 1u8; }
+    if sorted[0] == played_cards[2] { return 2u8; }
     0u8
 }
 
@@ -1452,7 +1521,17 @@ fn main() {
             println!("");
             // who wins this trick?
             let winner_id: u8 = (leader_id +
-                                 who_wins_trick(&played_cards)) % 3;
+                                 who_wins_trick(&played_cards,
+                                                sorted_game)) % 3;
+            println!("winner_id = {}", winner_id);
+            let winner_name = match winner_id {
+                0 => "A",
+                1 => "B",
+                2 => "C",
+                _ => panic!("Unknown player {}", winner_id),
+            };
+            println!("Player {} wins trick {} ...",
+                     winner_name, trick);
             if dealer.id == winner_id {
                 dealer.add_trick(&played_cards);
             } else if responder.id == winner_id {
