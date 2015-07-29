@@ -55,9 +55,16 @@ use std::io;
 struct Player {
     id: u8,
     cards: Vec<u8>,
+    tricks: Vec<u8>,
 }
 
 impl Player {
+    fn add_trick(&mut self, played_cards: &Vec<u8>) {
+        self.tricks.push(played_cards[0]);
+        self.tricks.push(played_cards[1]);
+        self.tricks.push(played_cards[2]);
+    }
+
     fn allow_sorting(&mut self) -> char {
         let mut g: char = 'd';
         loop {
@@ -769,7 +776,9 @@ impl PlayerBuilder {
     }
 
     fn finalize(&self) -> Player {
-        Player { id: self.id, cards: self.cards.to_vec(), }
+        Player { id: self.id,
+                 cards: self.cards.to_vec(),
+                 tricks: Vec::new(), }
     }
 }
 
@@ -1184,6 +1193,11 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
     (dealer, left, right, skat)
 }
 
+fn who_wins_trick(played_cards: &Vec<u8>) -> u8 {
+    // WORK
+    0u8
+}
+
 fn is_valid(bid: u8) -> bool {
     let mut valid;
     // Null game (have to be checked first)
@@ -1436,6 +1450,16 @@ fn main() {
             print_card(played_cards[1]);
             print_card(played_cards[2]);
             println!("");
+            // who wins this trick?
+            let winner_id: u8 = (leader_id +
+                                 who_wins_trick(&played_cards)) % 3;
+            if dealer.id == winner_id {
+                dealer.add_trick(&played_cards);
+            } else if responder.id == winner_id {
+                responder.add_trick(&played_cards);
+            } else if bidder.id == winner_id {
+                bidder.add_trick(&played_cards);
+            }
             // ask for input
             let mut input = String::new();
             io::stdin().read_line(&mut input)
