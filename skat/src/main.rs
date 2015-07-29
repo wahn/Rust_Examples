@@ -156,6 +156,31 @@ impl Player {
         player
     }
 
+    fn play_card(&mut self) {
+        loop {
+            println!("choose card [0-{}]:", self.cards.len() - 1);
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            let input: u8 = match input.trim().parse() {
+                Ok(num) => num,
+                Err(_) => 0,
+            };
+            match input {
+                0 ... 10 => {
+                    println!("{} chosen ...", input);
+                    let card: u8 = self.cards[input as usize];
+                    print_card(card);
+                    println!("");
+                    self.cards.remove(input as usize);
+                    break;
+                },
+                _ => continue,
+            }
+        }
+    }
+
     fn print_cards(&self) {
         match self.id {
             0 => println!("player A:"),
@@ -1393,10 +1418,13 @@ fn main() {
             for player in 0..3 {
                 if dealer.id == leader_id {
                     dealer.print_cards();
+                    dealer.play_card();
                 } else if responder.id == leader_id {
                     responder.print_cards();
+                    responder.play_card();
                 } else if bidder.id == leader_id {
                     bidder.print_cards();
+                    bidder.play_card();
                 }
                 // select next player
                 leader_id = (leader_id + 1) % 3;
