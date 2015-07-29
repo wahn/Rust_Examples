@@ -56,6 +56,7 @@ struct Player {
     id: u8,
     cards: Vec<u8>,
     tricks: Vec<u8>,
+    counter: u8,
 }
 
 impl Player {
@@ -63,6 +64,10 @@ impl Player {
         self.tricks.push(played_cards[0]);
         self.tricks.push(played_cards[1]);
         self.tricks.push(played_cards[2]);
+        self.counter += self.value_of(played_cards[0]);
+        self.counter += self.value_of(played_cards[1]);
+        self.counter += self.value_of(played_cards[2]);
+        println!("id{} has {:?}", self.id, self.counter);
     }
 
     fn allow_sorting(&mut self) -> char {
@@ -162,6 +167,10 @@ impl Player {
             _   => panic!("Unknown game announced"),
         }
         player
+    }
+
+    fn count_cards(&self) -> u8 {
+        self.counter
     }
 
     fn play_card(&mut self, mut played_cards: &mut Vec<u8>) {
@@ -687,6 +696,24 @@ impl Player {
         }
         self.cards = sorted;
     }
+
+    fn value_of(&self, card: u8) -> u8 {
+        let value = match card {
+            // Ace
+            0 | 8 | 16 | 24 => 11u8,
+            // Ten
+            1 | 9 | 17 | 25 => 10u8,
+            // King
+            2 | 10 | 18 | 26 => 4u8,
+            // Queen
+            3 | 11 | 19 | 27 => 3u8,
+            // Jack
+            4 | 12 | 20 | 28 => 2u8,
+            // others (7, 8, 9)
+            _ => 0u8,
+        };
+        value
+    }
 }
 
 struct PlayerBuilder {
@@ -778,7 +805,8 @@ impl PlayerBuilder {
     fn finalize(&self) -> Player {
         Player { id: self.id,
                  cards: self.cards.to_vec(),
-                 tricks: Vec::new(), }
+                 tricks: Vec::new(),
+                 counter: 0u8, }
     }
 }
 
@@ -1860,6 +1888,32 @@ fn main() {
             // set leader_id
             leader_id = winner_id;
         };
+        // count cards
+        let mut declarer_count: u8 = 0u8;
+        let mut team_count: u8 = 0u8;
+        println!("dealer: {}", dealer.count_cards());
+        println!("responder: {}", responder.count_cards());
+        println!("bidder: {}", bidder.count_cards());
+        if dealer.id == declarer_id {
+            declarer_count = dealer.count_cards();
+            team_count = responder.count_cards() + bidder.count_cards();
+        } else if responder.id == declarer_id {
+            declarer_count = responder.count_cards();
+            team_count = dealer.count_cards() + bidder.count_cards();
+        } else if bidder.id == declarer_id {
+            declarer_count = bidder.count_cards();
+            team_count = responder.count_cards() + dealer.count_cards();
+        }
+        // announce winner of this round
+        println!("###########################");
+        if declarer_count > team_count {
+            println!("declarer wins with {} to {}",
+                     declarer_count, team_count);
+        } else {
+            println!("declarer looses with {} to {}",
+                     declarer_count, team_count);
+        }
+        // continue?
         println!("New game?");
         let mut input = String::new();
         io::stdin().read_line(&mut input)
