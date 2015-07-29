@@ -64,9 +64,9 @@ impl Player {
         self.tricks.push(played_cards[0]);
         self.tricks.push(played_cards[1]);
         self.tricks.push(played_cards[2]);
-        self.counter += self.value_of(played_cards[0]);
-        self.counter += self.value_of(played_cards[1]);
-        self.counter += self.value_of(played_cards[2]);
+        self.counter += Player::value_of(played_cards[0]);
+        self.counter += Player::value_of(played_cards[1]);
+        self.counter += Player::value_of(played_cards[2]);
         println!("id{} has {:?}", self.id, self.counter);
     }
 
@@ -150,6 +150,9 @@ impl Player {
                 // drop (interactively) two cards
                 .drop1()
                 .drop2();
+        } else {
+            // player still gets the Skat for counting
+            player_builder.do_not_take(&skat);
         }
         let mut player = player_builder.finalize();
         if input == 1 {
@@ -697,7 +700,7 @@ impl Player {
         self.cards = sorted;
     }
 
-    fn value_of(&self, card: u8) -> u8 {
+    fn value_of(card: u8) -> u8 {
         let value = match card {
             // Ace
             0 | 8 | 16 | 24 => 11u8,
@@ -719,15 +722,22 @@ impl Player {
 struct PlayerBuilder {
     id: u8,
     cards: Vec<u8>,
+    counter: u8,
 }
 
 impl PlayerBuilder {
     fn new() -> PlayerBuilder {
-        PlayerBuilder { cards: Vec::new(), id: 3, }
+        PlayerBuilder { cards: Vec::new(), id: 3u8, counter: 0u8 }
     }
 
     fn add(&mut self, new_card: u8) -> &mut PlayerBuilder {
         self.cards.push(new_card);
+        self
+    }
+
+    fn do_not_take(&mut self, skat: &Skat) -> &mut PlayerBuilder {
+        self.counter += Player::value_of(skat.first);
+        self.counter += Player::value_of(skat.second);
         self
     }
 
@@ -747,7 +757,8 @@ impl PlayerBuilder {
             match input {
                 0 ... 11 => {
                     println!("{} chosen ...", input);
-                    self.cards.remove(input as usize);
+                    let card = self.cards.remove(input as usize);
+                    self.counter += Player::value_of(card);
                     break;
                 },
                 _ => continue,
@@ -772,7 +783,8 @@ impl PlayerBuilder {
             match input {
                 0 ... 10 => {
                     println!("{} chosen ...", input);
-                    self.cards.remove(input as usize);
+                    let card = self.cards.remove(input as usize);
+                    self.counter += Player::value_of(card);
                     break;
                 },
                 _ => continue,
@@ -806,7 +818,7 @@ impl PlayerBuilder {
         Player { id: self.id,
                  cards: self.cards.to_vec(),
                  tricks: Vec::new(),
-                 counter: 0u8, }
+                 counter: self.counter, }
     }
 }
 
