@@ -1785,7 +1785,7 @@ fn main() {
              mut responder,
              mut bidder,
              skat) = deal(player_id);
-        // bid
+        // bid (_game_value not used)
         let (declarer_id, _game_value, mut sorted_game) = bid(&mut dealer,
                                                               &mut responder,
                                                               &mut bidder);
@@ -1817,6 +1817,7 @@ fn main() {
             println!("trick #{}:", trick);
             println!("#########");
             let mut played_cards: Vec<u8> = Vec::new();
+            // _player not used
             for _player in 0..3 {
                 if dealer.id == leader_id {
                     dealer.print_cards();
