@@ -110,7 +110,7 @@ impl Player {
         g
     }
 
-    fn announce_game(&mut self, mut sorted_game: &mut char, skat: &Skat)
+    fn announce_game(&mut self, sorted_game: &mut char, skat: &Skat)
                      -> Player {
         // print cards before announcing the game
         self.print_cards();
@@ -1784,11 +1784,11 @@ fn main() {
         let (mut dealer,
              mut responder,
              mut bidder,
-             mut skat) = deal(player_id);
+             skat) = deal(player_id);
         // bid
-        let (declarer_id, game_value, mut sorted_game) = bid(&mut dealer,
-                                                             &mut responder,
-                                                             &mut bidder);
+        let (declarer_id, _game_value, mut sorted_game) = bid(&mut dealer,
+                                                              &mut responder,
+                                                              &mut bidder);
         // announce game
         if dealer.id == declarer_id {
             dealer = dealer.announce_game(&mut sorted_game, &skat);
@@ -1817,7 +1817,7 @@ fn main() {
             println!("trick #{}:", trick);
             println!("#########");
             let mut played_cards: Vec<u8> = Vec::new();
-            for player in 0..3 {
+            for _player in 0..3 {
                 if dealer.id == leader_id {
                     dealer.print_cards();
                     dealer.play_card(&mut played_cards);
