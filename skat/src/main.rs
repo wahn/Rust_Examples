@@ -1193,17 +1193,6 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
     (dealer, left, right, skat)
 }
 
-fn who_wins_trick(played_cards: &Vec<u8>,
-                  game: char) -> u8 {
-    let sorted = sort_trick_for(played_cards, game);
-    println!("played_cards: {:?}", played_cards);
-    println!("sorted: {:?}", sorted);
-    if sorted[0] == played_cards[0] { return 0u8; }
-    if sorted[0] == played_cards[1] { return 1u8; }
-    if sorted[0] == played_cards[2] { return 2u8; }
-    0u8
-}
-
 fn is_valid(bid: u8) -> bool {
     let mut valid;
     // Null game (have to be checked first)
@@ -1773,6 +1762,17 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
         _   => panic!("Unknown game {}", game),
     }
     sorted
+}
+
+fn who_wins_trick(played_cards: &Vec<u8>,
+                  game: char) -> u8 {
+    let sorted = sort_trick_for(played_cards, game);
+    println!("played_cards: {:?}", played_cards);
+    println!("sorted: {:?}", sorted);
+    if sorted[0] == played_cards[0] { return 0u8; }
+    if sorted[0] == played_cards[1] { return 1u8; }
+    if sorted[0] == played_cards[2] { return 2u8; }
+    0u8
 }
 
 fn main() {
