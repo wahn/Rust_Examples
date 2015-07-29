@@ -103,7 +103,8 @@ impl Player {
         g
     }
 
-    fn announce_game(&mut self, mut sorted_game: &mut char, skat: &Skat) -> Player {
+    fn announce_game(&mut self, mut sorted_game: &mut char, skat: &Skat)
+                     -> Player {
         // print cards before announcing the game
         self.print_cards();
         println!("Do you want to see the Skat? Press '1' for yes:");
@@ -156,7 +157,7 @@ impl Player {
         player
     }
 
-    fn play_card(&mut self) {
+    fn play_card(&mut self, mut played_cards: &mut Vec<u8>) {
         loop {
             println!("choose card [0-{}]:", self.cards.len() - 1);
             let mut input = String::new();
@@ -173,7 +174,7 @@ impl Player {
                     let card: u8 = self.cards[input as usize];
                     print_card(card);
                     println!("");
-                    self.cards.remove(input as usize);
+                    played_cards.push(self.cards.remove(input as usize));
                     break;
                 },
                 _ => continue,
@@ -1415,20 +1416,26 @@ fn main() {
         // play 10 tricks in a row
         for trick in 0..10 {
             println!("trick #{}:", trick);
+            let mut played_cards: Vec<u8> = Vec::new();
             for player in 0..3 {
                 if dealer.id == leader_id {
                     dealer.print_cards();
-                    dealer.play_card();
+                    dealer.play_card(&mut played_cards);
                 } else if responder.id == leader_id {
                     responder.print_cards();
-                    responder.play_card();
+                    responder.play_card(&mut played_cards);
                 } else if bidder.id == leader_id {
                     bidder.print_cards();
-                    bidder.play_card();
+                    bidder.play_card(&mut played_cards);
                 }
                 // select next player
                 leader_id = (leader_id + 1) % 3;
             }
+            println!("played cards: ");
+            print_card(played_cards[0]);
+            print_card(played_cards[1]);
+            print_card(played_cards[2]);
+            println!("");
             // ask for input
             let mut input = String::new();
             io::stdin().read_line(&mut input)
