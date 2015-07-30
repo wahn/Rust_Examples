@@ -2560,7 +2560,7 @@ fn main() {
         if sorted_game == 'n' {
             // check Null first
             if declarer_count == 0 || (hand && tricks_len == 2) {
-                // TODO: Skat was not taken (Hand)
+                // TODO: overt
                 println!("declarer wins with {} to {}",
                          declarer_count, team_count);
             } else {
