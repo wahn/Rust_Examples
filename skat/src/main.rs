@@ -115,7 +115,8 @@ impl Player {
         g
     }
 
-    fn announce_game(&mut self, sorted_game: &mut char, skat: &Skat)
+    fn announce_game(&mut self, sorted_game: &mut char, skat: &Skat,
+                     hand: &mut bool, overt: &mut bool)
                      -> Player {
         // print cards before announcing the game
         self.print_cards();
@@ -153,6 +154,7 @@ impl Player {
         } else {
             // player still gets the Skat for counting
             player_builder.do_not_take(&skat);
+            *hand = true;
         }
         let mut player = player_builder.finalize();
         if input == 1 {
@@ -161,12 +163,49 @@ impl Player {
         // announce
         *sorted_game = announce(*sorted_game as char);
         match *sorted_game {
-            'g' => println!("Grand announced ..."),
-            'n' => println!("Null announced ..."),
-            'c' => println!("Clubs announced ..."),
-            's' => println!("Spades announced ..."),
-            'h' => println!("Hearts announced ..."),
-            'd' => println!("Diamonds announced ..."),
+            // TODO: overt
+            'g' => {
+                if *hand {
+                    println!("Grand Hand announced ...");
+                } else {
+                    println!("Grand announced ...");
+                }
+            },
+            'n' => {
+                if *hand {
+                    println!("Null Hand announced ...");
+                } else {
+                    println!("Null announced ...");
+                }
+            },
+            'c' => {
+                if *hand {
+                    println!("Clubs Hand announced ...");
+                } else {
+                    println!("Clubs announced ...");
+                }
+            },
+            's' => {
+                if *hand {
+                    println!("Spades Hand announced ...");
+                } else {
+                    println!("Spades announced ...");
+                }
+            },
+            'h' => {
+                if *hand {
+                    println!("Hearts Hand announced ...");
+                } else {
+                    println!("Hearts announced ...");
+                }
+            },
+            'd' => {
+                if *hand {
+                    println!("Diamonds Hand announced ...");
+                    } else {
+                    println!("Diamonds announced ...");
+                }
+            },
             _   => panic!("Unknown game announced"),
         }
         player
@@ -2418,12 +2457,20 @@ fn main() {
                                                               &mut responder,
                                                               &mut bidder);
         // announce game
+        let mut hand = false;
+        let mut overt = false;
         if dealer.id == declarer_id {
-            dealer = dealer.announce_game(&mut sorted_game, &skat);
+            dealer = dealer.announce_game(&mut sorted_game, &skat,
+                                          // return values
+                                          &mut hand, &mut overt);
         } else if responder.id == declarer_id {
-            responder = responder.announce_game(&mut sorted_game, &skat);
+            responder = responder.announce_game(&mut sorted_game, &skat,
+                                                // return values
+                                                &mut hand, &mut overt);
         } else if bidder.id == declarer_id {
-            bidder = bidder.announce_game(&mut sorted_game, &skat);
+            bidder = bidder.announce_game(&mut sorted_game, &skat,
+                                          // return values
+                                          &mut hand, &mut overt);
         }
         // all players sort for game
         dealer.sort_cards_for(sorted_game);
@@ -2491,27 +2538,43 @@ fn main() {
         // count cards
         let mut declarer_count: u8 = 0u8;
         let mut team_count: u8 = 0u8;
+        let mut tricks_len: usize = 0usize;
         println!("dealer: {}", dealer.count_cards());
         println!("responder: {}", responder.count_cards());
         println!("bidder: {}", bidder.count_cards());
         if dealer.id == declarer_id {
             declarer_count = dealer.count_cards();
+            tricks_len = dealer.tricks.len();
             team_count = responder.count_cards() + bidder.count_cards();
         } else if responder.id == declarer_id {
             declarer_count = responder.count_cards();
+            tricks_len = responder.tricks.len();
             team_count = dealer.count_cards() + bidder.count_cards();
         } else if bidder.id == declarer_id {
             declarer_count = bidder.count_cards();
+            tricks_len = bidder.tricks.len();
             team_count = responder.count_cards() + dealer.count_cards();
         }
         // announce winner of this round
         println!("###########################");
-        if declarer_count > team_count {
-            println!("declarer wins with {} to {}",
-                     declarer_count, team_count);
+        if sorted_game == 'n' {
+            // check Null first
+            if declarer_count == 0 || (hand && tricks_len == 2) {
+                // TODO: Skat was not taken (Hand)
+                println!("declarer wins with {} to {}",
+                         declarer_count, team_count);
+            } else {
+                println!("declarer looses with {} to {}",
+                         declarer_count, team_count);
+            }
         } else {
-            println!("declarer looses with {} to {}",
-                     declarer_count, team_count);
+            if declarer_count > team_count {
+                println!("declarer wins with {} to {}",
+                         declarer_count, team_count);
+            } else {
+                println!("declarer looses with {} to {}",
+                         declarer_count, team_count);
+            }
         }
         // continue?
         println!("New game?");
