@@ -5,53 +5,6 @@ use ansi_term::Colour::*;
 use rand::Rng;
 use std::io;
 
-// enum Card {
-//     ClubsAce,      //  0
-//     ClubsTen,      //  1
-//     ClubsKing,     //  2
-//     ClubsQueen,    //  3
-//     ClubsJack,     //  4
-//     ClubsNine,     //  5
-//     ClubsEight,    //  6
-//     ClubsSeven,    //  7
-//     SpadesAce,     //  8
-//     SpadesTen,     //  9
-//     SpadesKing,    // 10
-//     SpadesQueen,   // 11
-//     SpadesJack,    // 12
-//     SpadesNine,    // 13
-//     SpadesEight,   // 14
-//     SpadesSeven,   // 15
-//     HeartsAce,     // 16
-//     HeartsTen,     // 17
-//     HeartsKing,    // 18
-//     HeartsQueen,   // 19
-//     HeartsJack,    // 20
-//     HeartsNine,    // 21
-//     HeartsEight,   // 22
-//     HeartsSeven,   // 23
-//     DiamondsAce,   // 24
-//     DiamondsTen,   // 25
-//     DiamondsKing,  // 26
-//     DiamondsQueen, // 27
-//     DiamondsJack,  // 28
-//     DiamondsNine,  // 29
-//     DiamondsEight, // 30
-//     DiamondsSeven, // 31
-// }
-
-// enum Game {
-//     Suit,
-//     Grand,
-//     Null,
-// }
-
-// enum PlayerId {
-//     A,
-//     B,
-//     C,
-// }
-
 struct Player {
     id: u8,
     cards: Vec<u8>,
