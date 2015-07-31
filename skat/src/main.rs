@@ -1269,22 +1269,22 @@ fn is_valid_card(card: u8, first_card: u8, game: char) -> bool {
         // Clubs
         0 ... 7 => match card {
              0 ... 7 => return true,
-            _ => return false,
+            _ => false,
         },
         // Spades
         8 ... 15 => match card {
              8 ... 15 => return true,
-            _ => return false,
+            _ => false,
         },
         // Hearts
         16 ... 23 => match card {
             16 ... 23 => return true,
-            _ => return false,
+            _ => false,
         },
         // Diamonds
         24 ... 31 => match card {
              24 ... 31 => return true,
-            _ => return false,
+            _ => false,
         },
         _ => false,
     };
