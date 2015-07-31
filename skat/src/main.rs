@@ -2485,6 +2485,22 @@ fn main() {
             println!("#########");
             println!("trick #{}:", trick);
             println!("#########");
+            let player_name = match declarer_id {
+                0 => "A",
+                1 => "B",
+                2 => "C",
+                _ => panic!("Unknown player {}", declarer_id),
+            };
+            let game = match sorted_game {
+                'g' => "Grand",
+                'n' => "Null",
+                'c' => "Clubs",
+                's' => "Spades",
+                'h' => "Hearts",
+                'd' => "Diamonds",
+                _   => panic!("Unknown game {}", sorted_game),
+            };
+            println!("player {:?} plays {:?}", player_name, game);
             let mut played_cards: Vec<u8> = Vec::new();
             // use player to detect first card played
             for player in 0..3 {
