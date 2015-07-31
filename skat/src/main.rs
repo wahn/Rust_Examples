@@ -168,7 +168,8 @@ impl Player {
         self.counter
     }
 
-    fn play_card(&mut self, mut played_cards: &mut Vec<u8>) {
+    fn play_card(&mut self, mut played_cards: &mut Vec<u8>,
+                 player: u8, sorted_game: char) {
         loop {
             println!("choose card [0-{}]:", self.cards.len() - 1);
             let mut input = String::new();
@@ -182,6 +183,9 @@ impl Player {
             match input {
                 0 ... 10 => {
                     println!("{} chosen ...", input);
+                    if player != 0 {
+                        println!("TODO: validate");
+                    }
                     let card: u8 = self.cards[input as usize];
                     print_card(card);
                     println!("");
@@ -2445,17 +2449,20 @@ fn main() {
             println!("trick #{}:", trick);
             println!("#########");
             let mut played_cards: Vec<u8> = Vec::new();
-            // _player not used
-            for _player in 0..3 {
+            // use player to detect first card played
+            for player in 0..3 {
                 if dealer.id == leader_id {
                     dealer.print_cards();
-                    dealer.play_card(&mut played_cards);
+                    dealer.play_card(&mut played_cards,
+                                     player, sorted_game);
                 } else if responder.id == leader_id {
                     responder.print_cards();
-                    responder.play_card(&mut played_cards);
+                    responder.play_card(&mut played_cards,
+                                        player, sorted_game);
                 } else if bidder.id == leader_id {
                     bidder.print_cards();
-                    bidder.play_card(&mut played_cards);
+                    bidder.play_card(&mut played_cards,
+                                     player, sorted_game);
                 }
                 // select next player
                 leader_id = (leader_id + 1) % 3;
