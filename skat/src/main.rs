@@ -169,7 +169,8 @@ impl Player {
     }
 
     fn play_card(&mut self, mut played_cards: &mut Vec<u8>,
-                 player: u8, sorted_game: char) {
+                 player: u8, game: char) {
+        let mut first_card: u8 = 0;
         loop {
             println!("choose card [0-{}]:", self.cards.len() - 1);
             let mut input = String::new();
@@ -183,8 +184,14 @@ impl Player {
             match input {
                 0 ... 10 => {
                     println!("{} chosen ...", input);
-                    if player != 0 {
-                        println!("TODO: validate");
+                    if player == 0 {
+                        first_card = input;
+                    } else {
+                        if is_valid_card(input, first_card, game) {
+                            println!("is valid");
+                        } else {
+                            println!("is NOT valid");
+                        }
                     }
                     let card: u8 = self.cards[input as usize];
                     print_card(card);
@@ -947,7 +954,7 @@ fn bid(dealer: &mut Player,
             Ok(num) => num,
             Err(_) => continue,
         };
-        if is_valid(bidder_bid) {
+        if is_valid_bid(bidder_bid) {
             break;
         } else {
             continue;
@@ -1001,7 +1008,7 @@ fn bid(dealer: &mut Player,
             Ok(num) => num,
             Err(_) => continue,
         };
-        if is_valid(responder_bid) {
+        if is_valid_bid(responder_bid) {
             break;
         } else {
             continue;
@@ -1054,7 +1061,7 @@ fn bid(dealer: &mut Player,
             Ok(num) => num,
             Err(_) => continue,
         };
-        if is_valid(dealer_bid) {
+        if is_valid_bid(dealer_bid) {
             break;
         } else {
             continue;
@@ -1130,7 +1137,7 @@ fn bid(dealer: &mut Player,
                 lowest = bidder_bid;
                 loop {
                     lowest += 1;
-                    if is_valid(lowest) {
+                    if is_valid_bid(lowest) {
                         break;
                     }
                 }
@@ -1230,7 +1237,7 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
     (dealer, left, right, skat)
 }
 
-fn is_valid(bid: u8) -> bool {
+fn is_valid_bid(bid: u8) -> bool {
     let mut valid;
     // Null game (have to be checked first)
     let nulls = [23, 35, 46, 59];
@@ -1252,6 +1259,10 @@ fn is_valid(bid: u8) -> bool {
     let highest: u8 = 168;
     if bid > highest { valid = false; }
     valid
+}
+
+fn is_valid_card(input: u8, first_card: u8, game: char) -> bool {
+    true
 }
 
 fn print_card(card: u8) {
