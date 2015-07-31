@@ -170,7 +170,9 @@ impl Player {
 
     fn play_card(&mut self, mut played_cards: &mut Vec<u8>,
                  player: u8, game: char) {
-        let mut first_card: u8 = 0;
+        println!("player = {:?}", player);
+        println!("played cards = {:?}", played_cards);
+        let mut first_card;
         loop {
             println!("choose card [0-{}]:", self.cards.len() - 1);
             let mut input = String::new();
@@ -184,16 +186,15 @@ impl Player {
             match input {
                 0 ... 10 => {
                     println!("{} chosen ...", input);
-                    if player == 0 {
-                        first_card = input;
-                    } else {
-                        if is_valid_card(input, first_card, game) {
+                    let card: u8 = self.cards[input as usize];
+                    if player != 0 {
+                        first_card = played_cards[0];
+                        if is_valid_card(card, first_card, game) {
                             println!("is valid");
                         } else {
                             println!("is NOT valid");
                         }
                     }
-                    let card: u8 = self.cards[input as usize];
                     print_card(card);
                     println!("");
                     played_cards.push(self.cards.remove(input as usize));
@@ -1261,8 +1262,33 @@ fn is_valid_bid(bid: u8) -> bool {
     valid
 }
 
-fn is_valid_card(input: u8, first_card: u8, game: char) -> bool {
-    true
+fn is_valid_card(card: u8, first_card: u8, game: char) -> bool {
+    println!("is_valid_card({:?}, {:?}, {:?})",
+             card, first_card, game);
+    let rv = match first_card {
+        // Clubs
+        0 ... 7 => match card {
+             0 ... 7 => return true,
+            _ => return false,
+        },
+        // Spades
+        8 ... 15 => match card {
+             8 ... 15 => return true,
+            _ => return false,
+        },
+        // Hearts
+        16 ... 23 => match card {
+            16 ... 23 => return true,
+            _ => return false,
+        },
+        // Diamonds
+        24 ... 31 => match card {
+             24 ... 31 => return true,
+            _ => return false,
+        },
+        _ => false,
+    };
+    rv
 }
 
 fn print_card(card: u8) {
@@ -2462,6 +2488,7 @@ fn main() {
             let mut played_cards: Vec<u8> = Vec::new();
             // use player to detect first card played
             for player in 0..3 {
+                println!("player = {:?}", player);
                 if dealer.id == leader_id {
                     dealer.print_cards();
                     dealer.play_card(&mut played_cards,
