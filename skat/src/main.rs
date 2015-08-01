@@ -192,7 +192,8 @@ impl Player {
                         if is_valid_card(card, first_card, game, &self.cards) {
                             println!("is valid");
                         } else {
-                            panic!("is NOT valid");
+                            println!("is NOT valid");
+                            continue;
                         }
                     }
                     print_card(card);
