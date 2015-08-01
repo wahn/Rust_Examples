@@ -2727,8 +2727,8 @@ fn main() {
              mut responder,
              mut bidder,
              skat) = deal(player_id);
-        // bid (_game_value not used)
-        let (declarer_id, _game_value, mut sorted_game) = bid(&mut dealer,
+        // bid
+        let (declarer_id, game_value, mut sorted_game) = bid(&mut dealer,
                                                               &mut responder,
                                                               &mut bidder);
         // announce game
@@ -2781,7 +2781,8 @@ fn main() {
                 'd' => "Diamonds",
                 _   => panic!("Unknown game {}", sorted_game),
             };
-            println!("player {:?} plays {:?}", player_name, game);
+            println!("player {} plays {} bidding {}",
+                     player_name, game, game_value);
             let mut played_cards: Vec<u8> = Vec::new();
             // use player to detect first card played
             for player in 0..3 {
