@@ -170,8 +170,6 @@ impl Player {
 
     fn play_card(&mut self, mut played_cards: &mut Vec<u8>,
                  player: u8, game: char) {
-        println!("player = {:?}", player);
-        println!("played cards = {:?}", played_cards);
         let mut first_card;
         loop {
             println!("choose card [0-{}]:", self.cards.len() - 1);
@@ -185,7 +183,6 @@ impl Player {
             };
             match input {
                 0 ... 10 => {
-                    println!("{} chosen ...", input);
                     let card: u8 = self.cards[input as usize];
                     if player != 0 {
                         first_card = played_cards[0];
@@ -1272,9 +1269,6 @@ fn is_valid_bid(bid: u8) -> bool {
 
 fn is_valid_card(card: u8, first_card: u8, game: char,
                  cards: &Vec<u8>) -> bool {
-
-    println!("is_valid_card({:?}, {:?}, {:?}, {:?})",
-             card, first_card, game, cards);
     // sort cards
     let mut jacks: Vec<u8> = Vec::new();
     let mut clubs: Vec<u8> = Vec::new();
@@ -2710,8 +2704,6 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
 fn who_wins_trick(played_cards: &Vec<u8>,
                   game: char) -> u8 {
     let sorted = sort_trick_for(played_cards, game);
-    println!("played_cards: {:?}", played_cards);
-    println!("sorted: {:?}", sorted);
     if sorted[0] == played_cards[0] { return 0u8; }
     if sorted[0] == played_cards[1] { return 1u8; }
     if sorted[0] == played_cards[2] { return 2u8; }
@@ -2786,7 +2778,6 @@ fn main() {
             let mut played_cards: Vec<u8> = Vec::new();
             // use player to detect first card played
             for player in 0..3 {
-                println!("player = {:?}", player);
                 if dealer.id == leader_id {
                     dealer.print_cards();
                     dealer.play_card(&mut played_cards,
@@ -2812,7 +2803,6 @@ fn main() {
             let winner_id: u8 = (leader_id +
                                  who_wins_trick(&played_cards,
                                                 sorted_game)) % 3;
-            println!("winner_id = {}", winner_id);
             let winner_name = match winner_id {
                 0 => "A",
                 1 => "B",
