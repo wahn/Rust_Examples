@@ -189,10 +189,10 @@ impl Player {
                     let card: u8 = self.cards[input as usize];
                     if player != 0 {
                         first_card = played_cards[0];
-                        if is_valid_card(card, first_card, game) {
+                        if is_valid_card(card, first_card, game, &self.cards) {
                             println!("is valid");
                         } else {
-                            println!("is NOT valid");
+                            panic!("is NOT valid");
                         }
                     }
                     print_card(card);
@@ -1238,6 +1238,13 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
     (dealer, left, right, skat)
 }
 
+fn is_in(card: u8, cards: &Vec<u8>) -> bool {
+    for n in 0..cards.len() {
+        if card == cards[n] { return true; }
+    }
+    false
+}
+
 fn is_valid_bid(bid: u8) -> bool {
     let mut valid;
     // Null game (have to be checked first)
@@ -1262,33 +1269,306 @@ fn is_valid_bid(bid: u8) -> bool {
     valid
 }
 
-fn is_valid_card(card: u8, first_card: u8, game: char) -> bool {
-    println!("is_valid_card({:?}, {:?}, {:?})",
-             card, first_card, game);
-    let rv = match first_card {
-        // Clubs
-        0 ... 7 => match card {
-             0 ... 7 => return true,
-            _ => false,
+fn is_valid_card(card: u8, first_card: u8, game: char,
+                 cards: &Vec<u8>) -> bool {
+
+    println!("is_valid_card({:?}, {:?}, {:?}, {:?})",
+             card, first_card, game, cards);
+    // sort cards
+    let mut jacks: Vec<u8> = Vec::new();
+    let mut clubs: Vec<u8> = Vec::new();
+    let mut spades: Vec<u8> = Vec::new();
+    let mut hearts: Vec<u8> = Vec::new();
+    let mut diamonds: Vec<u8> = Vec::new();
+    for n in 0..cards.len() {
+        match cards[n] {
+            // ClubsJack
+            4 => jacks.push(cards[n]),
+            // SpadesJack
+            12 => jacks.push(cards[n]),
+            // HeartsJack
+            20 => jacks.push(cards[n]),
+            // DiamondsJack
+            28 => jacks.push(cards[n]),
+            // Clubs
+            0 ... 7 => clubs.push(cards[n]),
+            // Spades
+            8 ... 15 => spades.push(cards[n]),
+            // Hearts
+            16 ... 23 => hearts.push(cards[n]),
+            // Diamonds
+            24 ... 31 => diamonds.push(cards[n]),
+            _ => panic!("Unknown card"),
+        }
+    }
+    match game {
+        'g' => { // Grand
+            match first_card {
+                4 | 12 | 20 | 28 => { // Jack
+                    if jacks.len() > 0usize && !is_in(card, &jacks) {
+                        // has Jacks, but didn't play one
+                        return false;
+                    } else {
+                        // has Jacks and played one of it
+                        // or doesn't have any Jacks
+                        return true;
+                    }
+                },
+                0 ... 7 => { // Clubs
+                    if clubs.len() > 0usize && !is_in(card, &clubs) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                8 ... 15 => { // Spades
+                    if spades.len() > 0usize && !is_in(card, &spades) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                16 ... 23 => { // Hearts
+                    if hearts.len() > 0usize && !is_in(card, &hearts) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                24 ... 31 => { // Diamonds
+                    if diamonds.len() > 0usize && !is_in(card, &diamonds) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                _ => panic!("Unknown card"),
+            }
         },
-        // Spades
-        8 ... 15 => match card {
-             8 ... 15 => return true,
-            _ => false,
+        'n' => { // Null
+            for n in 0..jacks.len() {
+                match jacks[n] {
+                    4  => clubs.push(jacks[n]),
+                    12 => spades.push(jacks[n]),
+                    20 => hearts.push(jacks[n]),
+                    28 => diamonds.push(jacks[n]),
+                    _ => println!("Unknown Jack"),
+                }
+            }
+            match first_card {
+                0 ... 7 => { // Clubs
+                    if clubs.len() > 0usize && !is_in(card, &clubs) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                8 ... 15 => { // Spades
+                    if spades.len() > 0usize && !is_in(card, &spades) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                16 ... 23 => { // Hearts
+                    if hearts.len() > 0usize && !is_in(card, &hearts) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                24 ... 31 => { // Diamonds
+                    if diamonds.len() > 0usize && !is_in(card, &diamonds) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                _ => panic!("Unknown card"),
+            }
         },
-        // Hearts
-        16 ... 23 => match card {
-            16 ... 23 => return true,
-            _ => false,
+        'c' => { // Clubs
+            match first_card {
+                0 ... 7 | 12 | 20 | 28 => { // Jack or Clubs
+                    if (jacks.len() > 0usize || clubs.len() > 0usize) &&
+                        !is_in(card, &jacks) && !is_in(card, &clubs) {
+                        // has Jacks or suit, but didn't play one
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                8 ... 15 => { // Spades
+                    if spades.len() > 0usize && !is_in(card, &spades) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                16 ... 23 => { // Hearts
+                    if hearts.len() > 0usize && !is_in(card, &hearts) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                24 ... 31 => { // Diamonds
+                    if diamonds.len() > 0usize && !is_in(card, &diamonds) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                _ => panic!("Unknown card"),
+            }
         },
-        // Diamonds
-        24 ... 31 => match card {
-             24 ... 31 => return true,
-            _ => false,
+        's' => { // Spades
+            match first_card {
+                4 | 8 ... 15 | 20 | 28 => { // Jack or Spades
+                    if (jacks.len() > 0usize || spades.len() > 0usize) &&
+                        !is_in(card, &jacks) && !is_in(card, &spades) {
+                        // has Jacks or suit, but didn't play one
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                0 ... 7 => { // Clubs
+                    if clubs.len() > 0usize && !is_in(card, &clubs) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                16 ... 23 => { // Hearts
+                    if hearts.len() > 0usize && !is_in(card, &hearts) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                24 ... 31 => { // Diamonds
+                    if diamonds.len() > 0usize && !is_in(card, &diamonds) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                _ => panic!("Unknown card"),
+            }
         },
-        _ => false,
-    };
-    rv
+        'h' => { // Hearts
+            match first_card {
+                4 | 12 | 16 ... 23 | 28 => { // Jack or Hearts
+                    if (jacks.len() > 0usize || hearts.len() > 0usize) &&
+                        !is_in(card, &jacks) && !is_in(card, &hearts) {
+                        // has Jacks or suit, but didn't play one
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                0 ... 7 => { // Clubs
+                    if clubs.len() > 0usize && !is_in(card, &clubs) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                8 ... 15 => { // Spades
+                    if spades.len() > 0usize && !is_in(card, &spades) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                24 ... 31 => { // Diamonds
+                    if diamonds.len() > 0usize && !is_in(card, &diamonds) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                _ => panic!("Unknown card"),
+            }
+        },
+        'd' => { // Diamonds
+            match first_card {
+                4 | 12 | 20 | 24 ... 31 => { // Jack or Diamonds
+                    if (jacks.len() > 0usize || diamonds.len() > 0usize) &&
+                        !is_in(card, &jacks) && !is_in(card, &diamonds) {
+                        // has Jacks or suit, but didn't play one
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                0 ... 7 => { // Clubs
+                    if clubs.len() > 0usize && !is_in(card, &clubs) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                8 ... 15 => { // Spades
+                    if spades.len() > 0usize && !is_in(card, &spades) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                16 ... 23 => { // Hearts
+                    if hearts.len() > 0usize && !is_in(card, &hearts) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                },
+                _ => panic!("Unknown card"),
+            }
+        },
+        _ => panic!("Unknown game {}", game),
+    }
 }
 
 fn print_card(card: u8) {
