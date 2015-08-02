@@ -69,7 +69,8 @@ impl Player {
     }
 
     fn announce_game(&mut self, sorted_game: &mut char, skat: &Skat,
-                     hand: &mut bool, ouvert: &mut bool)
+                     hand: &mut bool, ouvert: &mut bool,
+                     matadors: &mut u8)
                      -> Player {
         // print cards before announcing the game
         self.print_cards();
@@ -97,7 +98,11 @@ impl Player {
             .add(self.cards[8])
             .add(self.cards[9]);
         if input == 1 {
+            // Matadors jack strait
+            *matadors = player_builder.matadors_jack_strait(&skat);
+            // print Skat
             skat.print_cards();
+            // deal with Skat
             player_builder
                 // take skat
                 .take(&skat)
@@ -105,6 +110,8 @@ impl Player {
                 .drop1()
                 .drop2();
         } else {
+            // Matadors jack strait
+            *matadors = player_builder.matadors_jack_strait(&skat);
             // player still gets the Skat for counting
             player_builder.do_not_take(&skat);
             *hand = true;
@@ -799,6 +806,97 @@ impl PlayerBuilder {
     fn id(&mut self, new_id: u8) -> &mut PlayerBuilder {
         self.id = new_id;
         self
+    }
+
+    fn matadors_jack_strait(&self, skat: &Skat) -> u8 {
+        let mut matadors: u8 = 0u8;
+        let mut jacks: Vec<u8> = Vec::new();
+        // first find Jacks
+        for n in 0..10 {
+            match self.cards[n] {
+                // ClubsJack
+                4 => jacks.push(self.cards[n]),
+                // SpadesJack
+                12 => jacks.push(self.cards[n]),
+                // HeartsJack
+                20 => jacks.push(self.cards[n]),
+                // DiamondsJack
+                28 => jacks.push(self.cards[n]),
+                _ => continue,
+            }
+        }
+        // first card of Skat
+        let mut skat_card = skat.first;
+        match skat_card {
+            // ClubsJack
+            4 => jacks.push(skat_card),
+            // SpadesJack
+            12 => jacks.push(skat_card),
+            // HeartsJack
+            20 => jacks.push(skat_card),
+            // DiamondsJack
+            28 => jacks.push(skat_card),
+            _ => {}, // do nothing
+        }
+        // second card of Skat
+        skat_card = skat.second;
+        match skat_card {
+            // ClubsJack
+            4 => jacks.push(skat_card),
+            // SpadesJack
+            12 => jacks.push(skat_card),
+            // HeartsJack
+            20 => jacks.push(skat_card),
+            // DiamondsJack
+            28 => jacks.push(skat_card),
+            _ => {}, // do nothing
+        }
+        // order Jacks
+        jacks.sort();
+        println!("jacks: {:?}", jacks);
+        // count matadors
+        let mut with = false;
+        let jacks_len = jacks.len();
+        // _index not used
+        for _index in 0..jacks_len {
+            let jack = jacks[0]; // first
+            match jack {
+                // ClubsJack
+                4 => {
+                    with = true;
+                    matadors = 1;
+                },
+                // SpadesJack
+                12 => {
+                    if with {
+                        matadors = 2;
+                    } else {
+                        matadors = 1;
+                        return matadors;
+                    }
+                },
+                // HeartsJack
+                20 => {
+                    if with && matadors == 2 {
+                        matadors = 3;
+                    } else {
+                        matadors = 2;
+                        return matadors;
+                    }
+                },
+                // DiamondsJack
+                28 => {
+                    if with && matadors == 3 {
+                        matadors = 4;
+                    } else {
+                        matadors = 3;
+                        return matadors;
+                    }
+                },
+                _ => panic!("no Jack found"),
+            }
+        }
+        matadors
     }
 
     fn print_cards(&self) {
@@ -2732,18 +2830,22 @@ fn main() {
         // announce game
         let mut hand = false;
         let mut ouvert = false;
+        let mut matadors: u8 = 0u8;
         if dealer.id == declarer_id {
             dealer = dealer.announce_game(&mut sorted_game, &skat,
                                           // return values
-                                          &mut hand, &mut ouvert);
+                                          &mut hand, &mut ouvert,
+                                          &mut matadors);
         } else if responder.id == declarer_id {
             responder = responder.announce_game(&mut sorted_game, &skat,
                                                 // return values
-                                                &mut hand, &mut ouvert);
+                                                &mut hand, &mut ouvert,
+                                                &mut matadors);
         } else if bidder.id == declarer_id {
             bidder = bidder.announce_game(&mut sorted_game, &skat,
                                           // return values
-                                          &mut hand, &mut ouvert);
+                                          &mut hand, &mut ouvert,
+                                          &mut matadors);
         }
         // all players sort for game
         dealer.sort_cards_for(sorted_game);
@@ -2760,95 +2862,95 @@ fn main() {
         // TMP
         let mut leader_id: u8 = responder.id;
         // play 10 tricks in a row
+        let player_name = match declarer_id {
+            0 => "A",
+            1 => "B",
+            2 => "C",
+            _ => panic!("Unknown player {}", declarer_id),
+        };
+        let mut hand_announced = " ".to_string();
+        let mut ouvert_announced = "".to_string();
+        let game = match sorted_game {
+            'g' => {
+                if hand {
+                    hand_announced.push_str("Hand ");
+                    if ouvert {
+                        ouvert_announced.push_str("Ouvert ");
+                    } else {
+                        // there is only Grand Hand Ouvert
+                        ouvert = false;
+                    }
+                }
+                "Grand"
+            },
+            'n' => {
+                if hand {
+                    hand_announced.push_str("Hand ");
+                }
+                if ouvert {
+                    ouvert_announced.push_str("Ouvert ");
+                    if hand {
+                        // Null Ouvert Hand (instead of Null Hand Ouvert)
+                        hand_announced = " Ouvert Hand ".to_string();
+                        ouvert_announced = "".to_string(); // see above
+                    }
+                }
+                "Null"
+            },
+            'c' => {
+                if hand {
+                    hand_announced.push_str("Hand ");
+                    if ouvert {
+                        ouvert_announced.push_str("Ouvert ");
+                    } else {
+                        // there is only Grand Hand Ouvert
+                        ouvert = false;
+                    }
+                }
+                "Clubs"
+            },
+            's' => {
+                if hand {
+                    hand_announced.push_str("Hand ");
+                    if ouvert {
+                        ouvert_announced.push_str("Ouvert ");
+                    } else {
+                        // there is only Grand Hand Ouvert
+                        ouvert = false;
+                    }
+                }
+                "Spades"
+            },
+            'h' => {
+                if hand {
+                    hand_announced.push_str("Hand ");
+                    if ouvert {
+                        ouvert_announced.push_str("Ouvert ");
+                    } else {
+                        // there is only Grand Hand Ouvert
+                        ouvert = false;
+                    }
+                }
+                "Hearts"
+            },
+            'd' => {
+                if hand {
+                    hand_announced.push_str("Hand ");
+                    if ouvert {
+                        ouvert_announced.push_str("Ouvert ");
+                    } else {
+                        // there is only Grand Hand Ouvert
+                        ouvert = false;
+                    }
+                }
+                "Diamonds"
+            },
+            _   => panic!("Unknown game {}", sorted_game),
+        };
         for trick in 0..10 {
             println!("#########");
             println!("trick #{}:", trick);
             println!("#########");
-            let player_name = match declarer_id {
-                0 => "A",
-                1 => "B",
-                2 => "C",
-                _ => panic!("Unknown player {}", declarer_id),
-            };
-            let mut hand_announced = " ".to_string();
-            let mut ouvert_announced = "".to_string();
-            let game = match sorted_game {
-                'g' => {
-                    if hand {
-                        hand_announced.push_str("Hand ");
-                        if ouvert {
-                            ouvert_announced.push_str("Ouvert ");
-                        } else {
-                            // there is only Grand Hand Ouvert
-                            ouvert = false;
-                        }
-                    }
-                    "Grand"
-                },
-                'n' => {
-                    if hand {
-                        hand_announced.push_str("Hand ");
-                    }
-                    if ouvert {
-                        ouvert_announced.push_str("Ouvert ");
-                        if hand {
-                            // Null Ouvert Hand (instead of Null Hand Ouvert)
-                            hand_announced = " Ouvert Hand ".to_string();
-                            ouvert_announced = "".to_string(); // see above
-                        }
-                    }
-                    "Null"
-                },
-                'c' => {
-                    if hand {
-                        hand_announced.push_str("Hand ");
-                        if ouvert {
-                            ouvert_announced.push_str("Ouvert ");
-                        } else {
-                            // there is only Grand Hand Ouvert
-                            ouvert = false;
-                        }
-                    }
-                    "Clubs"
-                },
-                's' => {
-                    if hand {
-                        hand_announced.push_str("Hand ");
-                        if ouvert {
-                            ouvert_announced.push_str("Ouvert ");
-                        } else {
-                            // there is only Grand Hand Ouvert
-                            ouvert = false;
-                        }
-                    }
-                    "Spades"
-                },
-                'h' => {
-                    if hand {
-                        hand_announced.push_str("Hand ");
-                        if ouvert {
-                            ouvert_announced.push_str("Ouvert ");
-                        } else {
-                            // there is only Grand Hand Ouvert
-                            ouvert = false;
-                        }
-                    }
-                    "Hearts"
-                },
-                'd' => {
-                    if hand {
-                        hand_announced.push_str("Hand ");
-                        if ouvert {
-                            ouvert_announced.push_str("Ouvert ");
-                        } else {
-                            // there is only Grand Hand Ouvert
-                            ouvert = false;
-                        }
-                    }
-                    "Diamonds"
-                },
-                _   => panic!("Unknown game {}", sorted_game),
-            };
             println!("player {} plays {}{}{}bidding {}",
                      player_name, game, hand_announced, ouvert_announced,
                      game_value);
@@ -2920,22 +3022,29 @@ fn main() {
         }
         // announce winner of this round
         println!("###########################");
+        println!("hand = {:?}", hand);
+        println!("ouvert = {:?}", ouvert);
+        println!("game_value = {:?}", game_value);
+        println!("matadors = {:?}", matadors);
         if sorted_game == 'n' {
             // check Null first
             if declarer_count == 0 || (hand && tricks_len == 2) {
-                // TODO: ouvert
-                println!("declarer wins with {} to {}",
+                println!("declarer wins {}{}{}with {} to {}",
+                         game, hand_announced, ouvert_announced,
                          declarer_count, team_count);
             } else {
-                println!("declarer looses with {} to {}",
+                println!("declarer looses {}{}{}with {} to {}",
+                         game, hand_announced, ouvert_announced,
                          declarer_count, team_count);
             }
         } else {
             if declarer_count > team_count {
-                println!("declarer wins with {} to {}",
+                println!("declarer wins {}{}{}with {} to {}",
+                         game, hand_announced, ouvert_announced,
                          declarer_count, team_count);
             } else {
-                println!("declarer looses with {} to {}",
+                println!("declarer looses {}{}{}with {} to {}",
+                         game, hand_announced, ouvert_announced,
                          declarer_count, team_count);
             }
         }
