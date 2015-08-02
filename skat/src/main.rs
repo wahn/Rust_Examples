@@ -114,7 +114,7 @@ impl Player {
             *sorted_game = player.allow_sorting();
         }
         // announce
-        *sorted_game = announce(*sorted_game as char);
+        *sorted_game = announce(*sorted_game as char, ouvert);
         match *sorted_game {
             // TODO: ouvert
             'g' => {
@@ -859,9 +859,9 @@ impl SkatBuilder {
     }
 }
 
-fn announce(game: char) -> char {
+fn announce(game: char, ouvert: &mut bool) -> char {
     let mut g: char = game; // copy game value (can still be changed)
-    print!("announce game [gncshd] or y for ");
+    print!("announce game [gncshd], ouvert [o] or y for ");
     loop {
         match g {
             'g' => println!("Grand?"),
@@ -896,6 +896,12 @@ fn announce(game: char) -> char {
         } else if input == "d\n".to_string() {
             g = 'd';
             return g;
+        } else if input == "o\n".to_string() {
+            println!("Ouvert announced, but tell me the game:");
+            // g doesn't change
+            *ouvert = true;
+            // keep asking for game
+            continue;
         }
     }
 }
@@ -2764,17 +2770,48 @@ fn main() {
                 2 => "C",
                 _ => panic!("Unknown player {}", declarer_id),
             };
+            let mut hand_announced = "".to_string();
+            let mut ouvert_announced = "".to_string();
             let game = match sorted_game {
-                'g' => "Grand",
-                'n' => "Null",
+                'g' => {
+                    if hand {
+                        hand_announced.push_str(" Hand ");
+                        if ouvert {
+                            ouvert_announced.push_str("Ouvert ");
+                        } else {
+                            // there is only Grand Hand Ouvert
+                            ouvert = false;
+                        }
+                    } else {
+                        hand_announced.push_str(" ");
+                    }
+                    "Grand"
+                },
+                'n' => {
+                    if hand {
+                        hand_announced.push_str(" Hand ");
+                    } else {
+                        hand_announced.push_str(" ");
+                    }
+                    if ouvert {
+                        ouvert_announced.push_str("Ouvert ");
+                        if hand {
+                            // Null Ouvert Hand (instead of Null Hand Ouvert)
+                            hand_announced = " Ouvert Hand ".to_string();
+                            ouvert_announced = "".to_string(); // see above
+                        }
+                    }
+                    "Null"
+                },
                 'c' => "Clubs",
                 's' => "Spades",
                 'h' => "Hearts",
                 'd' => "Diamonds",
                 _   => panic!("Unknown game {}", sorted_game),
             };
-            println!("player {} plays {} bidding {}",
-                     player_name, game, game_value);
+            println!("player {} plays {}{}{}bidding {}",
+                     player_name, game, hand_announced, ouvert_announced,
+                     game_value);
             let mut played_cards: Vec<u8> = Vec::new();
             // use player to detect first card played
             for player in 0..3 {
