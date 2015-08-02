@@ -69,7 +69,7 @@ impl Player {
     }
 
     fn announce_game(&mut self, sorted_game: &mut char, skat: &Skat,
-                     hand: &mut bool, overt: &mut bool)
+                     hand: &mut bool, ouvert: &mut bool)
                      -> Player {
         // print cards before announcing the game
         self.print_cards();
@@ -116,7 +116,7 @@ impl Player {
         // announce
         *sorted_game = announce(*sorted_game as char);
         match *sorted_game {
-            // TODO: overt
+            // TODO: ouvert
             'g' => {
                 if *hand {
                     println!("Grand Hand announced ...");
@@ -2725,19 +2725,19 @@ fn main() {
                                                               &mut bidder);
         // announce game
         let mut hand = false;
-        let mut overt = false;
+        let mut ouvert = false;
         if dealer.id == declarer_id {
             dealer = dealer.announce_game(&mut sorted_game, &skat,
                                           // return values
-                                          &mut hand, &mut overt);
+                                          &mut hand, &mut ouvert);
         } else if responder.id == declarer_id {
             responder = responder.announce_game(&mut sorted_game, &skat,
                                                 // return values
-                                                &mut hand, &mut overt);
+                                                &mut hand, &mut ouvert);
         } else if bidder.id == declarer_id {
             bidder = bidder.announce_game(&mut sorted_game, &skat,
                                           // return values
-                                          &mut hand, &mut overt);
+                                          &mut hand, &mut ouvert);
         }
         // all players sort for game
         dealer.sort_cards_for(sorted_game);
@@ -2846,7 +2846,7 @@ fn main() {
         if sorted_game == 'n' {
             // check Null first
             if declarer_count == 0 || (hand && tricks_len == 2) {
-                // TODO: overt
+                // TODO: ouvert
                 println!("declarer wins with {} to {}",
                          declarer_count, team_count);
             } else {
