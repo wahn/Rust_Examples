@@ -2770,28 +2770,24 @@ fn main() {
                 2 => "C",
                 _ => panic!("Unknown player {}", declarer_id),
             };
-            let mut hand_announced = "".to_string();
+            let mut hand_announced = " ".to_string();
             let mut ouvert_announced = "".to_string();
             let game = match sorted_game {
                 'g' => {
                     if hand {
-                        hand_announced.push_str(" Hand ");
+                        hand_announced.push_str("Hand ");
                         if ouvert {
                             ouvert_announced.push_str("Ouvert ");
                         } else {
                             // there is only Grand Hand Ouvert
                             ouvert = false;
                         }
-                    } else {
-                        hand_announced.push_str(" ");
                     }
                     "Grand"
                 },
                 'n' => {
                     if hand {
-                        hand_announced.push_str(" Hand ");
-                    } else {
-                        hand_announced.push_str(" ");
+                        hand_announced.push_str("Hand ");
                     }
                     if ouvert {
                         ouvert_announced.push_str("Ouvert ");
@@ -2803,10 +2799,54 @@ fn main() {
                     }
                     "Null"
                 },
-                'c' => "Clubs",
-                's' => "Spades",
-                'h' => "Hearts",
-                'd' => "Diamonds",
+                'c' => {
+                    if hand {
+                        hand_announced.push_str("Hand ");
+                        if ouvert {
+                            ouvert_announced.push_str("Ouvert ");
+                        } else {
+                            // there is only Grand Hand Ouvert
+                            ouvert = false;
+                        }
+                    }
+                    "Clubs"
+                },
+                's' => {
+                    if hand {
+                        hand_announced.push_str("Hand ");
+                        if ouvert {
+                            ouvert_announced.push_str("Ouvert ");
+                        } else {
+                            // there is only Grand Hand Ouvert
+                            ouvert = false;
+                        }
+                    }
+                    "Spades"
+                },
+                'h' => {
+                    if hand {
+                        hand_announced.push_str("Hand ");
+                        if ouvert {
+                            ouvert_announced.push_str("Ouvert ");
+                        } else {
+                            // there is only Grand Hand Ouvert
+                            ouvert = false;
+                        }
+                    }
+                    "Hearts"
+                },
+                'd' => {
+                    if hand {
+                        hand_announced.push_str("Hand ");
+                        if ouvert {
+                            ouvert_announced.push_str("Ouvert ");
+                        } else {
+                            // there is only Grand Hand Ouvert
+                            ouvert = false;
+                        }
+                    }
+                    "Diamonds"
+                },
                 _   => panic!("Unknown game {}", sorted_game),
             };
             println!("player {} plays {}{}{}bidding {}",
