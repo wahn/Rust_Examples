@@ -3028,7 +3028,7 @@ fn main() {
         println!("matadors = {:?}", matadors);
         if sorted_game == 'n' {
             // check Null first
-            if declarer_count == 0 || (hand && tricks_len == 2) {
+            if declarer_count == 0 || tricks_len == 2 {
                 println!("declarer wins {}{}{}with {} to {}",
                          game, hand_announced, ouvert_announced,
                          declarer_count, team_count);
