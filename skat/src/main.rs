@@ -872,6 +872,7 @@ impl PlayerBuilder {
                         matadors = 2;
                     } else {
                         matadors = 1;
+                        println!("matadors_jack_strait() -> {}", matadors);
                         return matadors;
                     }
                 },
@@ -881,6 +882,7 @@ impl PlayerBuilder {
                         matadors = 3;
                     } else {
                         matadors = 2;
+                        println!("matadors_jack_strait() -> {}", matadors);
                         return matadors;
                     }
                 },
@@ -890,12 +892,14 @@ impl PlayerBuilder {
                         matadors = 4;
                     } else {
                         matadors = 3;
+                        println!("matadors_jack_strait() -> {}", matadors);
                         return matadors;
                     }
                 },
                 _ => panic!("no Jack found"),
             }
         }
+        println!("matadors_jack_strait() -> {}", matadors);
         matadors
     }
 
@@ -2847,6 +2851,7 @@ fn main() {
                                           &mut hand, &mut ouvert,
                                           &mut matadors);
         }
+        println!("in main() we have {} matadors", matadors);
         // all players sort for game
         dealer.sort_cards_for(sorted_game);
         responder.sort_cards_for(sorted_game);
