@@ -858,18 +858,21 @@ impl PlayerBuilder {
         let mut with = false;
         let jacks_len = jacks.len();
         // _index not used
-        for _index in 0..jacks_len {
+        for index in 0..jacks_len {
             let jack = jacks[0]; // first
+            println!("{:?}: jack = {}", index, jack);
             match jack {
                 // ClubsJack
                 4 => {
                     with = true;
                     matadors = 1;
+                    jacks.remove(0);
                 },
                 // SpadesJack
                 12 => {
                     if with {
                         matadors = 2;
+                        jacks.remove(0);
                     } else {
                         matadors = 1;
                         println!("matadors_jack_strait() -> {}", matadors);
@@ -880,6 +883,7 @@ impl PlayerBuilder {
                 20 => {
                     if with && matadors == 2 {
                         matadors = 3;
+                        jacks.remove(0);
                     } else {
                         matadors = 2;
                         println!("matadors_jack_strait() -> {}", matadors);
@@ -890,6 +894,7 @@ impl PlayerBuilder {
                 28 => {
                     if with && matadors == 3 {
                         matadors = 4;
+                        jacks.remove(0);
                     } else {
                         matadors = 3;
                         println!("matadors_jack_strait() -> {}", matadors);
