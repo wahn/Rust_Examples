@@ -881,9 +881,14 @@ impl PlayerBuilder {
                 },
                 // HeartsJack
                 20 => {
-                    if with && matadors == 2 {
-                        matadors = 3;
-                        jacks.remove(0);
+                    if with {
+                        if matadors == 2 {
+                            matadors = 3;
+                            jacks.remove(0);
+                        } else {
+                            println!("matadors_jack_strait() -> {}", matadors);
+                            return matadors;
+                        }
                     } else {
                         matadors = 2;
                         println!("matadors_jack_strait() -> {}", matadors);
@@ -892,9 +897,14 @@ impl PlayerBuilder {
                 },
                 // DiamondsJack
                 28 => {
-                    if with && matadors == 3 {
-                        matadors = 4;
-                        jacks.remove(0);
+                    if with {
+                        if matadors == 3 {
+                            matadors = 4;
+                            jacks.remove(0);
+                        } else {
+                            println!("matadors_jack_strait() -> {}", matadors);
+                            return matadors;
+                        }
                     } else {
                         matadors = 3;
                         println!("matadors_jack_strait() -> {}", matadors);
