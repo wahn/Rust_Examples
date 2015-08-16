@@ -1029,7 +1029,7 @@ fn bid(dealer: &mut Player,
     // return values
     let mut winner: u8;
     let mut lowest: u8;
-    let mut game:char;
+    let mut game: char;
     // bidder sees his cards first
     bidder.print_cards();
     // ask for input
@@ -2844,8 +2844,15 @@ fn main() {
              skat) = deal(player_id);
         // bid
         let (declarer_id, game_value, mut sorted_game) = bid(&mut dealer,
-                                                              &mut responder,
-                                                              &mut bidder);
+                                                             &mut responder,
+                                                             &mut bidder);
+        if game_value == 0 {
+            println!("Nobody wants to play ... continue with next player");
+            // next round
+            player_id = (player_id + 1) % 3;
+            // continue with next player
+            continue;
+        }
         // announce game
         let mut hand = false;
         let mut ouvert = false;
