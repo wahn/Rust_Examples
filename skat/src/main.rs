@@ -193,9 +193,7 @@ impl Player {
                     let card: u8 = self.cards[input as usize];
                     if player != 0 {
                         first_card = played_cards[0];
-                        if is_valid_card(card, first_card, game, &self.cards) {
-                            println!("is valid");
-                        } else {
+                        if !is_valid_card(card, first_card, game, &self.cards) {
                             println!("is NOT valid");
                             continue;
                         }
@@ -862,14 +860,12 @@ impl PlayerBuilder {
         }
         // order Jacks
         jacks.sort();
-        println!("jacks: {:?}", jacks);
         // count matadors
         let mut with = false;
         let jacks_len = jacks.len();
         // _index not used
-        for index in 0..jacks_len {
+        for _index in 0..jacks_len {
             let jack = jacks[0]; // first
-            println!("{:?}: jack = {}", index, jack);
             match jack {
                 // ClubsJack
                 4 => {
@@ -884,7 +880,6 @@ impl PlayerBuilder {
                         jacks.remove(0);
                     } else {
                         matadors = 1;
-                        println!("matadors_jack_strait() -> {}", matadors);
                         return matadors;
                     }
                 },
@@ -895,12 +890,10 @@ impl PlayerBuilder {
                             matadors = 3;
                             jacks.remove(0);
                         } else {
-                            println!("matadors_jack_strait() -> {}", matadors);
                             return matadors;
                         }
                     } else {
                         matadors = 2;
-                        println!("matadors_jack_strait() -> {}", matadors);
                         return matadors;
                     }
                 },
@@ -911,19 +904,16 @@ impl PlayerBuilder {
                             matadors = 4;
                             jacks.remove(0);
                         } else {
-                            println!("matadors_jack_strait() -> {}", matadors);
                             return matadors;
                         }
                     } else {
                         matadors = 3;
-                        println!("matadors_jack_strait() -> {}", matadors);
                         return matadors;
                     }
                 },
                 _ => panic!("no Jack found"),
             }
         }
-        println!("matadors_jack_strait() -> {}", matadors);
         matadors
     }
 
@@ -2887,20 +2877,10 @@ fn main() {
                                           &mut hand, &mut ouvert,
                                           &mut matadors);
         }
-        println!("in main() we have {} matadors", matadors);
         // all players sort for game
         dealer.sort_cards_for(sorted_game);
         responder.sort_cards_for(sorted_game);
         bidder.sort_cards_for(sorted_game);
-        // TMP
-        println!("sorted_game = {:?}", sorted_game);
-        println!("Dealer:");
-        dealer.print_cards();
-        println!("Responder:");
-        responder.print_cards();
-        println!("Bidder:");
-        bidder.print_cards();
-        // TMP
         let mut leader_id: u8 = responder.id;
         // play 10 tricks in a row
         let player_name = match declarer_id {
