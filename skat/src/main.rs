@@ -3047,6 +3047,10 @@ fn main() {
         println!("ouvert = {:?}", ouvert);
         println!("game_value = {:?}", game_value);
         println!("matadors = {:?}", matadors);
+        if hand {
+            // print Skat
+            skat.print_cards();
+        }
         if sorted_game == 'n' {
             // check Null first
             if declarer_count == 0 || tricks_len == 0 {
