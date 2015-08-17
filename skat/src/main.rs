@@ -3045,11 +3045,103 @@ fn main() {
         println!("###########################");
         println!("hand = {:?}", hand);
         println!("ouvert = {:?}", ouvert);
-        println!("game_value = {:?}", game_value);
         println!("matadors = {:?}", matadors);
+        // declarer's game value
+        let schneider_announced: bool = false; // TODO
+        let schwarz_announced:   bool = false; // TODO
+        let mut decl_game_value: u8 = matadors;
         if hand {
             // print Skat
             skat.print_cards();
+            // game
+            decl_game_value += 1;
+            // hand
+            decl_game_value += 1;
+            if declarer_count >= 90u8 {
+                // Schneider
+                decl_game_value += 1;
+                if schneider_announced {
+                    // Schneider announced
+                    decl_game_value += 1;
+                }
+            }
+            if declarer_count == 120u8 {
+                // Schwarz
+                decl_game_value += 1;
+                if schwarz_announced {
+                    // Schwarz announced
+                    decl_game_value += 1;
+                }
+            }
+            if ouvert {
+                // Ouvert
+                decl_game_value += 1;
+            }
+            match sorted_game {
+                'g' => {
+                    decl_game_value *= 24;
+                },
+                'n' => {
+                    if ouvert {
+                        // Null Ouvert Hand
+                        decl_game_value = 59;
+                    } else {
+                        // Null Hand
+                        decl_game_value = 35;
+                    }
+                },
+                'c' => {
+                    decl_game_value *= 12;
+                },
+                's' => {
+                    decl_game_value *= 11;
+                },
+                'h' => {
+                    decl_game_value *= 10;
+                },
+                'd' => {
+                    decl_game_value *=  9;
+                },
+                _   => panic!("Unknown game {}", sorted_game),
+            }
+        } else {
+            // game
+            decl_game_value += 1;
+            if declarer_count >= 90u8 {
+                // Schneider
+                decl_game_value += 1;
+            }
+            if declarer_count == 120u8 {
+                // Schwarz
+                decl_game_value += 1;
+            }
+            match sorted_game {
+                'g' => {
+                    decl_game_value *= 24;
+                },
+                'n' => {
+                    if ouvert {
+                        // Null Ouvert
+                        decl_game_value = 46;
+                    } else {
+                        // Null
+                        decl_game_value = 23;
+                    }
+                },
+                'c' => {
+                    decl_game_value *= 12;
+                },
+                's' => {
+                    decl_game_value *= 11;
+                },
+                'h' => {
+                    decl_game_value *= 10;
+                },
+                'd' => {
+                    decl_game_value *=  9;
+                },
+                _   => panic!("Unknown game {}", sorted_game),
+            }
         }
         if sorted_game == 'n' {
             // check Null first
@@ -3073,6 +3165,8 @@ fn main() {
                          declarer_count, team_count);
             }
         }
+        println!("game_value = {:?}", game_value);
+        println!("decl_game_value = {:?}", decl_game_value);
         // continue?
         println!("New game?");
         let mut input = String::new();
