@@ -914,6 +914,9 @@ impl PlayerBuilder {
                 _ => panic!("no Jack found"),
             }
         }
+        if jacks_len == 0 {
+            matadors = 4; // without 4
+        }
         matadors
     }
 
