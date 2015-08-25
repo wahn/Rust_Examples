@@ -2975,7 +2975,7 @@ fn main() {
             },
             _   => panic!("Unknown game {}", sorted_game),
         };
-        for trick in 0..10 {
+        'trick_loop: for trick in 0..10 {
             println!("#########");
             println!("trick #{}:", trick);
             println!("#########");
@@ -3027,6 +3027,10 @@ fn main() {
             }
             // set leader_id
             leader_id = winner_id;
+            // if we play Null break loop early
+            if sorted_game == 'n' && winner_id == declarer_id {
+                break 'trick_loop;
+            }
         };
         // count cards
         let mut declarer_count: u8 = 0u8;
