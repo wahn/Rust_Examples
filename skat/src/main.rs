@@ -2840,6 +2840,8 @@ fn who_wins_trick(played_cards: &Vec<u8>,
 }
 
 fn main() {
+    // keep scores
+    let mut score: [i32; 3] = [0, 0, 0];
     // randomly select player
     let mut player_id: u8 = rand::thread_rng().gen_range(0, 3);
     loop {
@@ -3170,6 +3172,49 @@ fn main() {
         }
         println!("game_value = {:?}", game_value);
         println!("decl_game_value = {:?}", decl_game_value);
+        // summarize ...
+        // ... before
+        println!("before: {:?}", score);
+        if sorted_game == 'n' {
+            // check Null first
+            if declarer_count == 0 || tricks_len == 0 {
+                // declarer wins
+                match decl_game_value {
+                    23 => { // Null
+                        score[declarer_id as usize] += 23;
+                    },
+                    35 => { // Null Hand
+                        score[declarer_id as usize] += 35;
+                    },
+                    46 => { // Null Ouvert
+                        score[declarer_id as usize] += 46;
+                    },
+                    59 => { // Null Ouvert Hand
+                        score[declarer_id as usize] += 59;
+                    },
+                    _ => panic!("Unknown game value {}, Null expected",
+                                decl_game_value),
+                }
+            } else {
+                // declarer looses
+                score[declarer_id as usize] -= 2 * decl_game_value as i32;
+            }
+        } else {
+            if declarer_count > team_count {
+                if decl_game_value >= game_value {
+                    // declarer wins
+                    score[declarer_id as usize] += decl_game_value as i32;
+                } else {
+                    // declarer looses
+                    score[declarer_id as usize] -= 2 * decl_game_value as i32;
+                }
+            } else {
+                // declarer looses
+                score[declarer_id as usize] -= 2 * decl_game_value as i32;
+            }
+        }
+        // ... and after
+        println!("after: {:?}", score);
         // continue?
         println!("New game?");
         let mut input = String::new();
