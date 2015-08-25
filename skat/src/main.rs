@@ -2842,9 +2842,11 @@ fn who_wins_trick(played_cards: &Vec<u8>,
 fn main() {
     // keep scores
     let mut score: [i32; 3] = [0, 0, 0];
+    let mut round_counter = 0u16;
     // randomly select player
     let mut player_id: u8 = rand::thread_rng().gen_range(0, 3);
     loop {
+        round_counter += 1;
         // player with player_id is dealing
         let (mut dealer,
              mut responder,
@@ -3174,7 +3176,7 @@ fn main() {
         println!("decl_game_value = {:?}", decl_game_value);
         // summarize ...
         // ... before
-        println!("before: {:?}", score);
+        println!("before round {}: {:?}", round_counter, score);
         if sorted_game == 'n' {
             // check Null first
             if declarer_count == 0 || tricks_len == 0 {
@@ -3214,7 +3216,7 @@ fn main() {
             }
         }
         // ... and after
-        println!("after: {:?}", score);
+        println!("after round {}: {:?}", round_counter, score);
         // continue?
         println!("New game?");
         let mut input = String::new();
