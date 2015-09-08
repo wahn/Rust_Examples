@@ -3076,7 +3076,7 @@ fn main() {
                     decl_game_value += 1;
                 }
             }
-            if declarer_count == 120u8 && tricks_len == 10 {
+            if declarer_count == 120u8 && tricks_len == 30 {
                 // Schwarz
                 decl_game_value += 1;
                 if schwarz_announced {
@@ -3122,7 +3122,7 @@ fn main() {
                 // Schneider
                 decl_game_value += 1;
             }
-            if declarer_count == 120u8 && tricks_len == 10 {
+            if declarer_count == 120u8 && tricks_len == 30 {
                 // Schwarz
                 decl_game_value += 1;
             }
