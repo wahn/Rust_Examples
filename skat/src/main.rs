@@ -1092,6 +1092,15 @@ impl Record {
         }
         println!("");
     }
+
+    fn is_valid(&mut self, index: u8) -> bool {
+        if !self.played[index as usize] {
+            self.played[index as usize] = true;
+            true
+        } else {
+            false
+        }
+    }
 }
 
 struct RecordBuilder {
@@ -3147,7 +3156,7 @@ fn main() {
             io::stdin().read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
-            let mut g: char = 'd';
+            let g: char;
             if input == "g\n".to_string() {
                 println!("Grand announced ...");
                 g = 'g';
@@ -3212,7 +3221,27 @@ fn main() {
             let mut record = record_builder.finalize();
             // print cards
             record.print_cards(g);
-            // TODO: ask for played cards in a loop, until all cards are played
+            // TODO: do we know what's in the Skat?
+            for _n in 0..10 {
+                for _m in 0..3 {
+                    loop {
+                        // ask for card to play
+                        println!("card to play?");
+                        let mut input = String::new();
+                        io::stdin().read_line(&mut input)
+                            .ok()
+                            .expect("failed to read line");
+                        let input: u8 = match input.trim().parse() {
+                            Ok(num) => num,
+                            Err(_) => 0,
+                        };
+                        if record.is_valid(input) {
+                            record.print_cards(g);
+                            break;
+                        }
+                    }
+                }
+            }
             // WORK
             // continue?
             println!("New game? [press 'q' to quit]");
