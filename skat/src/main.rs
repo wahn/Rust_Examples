@@ -985,12 +985,34 @@ impl SkatBuilder {
 
 struct Record {
     cards: Vec<u8>,
+    played: Vec<bool>,
 }
 
 impl Record {
     fn print_cards(&self) {
         println!("Cards:");
         println!("");
+    }
+}
+
+struct RecordBuilder {
+    cards: Vec<u8>,
+    played: Vec<bool>,
+}
+
+impl RecordBuilder {
+    fn new() -> RecordBuilder {
+        RecordBuilder { cards: Vec::new(), played: Vec::new() }
+    }
+    
+    fn add(&mut self, new_card: u8) -> &mut RecordBuilder {
+        self.cards.push(new_card);
+        self.played.push(false);
+        self
+    }
+    fn finalize(&self) -> Record {
+        Record { cards: self.cards.to_vec(),
+                 played: self.played.to_vec(), }
     }
 }
 
@@ -3083,6 +3105,12 @@ fn main() {
                 println!("Ouvert = no");
             }
             // TODO: print cards, ask for played cards in a loop, until all cards are played
+            let mut record_builder = RecordBuilder::new();
+            let cards: Vec<u8> = (0..32).collect();
+            for n in 0..32 {
+                record_builder.add(cards[n]);
+            }
+            let mut record = record_builder.finalize();
             // WORK
             // continue?
             println!("New game? [press 'q' to quit]");
