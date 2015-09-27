@@ -3236,6 +3236,18 @@ fn main() {
                 record_builder.add(cards[n]);
             }
             let mut record = record_builder.finalize();
+            // create three player builders (to collect played cards)
+            let mut players: Vec<PlayerBuilder> = Vec::new();
+            let mut player1 = PlayerBuilder::new();
+            players.push(player1);
+            let mut player2 = PlayerBuilder::new();
+            players.push(player2);
+            let mut player3 = PlayerBuilder::new();
+            players.push(player3);
+            // provide IDs (are the same as index)
+            players[0].id(0);
+            players[1].id(1);
+            players[2].id(2);
             // print cards
             record.print_cards(g);
             // do we know what's in the Skat?
@@ -3261,8 +3273,11 @@ fn main() {
                 }
             }
             // for each trick
+            let mut leader_id: u8 = 0u8;
             for _n in 0..10 {
+                let mut played_cards: Vec<u8> = Vec::new();
                 // for each player
+                let mut player_id: u8 = leader_id;
                 for _m in 0..3 {
                     loop {
                         // ask for card to play
@@ -3276,13 +3291,27 @@ fn main() {
                             Err(_) => 0,
                         };
                         if record.is_valid(input) {
+                            // store played card with current player
+                            players[player_id as usize].add(input);
+                            played_cards.push(input);
+                            // print cards
                             record.print_cards(g);
+                            // select next player
+                            player_id = (player_id + 1) % 3;
                             break;
                         }
                     }
                 }
+                // who wins this trick?
+                leader_id = (leader_id +
+                             who_wins_trick(&played_cards, g)) % 3;
             }
             // WORK
+            for m in 0..3 {
+                let mut player = players[m].finalize();
+                player.sort_cards_for(g);
+                player.print_cards();
+            }
             // continue?
             println!("New game? [press 'q' to quit]");
             let mut input = String::new();
