@@ -2881,6 +2881,34 @@ fn main() {
                 Err(_) => continue,
             };
             println!("highest bid = {:?}", bid);
+            // ask for announced game
+            println!("announced game [gncshd]:");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            let mut g: char = 'd';
+            if input == "g\n".to_string() {
+                println!("Grand announced ...");
+                g = 'g';
+            } else if input == "n\n".to_string() {
+                println!("Null announced ...");
+                g = 'n';
+            } else if input == "c\n".to_string() {
+                println!("Clubs announced ...");
+                g = 'c';
+            } else if input == "s\n".to_string() {
+                println!("Spades announced ...");
+                g = 's';
+            } else if input == "h\n".to_string() {
+                println!("Hearts announced ...");
+                g = 'h';
+            } else if input == "d\n".to_string() {
+                println!("Diamonds announced ...");
+                g = 'd';
+            } else {
+                break;
+            }
             // TODO: print cards, ask for played cards in a loop, until all cards are played
             // WORK
             // continue?
