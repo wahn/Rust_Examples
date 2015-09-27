@@ -1004,7 +1004,7 @@ impl RecordBuilder {
     fn new() -> RecordBuilder {
         RecordBuilder { cards: Vec::new(), played: Vec::new() }
     }
-    
+
     fn add(&mut self, new_card: u8) -> &mut RecordBuilder {
         self.cards.push(new_card);
         self.played.push(false);
