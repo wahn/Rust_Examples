@@ -2909,6 +2909,40 @@ fn main() {
             } else {
                 break;
             }
+            // Hand?
+            let mut hand = false;
+            println!("Hand? Press '1' for yes:");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            let input: u8 = match input.trim().parse() {
+                Ok(num) => num,
+                Err(_) => 0,
+            };
+            if input == 1 {
+                hand = true;
+                println!("Hand = yes");
+            } else {
+                println!("Hand = no");
+            }
+            // Ouvert?
+            let mut ouvert = false;
+            println!("Ouvert? Press '1' for yes:");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            let input: u8 = match input.trim().parse() {
+                Ok(num) => num,
+                Err(_) => 0,
+            };
+            if input == 1 {
+                ouvert = true;
+                println!("Ouvert = yes");
+            } else {
+                println!("Ouvert = no");
+            }
             // TODO: print cards, ask for played cards in a loop, until all cards are played
             // WORK
             // continue?
