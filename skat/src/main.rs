@@ -1,9 +1,14 @@
 extern crate ansi_term;
+extern crate getopts;
 extern crate rand;
 
 use ansi_term::Colour::*;
+use getopts::Options;
 use rand::Rng;
+use std::env;
 use std::io;
+
+pub const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
 struct Player {
     id: u8,
@@ -1865,6 +1870,15 @@ fn print_card(card: u8) {
     }
 }
 
+fn print_usage(program: &str, opts: Options) {
+    let brief = format!("Usage: {} FILE [options]", program);
+    print!("{}", opts.usage(&brief));
+}
+
+fn print_version(program: &str) {
+    println!("{} {}", program, VERSION);
+}
+
 fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
     let mut sorted: Vec<u8> = Vec::new();
     let mut clubs: Vec<u8> = Vec::new();
@@ -2840,6 +2854,23 @@ fn who_wins_trick(played_cards: &Vec<u8>,
 }
 
 fn main() {
+    // handle command line options
+    let args: Vec<String> = env::args().collect();
+    let program = args[0].clone();
+    let mut opts = Options::new();
+    opts.optflag("h", "help", "print this help menu");
+    opts.optflag("v", "version", "print version number");
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m) => { m }
+        Err(f) => { panic!(f.to_string()) }
+    };
+    if matches.opt_present("h") {
+        print_usage(&program, opts);
+        return;
+    } else if matches.opt_present("v") {
+        print_version(&program);
+        return;
+    }
     // keep scores
     let mut score: [i32; 3] = [0, 0, 0];
     let mut round_counter = 0u16;
