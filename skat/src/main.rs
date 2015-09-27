@@ -3212,6 +3212,23 @@ fn main() {
             } else {
                 println!("Ouvert = no");
             }
+            // Declarer?
+            let mut declarer = false;
+            println!("Are you the declarer? Press '1' for yes:");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            let input: u8 = match input.trim().parse() {
+                Ok(num) => num,
+                Err(_) => 0,
+            };
+            if input == 1 {
+                declarer = true;
+                println!("Declarer = yes");
+            } else {
+                println!("Declarer = no");
+            }
             // build a record with all cards (and none being played)
             let mut record_builder = RecordBuilder::new();
             let cards: Vec<u8> = (0..32).collect();
@@ -3221,8 +3238,31 @@ fn main() {
             let mut record = record_builder.finalize();
             // print cards
             record.print_cards(g);
-            // TODO: do we know what's in the Skat?
+            // do we know what's in the Skat?
+            if declarer && !hand {
+                // mark Skat as played
+                for _m in 0..2 {
+                    loop {
+                        // ask for card to play
+                        println!("card to play?");
+                        let mut input = String::new();
+                        io::stdin().read_line(&mut input)
+                            .ok()
+                            .expect("failed to read line");
+                        let input: u8 = match input.trim().parse() {
+                            Ok(num) => num,
+                            Err(_) => 0,
+                        };
+                        if record.is_valid(input) {
+                            record.print_cards(g);
+                            break;
+                        }
+                    }
+                }
+            }
+            // for each trick
             for _n in 0..10 {
+                // for each player
                 for _m in 0..3 {
                     loop {
                         // ask for card to play
