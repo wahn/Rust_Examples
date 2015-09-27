@@ -3306,7 +3306,7 @@ fn main() {
                 leader_id = (leader_id +
                              who_wins_trick(&played_cards, g)) % 3;
             }
-            // WORK
+            // reconstructed distribution of cards
             for m in 0..3 {
                 let mut player = players[m].finalize();
                 player.sort_cards_for(g);
