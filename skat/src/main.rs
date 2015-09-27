@@ -2859,6 +2859,7 @@ fn main() {
     let program = args[0].clone();
     let mut opts = Options::new();
     opts.optflag("h", "help", "print this help menu");
+    opts.optflag("r", "record", "record a Skat game");
     opts.optflag("v", "version", "print version number");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => { m }
@@ -2866,6 +2867,9 @@ fn main() {
     };
     if matches.opt_present("h") {
         print_usage(&program, opts);
+        return;
+    } else if matches.opt_present("r") {
+        // TODO: record a Skat game
         return;
     } else if matches.opt_present("v") {
         print_version(&program);
