@@ -1032,7 +1032,7 @@ fn bid(dealer: &mut Player,
     // return values
     let mut winner: u8;
     let mut lowest: u8;
-    let mut game: char;
+    let game: char;
     // bidder sees his cards first
     bidder.print_leader(leader_id);
     bidder.print_cards();
@@ -3222,17 +3222,12 @@ fn main() {
         // ... and after
         println!("after round {}: {:?}", round_counter, score);
         // continue?
-        println!("New game?");
+        println!("New game? [press 'q' to quit]");
         let mut input = String::new();
         io::stdin().read_line(&mut input)
             .ok()
             .expect("failed to read line");
-        let input: u8 = match input.trim().parse() {
-            Ok(num) => num,
-            Err(_) => break,
-        };
-        println!("your input: {}", input);
-        if input != 1 {
+        if input == "q\n".to_string() {
             break;
         }
         // next round
