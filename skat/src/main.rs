@@ -1871,7 +1871,7 @@ fn print_card(card: u8) {
 }
 
 fn print_usage(program: &str, opts: Options) {
-    let brief = format!("Usage: {} FILE [options]", program);
+    let brief = format!("Usage: {} [options]", program);
     print!("{}", opts.usage(&brief));
 }
 
