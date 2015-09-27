@@ -2869,7 +2869,30 @@ fn main() {
         print_usage(&program, opts);
         return;
     } else if matches.opt_present("r") {
-        // TODO: record a Skat game
+        loop {
+            // highest bid
+            println!("highest bid:");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            let bid: u8 = match input.trim().parse() {
+                Ok(num) => num,
+                Err(_) => continue,
+            };
+            println!("highest bid = {:?}", bid);
+            // TODO: print cards, ask for played cards in a loop, until all cards are played
+            // WORK
+            // continue?
+            println!("New game? [press 'q' to quit]");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input)
+                .ok()
+                .expect("failed to read line");
+            if input == "q\n".to_string() {
+                break;
+            }
+        }
         return;
     } else if matches.opt_present("v") {
         print_version(&program);
