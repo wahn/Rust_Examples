@@ -989,8 +989,107 @@ struct Record {
 }
 
 impl Record {
-    fn print_cards(&self) {
+    fn print_cards(&self, game: char) {
         println!("Cards:");
+        if game == 'n' {
+            // Null
+            for suit in 0..4 {
+                // Aces first ...
+                for c in 0..8 {
+                    let index = suit * 8 + c;
+                    match index % 8 == 0 {
+                        true => {
+                            if index < 10 {
+                                print!(" {}:", index);
+                            } else {
+                                print!("{}:", index);
+                            }
+                            print_card(self.cards[index], !self.played[index]);
+                        },
+                        _ => { // do nothing
+                        },
+                    }
+                }
+                // Kings, Queens, Jacks ...
+                for c in 0..8 {
+                    let index = suit * 8 + c;
+                    match index % 8 >= 2 && index % 8 <= 4 {
+                        true => {
+                            if index < 10 {
+                                print!(" {}:", index);
+                            } else {
+                                print!("{}:", index);
+                            }
+                            print_card(self.cards[index], !self.played[index]);
+                        },
+                        _ => { // do nothing
+                        },
+                    }
+                }
+                // Tens ...
+                for c in 0..8 {
+                    let index = suit * 8 + c;
+                    match index % 8 == 1 {
+                        true => {
+                            if index < 10 {
+                                print!(" {}:", index);
+                            } else {
+                                print!("{}:", index);
+                            }
+                            print_card(self.cards[index], !self.played[index]);
+                        },
+                        _ => { // do nothing
+                        },
+                    }
+                }
+                // Nines, Eights, Sevens ...
+                for c in 0..8 {
+                    let index = suit * 8 + c;
+                    match index % 8 >= 5 && index % 8 <= 7 {
+                        true => {
+                            if index < 10 {
+                                print!(" {}:", index);
+                            } else {
+                                print!("{}:", index);
+                            }
+                            print_card(self.cards[index], !self.played[index]);
+                        },
+                        _ => { // do nothing
+                        },
+                    }
+                }
+                println!("");
+            }
+        } else {
+            // Grand or Suit
+            for suit in 0..4 {
+                // Jacks first ...
+                for c in 0..8 {
+                    let index = suit * 8 + c;
+                    if index % 8 == 4 {
+                        if index < 10 {
+                            print!(" {}:", index);
+                        } else {
+                            print!("{}:", index);
+                        }
+                        print_card(self.cards[index], !self.played[index]);
+                    }
+                }
+                // then the others ...
+                for c in 0..8 {
+                    let index = suit * 8 + c;
+                    if index % 8 != 4 {
+                        if index < 10 {
+                            print!(" {}:", index);
+                        } else {
+                            print!("{}:", index);
+                        }
+                        print_card(self.cards[index], !self.played[index]);
+                    }
+                }
+                println!("");
+            }
+        }
         println!("");
     }
 }
@@ -3104,13 +3203,16 @@ fn main() {
             } else {
                 println!("Ouvert = no");
             }
-            // TODO: print cards, ask for played cards in a loop, until all cards are played
+            // build a record with all cards (and none being played)
             let mut record_builder = RecordBuilder::new();
             let cards: Vec<u8> = (0..32).collect();
             for n in 0..32 {
                 record_builder.add(cards[n]);
             }
             let mut record = record_builder.finalize();
+            // print cards
+            record.print_cards(g);
+            // TODO: ask for played cards in a loop, until all cards are played
             // WORK
             // continue?
             println!("New game? [press 'q' to quit]");
