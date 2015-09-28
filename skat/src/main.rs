@@ -355,7 +355,7 @@ impl Player {
                 // println!("Grand");
 
                 // first find Jacks
-                for n in 0..10 {
+                for n in 0..self.cards.len() {
                     match self.cards[n] {
                         // ClubsJack
                         4 => sorted.push(self.cards[n]),
@@ -403,7 +403,7 @@ impl Player {
             'n' => {
                 // println!("Null");
 
-                for n in 0..10 {
+                for n in 0..self.cards.len() {
                     match self.cards[n] {
                         // Clubs
                         0 ... 7 => clubs.push(self.cards[n]),
@@ -524,7 +524,7 @@ impl Player {
                 // println!("Clubs");
 
                 // first find Jacks
-                for n in 0..10 {
+                for n in 0..self.cards.len() {
                     match self.cards[n] {
                         // ClubsJack
                         4 => sorted.push(self.cards[n]),
@@ -573,7 +573,7 @@ impl Player {
                 // println!("Spades");
 
                 // first find Jacks
-                for n in 0..10 {
+                for n in 0..self.cards.len() {
                     match self.cards[n] {
                         // ClubsJack
                         4 => sorted.push(self.cards[n]),
@@ -622,7 +622,7 @@ impl Player {
                 // println!("Hearts");
 
                 // first find Jacks
-                for n in 0..10 {
+                for n in 0..self.cards.len() {
                     match self.cards[n] {
                         // ClubsJack
                         4 => sorted.push(self.cards[n]),
@@ -671,7 +671,7 @@ impl Player {
                 // println!("Diamonds");
 
                 // first find Jacks
-                for n in 0..10 {
+                for n in 0..self.cards.len() {
                     match self.cards[n] {
                         // ClubsJack
                         4 => sorted.push(self.cards[n]),
@@ -3238,11 +3238,11 @@ fn main() {
             let mut record = record_builder.finalize();
             // create three player builders (to collect played cards)
             let mut players: Vec<PlayerBuilder> = Vec::new();
-            let mut player1 = PlayerBuilder::new();
+            let player1 = PlayerBuilder::new();
             players.push(player1);
-            let mut player2 = PlayerBuilder::new();
+            let player2 = PlayerBuilder::new();
             players.push(player2);
-            let mut player3 = PlayerBuilder::new();
+            let player3 = PlayerBuilder::new();
             players.push(player3);
             // provide IDs (are the same as index)
             players[0].id(0);
@@ -3273,6 +3273,7 @@ fn main() {
                 }
             }
             // for each trick
+            let mut abort: bool = false;
             let mut leader_id: u8 = 0u8;
             for _n in 0..10 {
                 let mut played_cards: Vec<u8> = Vec::new();
@@ -3290,6 +3291,10 @@ fn main() {
                             Ok(num) => num,
                             Err(_) => 0,
                         };
+                        if input == 32u8 {
+                            abort = true;
+                            break;
+                        }
                         if record.is_valid(input) {
                             // store played card with current player
                             players[player_id as usize].add(input);
@@ -3301,10 +3306,17 @@ fn main() {
                             break;
                         }
                     }
+                    if abort {
+                        break;
+                    }
                 }
-                // who wins this trick?
-                leader_id = (leader_id +
-                             who_wins_trick(&played_cards, g)) % 3;
+                if abort {
+                    break;
+                } else {
+                    // who wins this trick?
+                    leader_id = (leader_id +
+                                 who_wins_trick(&played_cards, g)) % 3;
+                }
             }
             // reconstructed distribution of cards
             for m in 0..3 {
