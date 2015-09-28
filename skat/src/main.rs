@@ -3275,10 +3275,13 @@ fn main() {
             // for each trick
             let mut abort: bool = false;
             let mut leader_id: u8 = 0u8;
+            let mut tricks: Vec<Vec<u8>> = Vec::new();
             for _n in 0..10 {
                 let mut played_cards: Vec<u8> = Vec::new();
                 // for each player
                 let mut player_id: u8 = leader_id;
+                let mut trick: Vec<u8> = Vec::new();
+                trick.push(leader_id);
                 for _m in 0..3 {
                     loop {
                         // ask for card to play
@@ -3296,6 +3299,7 @@ fn main() {
                             break;
                         }
                         if record.is_valid(input) {
+                            trick.push(input);
                             // store played card with current player
                             players[player_id as usize].add(input);
                             played_cards.push(input);
@@ -3313,6 +3317,8 @@ fn main() {
                 if abort {
                     break;
                 } else {
+                    // store trick
+                    tricks.push(trick);
                     // who wins this trick?
                     leader_id = (leader_id +
                                  who_wins_trick(&played_cards, g)) % 3;
@@ -3323,6 +3329,19 @@ fn main() {
                 let mut player = players[m].finalize();
                 player.sort_cards_for(g);
                 player.print_cards();
+            }
+            for m in 0..tricks.len() {
+                let ref trick = &tricks[m];
+                match trick[0] {
+                    0 => print!("A:"),
+                    1 => print!("B:"),
+                    2 => print!("C:"),
+                    _ => panic!("Unknown player {}", trick[0]),
+                }
+                print_card(trick[1], true);
+                print_card(trick[2], true);
+                print_card(trick[3], true);
+                println!("");
             }
             // continue?
             println!("New game? [press 'q' to quit]");
