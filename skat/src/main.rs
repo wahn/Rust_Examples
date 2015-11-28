@@ -194,7 +194,10 @@ impl Player {
                 Err(_) => 0,
             };
             match input {
-                0 ... 10 => {
+                0 ... 9 => {
+                    if input >= self.cards.len() as u8 {
+                        continue;
+                    }
                     let card: u8 = self.cards[input as usize];
                     if player != 0 {
                         first_card = played_cards[0];
