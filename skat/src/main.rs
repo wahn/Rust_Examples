@@ -3198,23 +3198,6 @@ fn main() {
             } else {
                 println!("Hand = no");
             }
-            // Ouvert?
-            let mut ouvert = false;
-            println!("Ouvert? Press '1' for yes:");
-            let mut input = String::new();
-            io::stdin().read_line(&mut input)
-                .ok()
-                .expect("failed to read line");
-            let input: u8 = match input.trim().parse() {
-                Ok(num) => num,
-                Err(_) => 0,
-            };
-            if input == 1 {
-                ouvert = true;
-                println!("Ouvert = yes");
-            } else {
-                println!("Ouvert = no");
-            }
             // Declarer?
             let mut declarer = false;
             println!("Are you the declarer? Press '1' for yes:");
