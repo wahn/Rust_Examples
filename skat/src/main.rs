@@ -6,7 +6,10 @@ use ansi_term::Colour::*;
 use getopts::Options;
 use rand::Rng;
 use std::env;
+use std::fs::File;
 use std::io;
+use std::io::BufRead;
+use std::io::BufReader;
 
 pub const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
@@ -3146,6 +3149,166 @@ fn main() {
         match infile {
             Some(x) => {
                 println!("FILE = {}", x);
+                let f = File::open(x).unwrap();
+                let reader = BufReader::new(f);
+                let mut expect_first_skat = false;
+                let mut expect_second_skat = false;
+                let mut expect_first = false;
+                let mut expect_second = false;
+                let mut expect_third = false;
+                // build a record with all cards (and none being played)
+                let mut record_builder = RecordBuilder::new();
+                let cards: Vec<u8> = (0..32).collect();
+                for n in 0..32 {
+                    record_builder.add(cards[n]);
+                }
+                let mut record = record_builder.finalize();
+                // create three player builders (to collect played cards)
+                let mut players: Vec<PlayerBuilder> = Vec::new();
+                let player1 = PlayerBuilder::new();
+                players.push(player1);
+                let player2 = PlayerBuilder::new();
+                players.push(player2);
+                let player3 = PlayerBuilder::new();
+                players.push(player3);
+                // provide IDs (are the same as index)
+                players[0].id(0);
+                players[1].id(1);
+                players[2].id(2);
+                let mut g: char = 'x';
+                let mut leader_id: u8 = 0u8;
+                let mut player_id: u8 = leader_id;
+                let mut tricks: Vec<Vec<u8>> = Vec::new();
+                let mut skat_first:  u8 = 0;
+                let mut skat_second: u8 = 0;
+                let mut first:  u8 = 0;
+                let mut second: u8 = 0;
+                let mut third:  u8 = 0;
+                let mut card_counter: u8 = 0;
+                for line in reader.lines() {
+                    let input = line.unwrap();
+                    // announced game
+                    if input == "g".to_string() {
+                        println!("Grand announced ...");
+                        g = 'g';
+                    } else if input == "n".to_string() {
+                        println!("Null announced ...");
+                        g = 'n';
+                    } else if input == "c".to_string() {
+                        println!("Clubs announced ...");
+                        g = 'c';
+                    } else if input == "s".to_string() {
+                        println!("Spades announced ...");
+                        g = 's';
+                    } else if input == "h".to_string() {
+                        println!("Hearts announced ...");
+                        g = 'h';
+                    } else if input == "d".to_string() {
+                        println!("Diamonds announced ...");
+                        g = 'd';
+                    } else {
+                        if input == "sf" {
+                            // sf = Skat first
+                            expect_first_skat = true;
+                            println!("Skat first");
+                        } else if input == "sl" {
+                            // sl = Skat last
+                            expect_first = true;
+                            println!("Skat last");
+                        } else {
+                            let card: u8 = match input.trim().parse() {
+                                Ok(num) => num,
+                                _ => panic!("ERROR: number [0-31] expected {}", input),
+                            };
+                            if record.is_valid(card) {
+                                if expect_first_skat {
+                                    skat_first = card;
+                                    card_counter += 1;
+                                    expect_first_skat = false;
+                                    expect_second_skat = true;
+                                } else if expect_second_skat {
+                                    skat_second = card;
+                                    card_counter += 1;
+                                    expect_second_skat = false;
+                                    expect_first = true;
+                                } else if card_counter == 30 {
+                                    // expect_first_skat = true;
+                                    skat_first = card;
+                                    card_counter += 1;
+                                    expect_first_skat = false;
+                                    expect_second_skat = true;
+                                } else if expect_first {
+                                    first = card;
+                                    card_counter += 1;
+                                    // store played card with current player
+                                    players[player_id as usize].add(card);
+                                    // select next player
+                                    player_id = (player_id + 1) % 3;
+                                    // next card
+                                    expect_first  = false;
+                                    expect_second = true;
+                                    expect_third  = false;
+                                } else if expect_second {
+                                    second = card;
+                                    card_counter += 1;
+                                    // store played card with current player
+                                    players[player_id as usize].add(card);
+                                    // select next player
+                                    player_id = (player_id + 1) % 3;
+                                    // next card
+                                    expect_first  = false;
+                                    expect_second = false;
+                                    expect_third  = true;
+                                } else if expect_third {
+                                    third = card;
+                                    card_counter += 1;
+                                    // store played card with current player
+                                    players[player_id as usize].add(card);
+                                    // select next player
+                                    player_id = (player_id + 1) % 3;
+                                    // store trick
+                                    let trick = vec!(leader_id, first, second, third);
+                                    let played_cards = vec!(first, second, third);
+                                    tricks.push(trick);
+                                    // who wins this trick?
+                                    leader_id = (leader_id +
+                                                 who_wins_trick(&played_cards, g)) % 3;
+                                    player_id = leader_id;
+                                    // next card
+                                    expect_first = true;
+                                    expect_second = false;
+                                    expect_third  = false;
+                                } else {
+                                    println!("This is not supposed to happen !!!");
+                                }
+                            }
+                        }
+                    }
+                }
+                // reconstructed distribution of cards
+                for m in 0..3 {
+                    let mut player = players[m].finalize();
+                    player.sort_cards_for(g);
+                    player.print_cards();
+                }
+                for m in 0..tricks.len() {
+                    let ref trick = &tricks[m];
+                    match trick[0] {
+                        0 => print!("A:"),
+                        1 => print!("B:"),
+                        2 => print!("C:"),
+                        _ => panic!("Unknown player {}", trick[0]),
+                    }
+                    print_card(trick[1], true);
+                    print_card(trick[2], true);
+                    print_card(trick[3], true);
+                    println!("");
+                }
+                // print Skat
+                let skat = SkatBuilder::new()
+                    .add(skat_first, skat_second)
+                    .finalize();
+                skat.print_cards();
             },
             None => panic!("no input file name"),
         }
