@@ -3231,7 +3231,7 @@ fn main() {
                                     card_counter += 1;
                                     expect_second_skat = false;
                                     expect_first = true;
-                                } else if card_counter == 30 {
+                                } else if card_counter == 30 && expect_first {
                                     // expect_first_skat = true;
                                     skat_first = card;
                                     card_counter += 1;
