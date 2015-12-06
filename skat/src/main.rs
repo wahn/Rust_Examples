@@ -3156,6 +3156,7 @@ fn main() {
                 let mut expect_first = false;
                 let mut expect_second = false;
                 let mut expect_third = false;
+                let mut got_skat = false;
                 // build a record with all cards (and none being played)
                 let mut record_builder = RecordBuilder::new();
                 let cards: Vec<u8> = (0..32).collect();
@@ -3228,6 +3229,7 @@ fn main() {
                                     expect_second_skat = true;
                                 } else if expect_second_skat {
                                     skat_second = card;
+                                    got_skat = true;
                                     card_counter += 1;
                                     expect_second_skat = false;
                                     expect_first = true;
@@ -3304,11 +3306,13 @@ fn main() {
                     print_card(trick[3], true);
                     println!("");
                 }
-                // print Skat
-                let skat = SkatBuilder::new()
-                    .add(skat_first, skat_second)
-                    .finalize();
-                skat.print_cards();
+                if got_skat {
+                    // print Skat
+                    let skat = SkatBuilder::new()
+                        .add(skat_first, skat_second)
+                        .finalize();
+                    skat.print_cards();
+                }
             },
             None => panic!("no input file name"),
         }
