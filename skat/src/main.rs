@@ -242,6 +242,10 @@ impl Player {
         println!("");
     }
 
+    fn print_counter(&self) {
+        println!("id{} has {:?}", self.id, self.counter);
+    }
+
     fn sort_cards(&mut self) {
         let mut sorted: Vec<u8> = Vec::new();
         let mut clubs: Vec<u8> = Vec::new();
@@ -3663,6 +3667,9 @@ fn main() {
             println!("Player {} plays {}{}{}bidding {}",
                      player_name, game, hand_announced, ouvert_announced,
                      game_value);
+            responder.print_counter();
+            bidder.print_counter();
+            dealer.print_counter();
             let mut played_cards: Vec<u8> = Vec::new();
             // use player to detect first card played
             for player in 0..3 {
