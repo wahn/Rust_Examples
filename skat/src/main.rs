@@ -7,9 +7,11 @@ use getopts::Options;
 use rand::Rng;
 use std::env;
 use std::fs::File;
+use std::io::prelude::*;
 use std::io;
-use std::io::BufRead;
 use std::io::BufReader;
+use std::path::Path;
+use std::error::Error;
 
 pub const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
@@ -3292,10 +3294,30 @@ fn main() {
                     }
                 }
                 // reconstructed distribution of cards
+                static TMP_TEXT: &'static str =
+"12 28 1 2 7 8 16 24 26 27
+0 3 5 6 10 13 21 23 25 31
+4 20 9 11 14 17 18 22 29 30
+";
+                let path = Path::new("skat_card_distribution.txt");
+                let display = path.display();
+                let mut file = match File::create(&path) {
+                    Err(why) => panic!("couldn't create {}: {}",
+                                       display,
+                                       Error::description(&why)),
+                    Ok(file) => file,
+                };
                 for m in 0..3 {
                     let mut player = players[m].finalize();
                     player.sort_cards_for(g);
                     player.print_cards();
+                }
+                match file.write_all(TMP_TEXT.as_bytes()) {
+                    Err(why) => {
+                        panic!("couldn't write to {}: {}", display,
+                               Error::description(&why))
+                    },
+                    Ok(_) => println!("successfully wrote to {}", display),
                 }
                 for m in 0..tricks.len() {
                     let ref trick = &tricks[m];
