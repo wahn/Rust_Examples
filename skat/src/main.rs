@@ -3155,6 +3155,7 @@ fn main() {
         match infile {
             Some(x) => {
                 println!("FILE = {}", x);
+                let y = x.clone();
                 let f = File::open(x).unwrap();
                 let reader = BufReader::new(f);
                 let mut expect_first_skat = false;
@@ -3300,7 +3301,17 @@ fn main() {
 0 3 5 6 10 13 21 23 25 31
 4 20 9 11 14 17 18 22 29 30
 ";
-                let path = Path::new("skat_card_distribution.txt");
+                // create a name for the .dst file
+                let mut dst_file = String::new();
+                // assume filename ends with ".txt"
+                if y.ends_with(".txt") {
+                    // replace file extension
+                    dst_file = y.replace(".txt", ".dst");
+                } else {
+                    // use a default name
+                    dst_file = String::from("skat_card_distribution.dst");
+                }
+                let path = Path::new(&dst_file);
                 let display = path.display();
                 let mut file = match File::create(&path) {
                     Err(why) => panic!("couldn't create {}: {}",
