@@ -3295,7 +3295,8 @@ fn main() {
                 }
                 // reconstructed distribution of cards
                 static TMP_TEXT: &'static str =
-"12 28 1 2 7 8 16 24 26 27
+"g
+12 28 1 2 7 8 16 24 26 27
 0 3 5 6 10 13 21 23 25 31
 4 20 9 11 14 17 18 22 29 30
 ";
