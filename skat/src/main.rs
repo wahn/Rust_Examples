@@ -230,18 +230,24 @@ impl Player {
         }
     }
 
-    fn print_cards(&self) {
+    fn print_cards(&self) -> String {
         match self.id {
             0 => println!("Player A:"),
             1 => println!("Player B:"),
             2 => println!("Player C:"),
             _ => panic!("Unknown player {}", self.id),
         }
+        let mut ret_str = String::new();
         for index in 0..self.cards.len() {
             print!("{}:", index);
             print_card(self.cards[index], true);
+            let s: String = self.cards[index].to_string();
+            ret_str.push_str(&s);
+            ret_str.push(' ');
         }
         println!("");
+        ret_str.push('\n');
+        ret_str
     }
 
     fn print_counter(&self) {
@@ -3295,14 +3301,17 @@ fn main() {
                     }
                 }
                 // reconstructed distribution of cards
-                static TMP_TEXT: &'static str =
-"g
-12 28 1 2 7 8 16 24 26 27
-0 3 5 6 10 13 21 23 25 31
-4 20 9 11 14 17 18 22 29 30
-";
+
+                // example how an input file would look like:
+                // static TMP_TEXT: &'static str =
+                // "g
+                // 12 28 1 2 7 8 16 24 26 27
+                // 0 3 5 6 10 13 21 23 25 31
+                // 4 20 9 11 14 17 18 22 29 30
+                // ";
+
                 // create a name for the .dst file
-                let mut dst_file = String::new();
+                let dst_file: String;
                 // assume filename ends with ".txt"
                 if y.ends_with(".txt") {
                     // replace file extension
@@ -3319,12 +3328,18 @@ fn main() {
                                        Error::description(&why)),
                     Ok(file) => file,
                 };
+                // collect info here
+                let mut text = String::new();
+                // start with current game (in one line)
+                text.push(g);
+                text.push('\n');
                 for m in 0..3 {
                     let mut player = players[m].finalize();
                     player.sort_cards_for(g);
-                    player.print_cards();
+                    let cards_str = player.print_cards();
+                    text.push_str(&cards_str);
                 }
-                match file.write_all(TMP_TEXT.as_bytes()) {
+                match file.write_all(text.as_bytes()) {
                     Err(why) => {
                         panic!("couldn't write to {}: {}", display,
                                Error::description(&why))
