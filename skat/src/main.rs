@@ -45,32 +45,32 @@ impl Player {
                 println!("Sort for Grand ...");
                 g = 'g';
                 self.sort_cards_for(g);
-                self.print_cards();
+                self.print_cards(false);
             } else if input == "n\n".to_string() {
                 println!("Sort for Null ...");
                 g = 'n';
                 self.sort_cards_for(g);
-                self.print_cards();
+                self.print_cards(false);
             } else if input == "c\n".to_string() {
                 println!("Sort for Clubs ...");
                 g = 'c';
                 self.sort_cards_for(g);
-                self.print_cards();
+                self.print_cards(false);
             } else if input == "s\n".to_string() {
                 println!("Sort for Spades ...");
                 g = 's';
                 self.sort_cards_for(g);
-                self.print_cards();
+                self.print_cards(false);
             } else if input == "h\n".to_string() {
                 println!("Sort for Hearts ...");
                 g = 'h';
                 self.sort_cards_for(g);
-                self.print_cards();
+                self.print_cards(false);
             } else if input == "d\n".to_string() {
                 println!("Sort for Diamonds ...");
                 g = 'd';
                 self.sort_cards_for(g);
-                self.print_cards();
+                self.print_cards(false);
             } else {
                 break;
             }
@@ -83,7 +83,7 @@ impl Player {
                      matadors: &mut u8)
                      -> Player {
         // print cards before announcing the game
-        self.print_cards();
+        self.print_cards(false);
         println!("Do you want to see the Skat? Press '1' for yes:");
         let mut input = String::new();
         io::stdin().read_line(&mut input)
@@ -230,7 +230,8 @@ impl Player {
         }
     }
 
-    fn print_cards(&self) -> String {
+    fn print_cards(&self, print_value: bool) -> String {
+        let mut counter: u8 = 0u8;
         match self.id {
             0 => println!("Player A:"),
             1 => println!("Player B:"),
@@ -240,10 +241,16 @@ impl Player {
         let mut ret_str = String::new();
         for index in 0..self.cards.len() {
             print!("{}:", index);
+            if print_value {
+                counter += Player::value_of(self.cards[index]);
+            }
             print_card(self.cards[index], true);
             let s: String = self.cards[index].to_string();
             ret_str.push_str(&s);
             ret_str.push(' ');
+        }
+        if print_value {
+            print!("({})", counter);
         }
         println!("");
         ret_str.push('\n');
@@ -1199,7 +1206,7 @@ fn bid(dealer: &mut Player,
     let game: char;
     // bidder sees his cards first
     bidder.print_leader(leader_id);
-    bidder.print_cards();
+    bidder.print_cards(true);
     // ask for input
     let mut bidder_bid: u8;
     let mut g: char = 'd';
@@ -1213,32 +1220,32 @@ fn bid(dealer: &mut Player,
             println!("Sort for Grand ...");
             g = 'g';
             bidder.sort_cards_for(g);
-            bidder.print_cards();
+            bidder.print_cards(false);
         } else if input == "n\n".to_string() {
             println!("Sort for Null ...");
             g = 'n';
             bidder.sort_cards_for(g);
-            bidder.print_cards();
+            bidder.print_cards(false);
         } else if input == "c\n".to_string() {
             println!("Sort for Clubs ...");
             g = 'c';
             bidder.sort_cards_for(g);
-            bidder.print_cards();
+            bidder.print_cards(false);
         } else if input == "s\n".to_string() {
             println!("Sort for Spades ...");
             g = 's';
             bidder.sort_cards_for(g);
-            bidder.print_cards();
+            bidder.print_cards(false);
         } else if input == "h\n".to_string() {
             println!("Sort for Hearts ...");
             g = 'h';
             bidder.sort_cards_for(g);
-            bidder.print_cards();
+            bidder.print_cards(false);
         } else if input == "d\n".to_string() {
             println!("Sort for Diamonds ...");
             g = 'd';
             bidder.sort_cards_for(g);
-            bidder.print_cards();
+            bidder.print_cards(false);
         }
         bidder_bid = match input.trim().parse() {
             Ok(num) => num,
@@ -1255,7 +1262,7 @@ fn bid(dealer: &mut Player,
     println!("Bidder: {}", bidder_bid);
     // responder is next
     responder.print_leader(leader_id);
-    responder.print_cards();
+    responder.print_cards(true);
     // ask for input
     let mut responder_bid: u8;
     loop {
@@ -1268,32 +1275,32 @@ fn bid(dealer: &mut Player,
             println!("Sort for Grand ...");
             g = 'g';
             responder.sort_cards_for(g);
-            responder.print_cards();
+            responder.print_cards(false);
         } else if input == "n\n".to_string() {
             println!("Sort for Null ...");
             g = 'n';
             responder.sort_cards_for(g);
-            responder.print_cards();
+            responder.print_cards(false);
         } else if input == "c\n".to_string() {
             println!("Sort for Clubs ...");
             g = 'c';
             responder.sort_cards_for(g);
-            responder.print_cards();
+            responder.print_cards(false);
         } else if input == "s\n".to_string() {
             println!("Sort for Spades ...");
             g = 's';
             responder.sort_cards_for(g);
-            responder.print_cards();
+            responder.print_cards(false);
         } else if input == "h\n".to_string() {
             println!("Sort for Hearts ...");
             g = 'h';
             responder.sort_cards_for(g);
-            responder.print_cards();
+            responder.print_cards(false);
         } else if input == "d\n".to_string() {
             println!("Sort for Diamonds ...");
             g = 'd';
             responder.sort_cards_for(g);
-            responder.print_cards();
+            responder.print_cards(false);
         }
         responder_bid = match input.trim().parse() {
             Ok(num) => num,
@@ -1309,7 +1316,7 @@ fn bid(dealer: &mut Player,
     println!("Responder: {}", responder_bid);
     // ask dealer last
     dealer.print_leader(leader_id);
-    dealer.print_cards();
+    dealer.print_cards(true);
     // ask for input
     let mut dealer_bid: u8;
     loop {
@@ -1322,32 +1329,32 @@ fn bid(dealer: &mut Player,
             println!("Sort for Grand ...");
             g = 'g';
             dealer.sort_cards_for(g);
-            dealer.print_cards();
+            dealer.print_cards(false);
         } else if input == "n\n".to_string() {
             println!("Sort for Null ...");
             g = 'n';
             dealer.sort_cards_for(g);
-            dealer.print_cards();
+            dealer.print_cards(false);
         } else if input == "c\n".to_string() {
             println!("Sort for Clubs ...");
             g = 'c';
             dealer.sort_cards_for(g);
-            dealer.print_cards();
+            dealer.print_cards(false);
         } else if input == "s\n".to_string() {
             println!("Sort for Spades ...");
             g = 's';
             dealer.sort_cards_for(g);
-            dealer.print_cards();
+            dealer.print_cards(false);
         } else if input == "h\n".to_string() {
             println!("Sort for Hearts ...");
             g = 'h';
             dealer.sort_cards_for(g);
-            dealer.print_cards();
+            dealer.print_cards(false);
         } else if input == "d\n".to_string() {
             println!("Sort for Diamonds ...");
             g = 'd';
             dealer.sort_cards_for(g);
-            dealer.print_cards();
+            dealer.print_cards(false);
         }
         dealer_bid = match input.trim().parse() {
             Ok(num) => num,
@@ -1484,7 +1491,7 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
     // let the dealer print his own cards
     dealer.sort_cards();
     println!("");
-    dealer.print_cards();
+    dealer.print_cards(false);
     // create the left player (will play first card)
     let mut left = PlayerBuilder::new()
         .id((dealer_id + 1) % 3)
@@ -1501,7 +1508,7 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
         .finalize();
     left.sort_cards();
     println!("");
-    left.print_cards();
+    left.print_cards(false);
     // create the right player (will play bid first)
     let mut right = PlayerBuilder::new()
         .id((dealer_id + 2) % 3)
@@ -1518,7 +1525,7 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
         .finalize();
     right.sort_cards();
     println!("");
-    right.print_cards();
+    right.print_cards(false);
     // Skat
     let skat = SkatBuilder::new()
         .add(shuffled[30], shuffled[31])
@@ -3336,7 +3343,7 @@ fn main() {
                 for m in 0..3 {
                     let mut player = players[m].finalize();
                     player.sort_cards_for(g);
-                    let cards_str = player.print_cards();
+                    let cards_str = player.print_cards(false);
                     text.push_str(&cards_str);
                 }
                 match file.write_all(text.as_bytes()) {
@@ -3544,7 +3551,7 @@ fn main() {
             for m in 0..3 {
                 let mut player = players[m].finalize();
                 player.sort_cards_for(g);
-                player.print_cards();
+                player.print_cards(false);
             }
             for m in 0..tricks.len() {
                 let ref trick = &tricks[m];
@@ -3723,15 +3730,15 @@ fn main() {
             // use player to detect first card played
             for player in 0..3 {
                 if dealer.id == leader_id {
-                    dealer.print_cards();
+                    dealer.print_cards(false);
                     dealer.play_card(&mut played_cards,
                                      player, sorted_game);
                 } else if responder.id == leader_id {
-                    responder.print_cards();
+                    responder.print_cards(false);
                     responder.play_card(&mut played_cards,
                                         player, sorted_game);
                 } else if bidder.id == leader_id {
-                    bidder.print_cards();
+                    bidder.print_cards(false);
                     bidder.play_card(&mut played_cards,
                                      player, sorted_game);
                 }
