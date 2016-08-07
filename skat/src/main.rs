@@ -38,7 +38,8 @@ impl Player {
         loop {
             println!("Sort for?");
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             if input == "g\n".to_string() {
@@ -78,15 +79,19 @@ impl Player {
         g
     }
 
-    fn announce_game(&mut self, sorted_game: &mut char, skat: &Skat,
-                     hand: &mut bool, ouvert: &mut bool,
+    fn announce_game(&mut self,
+                     sorted_game: &mut char,
+                     skat: &Skat,
+                     hand: &mut bool,
+                     ouvert: &mut bool,
                      matadors: &mut u8)
                      -> Player {
         // print cards before announcing the game
         self.print_cards(false);
         println!("Do you want to see the Skat? Press '1' for yes:");
         let mut input = String::new();
-        io::stdin().read_line(&mut input)
+        io::stdin()
+            .read_line(&mut input)
             .ok()
             .expect("failed to read line");
         let input: u8 = match input.trim().parse() {
@@ -140,43 +145,43 @@ impl Player {
                 } else {
                     println!("Grand announced ...");
                 }
-            },
+            }
             'n' => {
                 if *hand {
                     println!("Null Hand announced ...");
                 } else {
                     println!("Null announced ...");
                 }
-            },
+            }
             'c' => {
                 if *hand {
                     println!("Clubs Hand announced ...");
                 } else {
                     println!("Clubs announced ...");
                 }
-            },
+            }
             's' => {
                 if *hand {
                     println!("Spades Hand announced ...");
                 } else {
                     println!("Spades announced ...");
                 }
-            },
+            }
             'h' => {
                 if *hand {
                     println!("Hearts Hand announced ...");
                 } else {
                     println!("Hearts announced ...");
                 }
-            },
+            }
             'd' => {
                 if *hand {
                     println!("Diamonds Hand announced ...");
-                    } else {
+                } else {
                     println!("Diamonds announced ...");
                 }
-            },
-            _   => panic!("Unknown game announced"),
+            }
+            _ => panic!("Unknown game announced"),
         }
         player
     }
@@ -185,13 +190,13 @@ impl Player {
         self.counter
     }
 
-    fn play_card(&mut self, mut played_cards: &mut Vec<u8>,
-                 player: u8, game: char) {
+    fn play_card(&mut self, mut played_cards: &mut Vec<u8>, player: u8, game: char) {
         let mut first_card;
         loop {
             println!("choose card [0-{}]:", self.cards.len() - 1);
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             let input: u8 = match input.trim().parse() {
@@ -199,7 +204,7 @@ impl Player {
                 Err(_) => 0,
             };
             match input {
-                0 ... 9 => {
+                0...9 => {
                     if input >= self.cards.len() as u8 {
                         continue;
                     }
@@ -215,7 +220,7 @@ impl Player {
                     println!("");
                     played_cards.push(self.cards.remove(input as usize));
                     break;
-                },
+                }
                 _ => continue,
             }
         }
@@ -279,13 +284,13 @@ impl Player {
                 // DiamondsJack
                 28 => sorted.push(self.cards[n]),
                 // Clubs
-                0 ... 7 => clubs.push(self.cards[n]),
+                0...7 => clubs.push(self.cards[n]),
                 // Spades
-                8 ... 15 => spades.push(self.cards[n]),
+                8...15 => spades.push(self.cards[n]),
                 // Hearts
-                16 ... 23 => hearts.push(self.cards[n]),
+                16...23 => hearts.push(self.cards[n]),
                 // Diamonds
-                24 ... 31 => diamonds.push(self.cards[n]),
+                24...31 => diamonds.push(self.cards[n]),
                 _ => panic!("Unknown card"),
             }
         }
@@ -391,13 +396,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0 ... 7 => clubs.push(self.cards[n]),
+                        0...7 => clubs.push(self.cards[n]),
                         // Spades
-                        8 ... 15 => spades.push(self.cards[n]),
+                        8...15 => spades.push(self.cards[n]),
                         // Hearts
-                        16 ... 23 => hearts.push(self.cards[n]),
+                        16...23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24 ... 31 => diamonds.push(self.cards[n]),
+                        24...31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -424,20 +429,20 @@ impl Player {
                 for n in 0..diamonds.len() {
                     sorted.push(diamonds[n]);
                 }
-            },
+            }
             'n' => {
                 // println!("Null");
 
                 for n in 0..self.cards.len() {
                     match self.cards[n] {
                         // Clubs
-                        0 ... 7 => clubs.push(self.cards[n]),
+                        0...7 => clubs.push(self.cards[n]),
                         // Spades
-                        8 ... 15 => spades.push(self.cards[n]),
+                        8...15 => spades.push(self.cards[n]),
                         // Hearts
-                        16 ... 23 => hearts.push(self.cards[n]),
+                        16...23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24 ... 31 => diamonds.push(self.cards[n]),
+                        24...31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -544,7 +549,7 @@ impl Player {
                 if ten_found && !pushed_ten {
                     sorted.push(ten);
                 }
-            },
+            }
             'c' => {
                 // println!("Clubs");
 
@@ -560,13 +565,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0 ... 7 => clubs.push(self.cards[n]),
+                        0...7 => clubs.push(self.cards[n]),
                         // Spades
-                        8 ... 15 => spades.push(self.cards[n]),
+                        8...15 => spades.push(self.cards[n]),
                         // Hearts
-                        16 ... 23 => hearts.push(self.cards[n]),
+                        16...23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24 ... 31 => diamonds.push(self.cards[n]),
+                        24...31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -593,7 +598,7 @@ impl Player {
                 for n in 0..diamonds.len() {
                     sorted.push(diamonds[n]);
                 }
-            },
+            }
             's' => {
                 // println!("Spades");
 
@@ -609,13 +614,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0 ... 7 => clubs.push(self.cards[n]),
+                        0...7 => clubs.push(self.cards[n]),
                         // Spades
-                        8 ... 15 => spades.push(self.cards[n]),
+                        8...15 => spades.push(self.cards[n]),
                         // Hearts
-                        16 ... 23 => hearts.push(self.cards[n]),
+                        16...23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24 ... 31 => diamonds.push(self.cards[n]),
+                        24...31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -642,7 +647,7 @@ impl Player {
                 for n in 0..diamonds.len() {
                     sorted.push(diamonds[n]);
                 }
-            },
+            }
             'h' => {
                 // println!("Hearts");
 
@@ -658,13 +663,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0 ... 7 => clubs.push(self.cards[n]),
+                        0...7 => clubs.push(self.cards[n]),
                         // Spades
-                        8 ... 15 => spades.push(self.cards[n]),
+                        8...15 => spades.push(self.cards[n]),
                         // Hearts
-                        16 ... 23 => hearts.push(self.cards[n]),
+                        16...23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24 ... 31 => diamonds.push(self.cards[n]),
+                        24...31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -691,7 +696,7 @@ impl Player {
                 for n in 0..spades.len() {
                     sorted.push(spades[n]);
                 }
-            },
+            }
             'd' => {
                 // println!("Diamonds");
 
@@ -707,13 +712,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0 ... 7 => clubs.push(self.cards[n]),
+                        0...7 => clubs.push(self.cards[n]),
                         // Spades
-                        8 ... 15 => spades.push(self.cards[n]),
+                        8...15 => spades.push(self.cards[n]),
                         // Hearts
-                        16 ... 23 => hearts.push(self.cards[n]),
+                        16...23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24 ... 31 => diamonds.push(self.cards[n]),
+                        24...31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -740,8 +745,8 @@ impl Player {
                 for n in 0..spades.len() {
                     sorted.push(spades[n]);
                 }
-            },
-            _   => panic!("Unknown game {}", game),
+            }
+            _ => panic!("Unknown game {}", game),
         }
         self.cards = sorted;
     }
@@ -773,7 +778,11 @@ struct PlayerBuilder {
 
 impl PlayerBuilder {
     fn new() -> PlayerBuilder {
-        PlayerBuilder { cards: Vec::new(), id: 3u8, counter: 0u8 }
+        PlayerBuilder {
+            cards: Vec::new(),
+            id: 3u8,
+            counter: 0u8,
+        }
     }
 
     fn add(&mut self, new_card: u8) -> &mut PlayerBuilder {
@@ -793,7 +802,8 @@ impl PlayerBuilder {
         loop {
             println!("drop:");
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             let input: u8 = match input.trim().parse() {
@@ -801,12 +811,12 @@ impl PlayerBuilder {
                 Err(_) => 0,
             };
             match input {
-                0 ... 11 => {
+                0...11 => {
                     println!("{} chosen ...", input);
                     let card = self.cards.remove(input as usize);
                     self.counter += Player::value_of(card);
                     break;
-                },
+                }
                 _ => continue,
             }
         }
@@ -819,7 +829,8 @@ impl PlayerBuilder {
         loop {
             println!("drop:");
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             let input: u8 = match input.trim().parse() {
@@ -827,12 +838,12 @@ impl PlayerBuilder {
                 Err(_) => 0,
             };
             match input {
-                0 ... 10 => {
+                0...10 => {
                     println!("{} chosen ...", input);
                     let card = self.cards.remove(input as usize);
                     self.counter += Player::value_of(card);
                     break;
-                },
+                }
                 _ => continue,
             }
         }
@@ -873,7 +884,7 @@ impl PlayerBuilder {
             20 => jacks.push(skat_card),
             // DiamondsJack
             28 => jacks.push(skat_card),
-            _ => {}, // do nothing
+            _ => {} // do nothing
         }
         // second card of Skat
         skat_card = skat.second;
@@ -886,7 +897,7 @@ impl PlayerBuilder {
             20 => jacks.push(skat_card),
             // DiamondsJack
             28 => jacks.push(skat_card),
-            _ => {}, // do nothing
+            _ => {} // do nothing
         }
         // order Jacks
         jacks.sort();
@@ -902,7 +913,7 @@ impl PlayerBuilder {
                     with = true;
                     matadors = 1;
                     jacks.remove(0);
-                },
+                }
                 // SpadesJack
                 12 => {
                     if with {
@@ -912,7 +923,7 @@ impl PlayerBuilder {
                         matadors = 1;
                         return matadors;
                     }
-                },
+                }
                 // HeartsJack
                 20 => {
                     if with {
@@ -926,7 +937,7 @@ impl PlayerBuilder {
                         matadors = 2;
                         return matadors;
                     }
-                },
+                }
                 // DiamondsJack
                 28 => {
                     if with {
@@ -940,7 +951,7 @@ impl PlayerBuilder {
                         matadors = 3;
                         return matadors;
                     }
-                },
+                }
                 _ => panic!("no Jack found"),
             }
         }
@@ -966,15 +977,17 @@ impl PlayerBuilder {
     }
 
     fn finalize(&self) -> Player {
-        Player { id: self.id,
-                 cards: self.cards.to_vec(),
-                 tricks: Vec::new(),
-                 counter: self.counter, }
+        Player {
+            id: self.id,
+            cards: self.cards.to_vec(),
+            tricks: Vec::new(),
+            counter: self.counter,
+        }
     }
 }
 
 struct Skat {
-    first:  u8,
+    first: u8,
     second: u8,
 }
 
@@ -988,23 +1001,29 @@ impl Skat {
 }
 
 struct SkatBuilder {
-    first:  u8,
+    first: u8,
     second: u8,
 }
 
 impl SkatBuilder {
     fn new() -> SkatBuilder {
-        SkatBuilder { first: 0u8, second: 0u8, }
+        SkatBuilder {
+            first: 0u8,
+            second: 0u8,
+        }
     }
 
     fn add(&mut self, f: u8, s: u8) -> &mut SkatBuilder {
-        self.first  = f;
+        self.first = f;
         self.second = s;
         self
     }
 
     fn finalize(&self) -> Skat {
-        Skat { first: self.first, second: self.second, }
+        Skat {
+            first: self.first,
+            second: self.second,
+        }
     }
 }
 
@@ -1030,9 +1049,10 @@ impl Record {
                                 print!("{}:", index);
                             }
                             print_card(self.cards[index], !self.played[index]);
-                        },
-                        _ => { // do nothing
-                        },
+                        }
+                        _ => {
+                            // do nothing
+                        }
                     }
                 }
                 // Kings, Queens, Jacks ...
@@ -1046,9 +1066,10 @@ impl Record {
                                 print!("{}:", index);
                             }
                             print_card(self.cards[index], !self.played[index]);
-                        },
-                        _ => { // do nothing
-                        },
+                        }
+                        _ => {
+                            // do nothing
+                        }
                     }
                 }
                 // Tens ...
@@ -1062,9 +1083,10 @@ impl Record {
                                 print!("{}:", index);
                             }
                             print_card(self.cards[index], !self.played[index]);
-                        },
-                        _ => { // do nothing
-                        },
+                        }
+                        _ => {
+                            // do nothing
+                        }
                     }
                 }
                 // Nines, Eights, Sevens ...
@@ -1078,9 +1100,10 @@ impl Record {
                                 print!("{}:", index);
                             }
                             print_card(self.cards[index], !self.played[index]);
-                        },
-                        _ => { // do nothing
-                        },
+                        }
+                        _ => {
+                            // do nothing
+                        }
                     }
                 }
                 println!("");
@@ -1135,7 +1158,10 @@ struct RecordBuilder {
 
 impl RecordBuilder {
     fn new() -> RecordBuilder {
-        RecordBuilder { cards: Vec::new(), played: Vec::new() }
+        RecordBuilder {
+            cards: Vec::new(),
+            played: Vec::new(),
+        }
     }
 
     fn add(&mut self, new_card: u8) -> &mut RecordBuilder {
@@ -1144,8 +1170,10 @@ impl RecordBuilder {
         self
     }
     fn finalize(&self) -> Record {
-        Record { cards: self.cards.to_vec(),
-                 played: self.played.to_vec(), }
+        Record {
+            cards: self.cards.to_vec(),
+            played: self.played.to_vec(),
+        }
     }
 }
 
@@ -1160,10 +1188,14 @@ fn announce(game: char, ouvert: &mut bool) -> char {
             's' => println!("Spades?"),
             'h' => println!("Hearts?"),
             'd' => println!("Diamonds?"),
-            _   => { println!("Choose game [gncshd]:"); g = 'd'; },
+            _ => {
+                println!("Choose game [gncshd]:");
+                g = 'd';
+            }
         }
         let mut input = String::new();
-        io::stdin().read_line(&mut input)
+        io::stdin()
+            .read_line(&mut input)
             .ok()
             .expect("failed to read line");
         if input == "y\n".to_string() || input == "\n" {
@@ -1199,7 +1231,8 @@ fn announce(game: char, ouvert: &mut bool) -> char {
 fn bid(dealer: &mut Player,
        responder: &mut Player,
        bidder: &mut Player,
-       leader_id: u8) -> (u8, u8, char) {
+       leader_id: u8)
+       -> (u8, u8, char) {
     // return values
     let mut winner: u8;
     let mut lowest: u8;
@@ -1213,7 +1246,8 @@ fn bid(dealer: &mut Player,
     loop {
         println!("bid (or [gncshd]):");
         let mut input = String::new();
-        io::stdin().read_line(&mut input)
+        io::stdin()
+            .read_line(&mut input)
             .ok()
             .expect("failed to read line");
         if input == "g\n".to_string() {
@@ -1268,7 +1302,8 @@ fn bid(dealer: &mut Player,
     loop {
         println!("bid (or [gncshd]):");
         let mut input = String::new();
-        io::stdin().read_line(&mut input)
+        io::stdin()
+            .read_line(&mut input)
             .ok()
             .expect("failed to read line");
         if input == "g\n".to_string() {
@@ -1322,7 +1357,8 @@ fn bid(dealer: &mut Player,
     loop {
         println!("bid (or [gncshd]):");
         let mut input = String::new();
-        io::stdin().read_line(&mut input)
+        io::stdin()
+            .read_line(&mut input)
             .ok()
             .expect("failed to read line");
         if input == "g\n".to_string() {
@@ -1394,11 +1430,11 @@ fn bid(dealer: &mut Player,
                     2 => "C",
                     _ => panic!("Unknown player {}", winner),
                 };
-                println!("Player {} wins bidding with {} ...",
-                         winner_name, lowest);
+                println!("Player {} wins bidding with {} ...", winner_name, lowest);
                 return (winner, lowest, game);
             }
-        } else { // responder_bid > bidder_bid
+        } else {
+            // responder_bid > bidder_bid
             lowest = bidder_bid; // can still be 0
             if bidder_bid == 0u8 {
                 lowest = 18u8; // responder said at least 18
@@ -1423,7 +1459,8 @@ fn bid(dealer: &mut Player,
             winner = responder.id;
             game = responder_game;
         }
-    } else { // winner == bidder.id
+    } else {
+        // winner == bidder.id
         // responder passed, dealer can pass or has to say more than bidder
         if dealer_bid > bidder_bid {
             // dealer wins
@@ -1538,7 +1575,9 @@ fn deal(dealer_id: u8) -> (Player, Player, Player, Skat) {
 
 fn is_in(card: u8, cards: &Vec<u8>) -> bool {
     for n in 0..cards.len() {
-        if card == cards[n] { return true; }
+        if card == cards[n] {
+            return true;
+        }
     }
     false
 }
@@ -1549,26 +1588,39 @@ fn is_valid_bid(bid: u8) -> bool {
     let nulls = [23, 35, 46, 59];
     valid = match nulls.iter().find(|&&x| x == bid) {
         Some(_) => true,
-        None    => false,
+        None => false,
     };
     // Suit game
-    if (bid % 12) == 0 { valid = true; }
-    if (bid % 11) == 0 { valid = true; }
-    if (bid % 10) == 0 { valid = true; }
-    if (bid %  9) == 0 { valid = true; }
+    if (bid % 12) == 0 {
+        valid = true;
+    }
+    if (bid % 11) == 0 {
+        valid = true;
+    }
+    if (bid % 10) == 0 {
+        valid = true;
+    }
+    if (bid % 9) == 0 {
+        valid = true;
+    }
     // 13 * 12 = 4 Jacks, 6 trumps, Game, Schneider, Schwarz
     let highest: u8 = 156;
-    if bid > highest { valid = false; }
+    if bid > highest {
+        valid = false;
+    }
     // Grand game
-    if (bid % 24) == 0 { valid = true; }
+    if (bid % 24) == 0 {
+        valid = true;
+    }
     // 7 * 24 = 4 Jacks, Game, Schneider, Schwarz
     let highest: u8 = 168;
-    if bid > highest { valid = false; }
+    if bid > highest {
+        valid = false;
+    }
     valid
 }
 
-fn is_valid_card(card: u8, first_card: u8, game: char,
-                 cards: &Vec<u8>) -> bool {
+fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool {
     // sort cards
     let mut jacks: Vec<u8> = Vec::new();
     let mut clubs: Vec<u8> = Vec::new();
@@ -1586,20 +1638,22 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
             // DiamondsJack
             28 => jacks.push(cards[n]),
             // Clubs
-            0 ... 7 => clubs.push(cards[n]),
+            0...7 => clubs.push(cards[n]),
             // Spades
-            8 ... 15 => spades.push(cards[n]),
+            8...15 => spades.push(cards[n]),
             // Hearts
-            16 ... 23 => hearts.push(cards[n]),
+            16...23 => hearts.push(cards[n]),
             // Diamonds
-            24 ... 31 => diamonds.push(cards[n]),
+            24...31 => diamonds.push(cards[n]),
             _ => panic!("Unknown card"),
         }
     }
     match game {
-        'g' => { // Grand
+        'g' => {
+            // Grand
             match first_card {
-                4 | 12 | 20 | 28 => { // Jack
+                4 | 12 | 20 | 28 => {
+                    // Jack
                     if jacks.len() > 0usize && !is_in(card, &jacks) {
                         // has Jacks, but didn't play one
                         return false;
@@ -1608,8 +1662,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // or doesn't have any Jacks
                         return true;
                     }
-                },
-                0 ... 7 => { // Clubs
+                }
+                0...7 => {
+                    // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
                         return false;
@@ -1617,8 +1672,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
                         return false;
@@ -1626,8 +1682,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
                         return false;
@@ -1635,8 +1692,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
                         return false;
@@ -1644,14 +1702,15 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
-        'n' => { // Null
+        }
+        'n' => {
+            // Null
             for n in 0..jacks.len() {
                 match jacks[n] {
-                    4  => clubs.push(jacks[n]),
+                    4 => clubs.push(jacks[n]),
                     12 => spades.push(jacks[n]),
                     20 => hearts.push(jacks[n]),
                     28 => diamonds.push(jacks[n]),
@@ -1659,7 +1718,8 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                 }
             }
             match first_card {
-                0 ... 7 => { // Clubs
+                0...7 => {
+                    // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
                         return false;
@@ -1667,8 +1727,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
                         return false;
@@ -1676,8 +1737,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
                         return false;
@@ -1685,8 +1747,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
                         return false;
@@ -1694,22 +1757,25 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
-        'c' => { // Clubs
+        }
+        'c' => {
+            // Clubs
             match first_card {
-                0 ... 7 | 12 | 20 | 28 => { // Jack or Clubs
-                    if (jacks.len() > 0usize || clubs.len() > 0usize) &&
-                        !is_in(card, &jacks) && !is_in(card, &clubs) {
+                0...7 | 12 | 20 | 28 => {
+                    // Jack or Clubs
+                    if (jacks.len() > 0usize || clubs.len() > 0usize) && !is_in(card, &jacks) &&
+                       !is_in(card, &clubs) {
                         // has Jacks or suit, but didn't play one
                         return false;
                     } else {
                         return true;
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
                         return false;
@@ -1717,8 +1783,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
                         return false;
@@ -1726,8 +1793,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
                         return false;
@@ -1735,22 +1803,25 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
-        's' => { // Spades
+        }
+        's' => {
+            // Spades
             match first_card {
-                4 | 8 ... 15 | 20 | 28 => { // Jack or Spades
-                    if (jacks.len() > 0usize || spades.len() > 0usize) &&
-                        !is_in(card, &jacks) && !is_in(card, &spades) {
+                4 | 8...15 | 20 | 28 => {
+                    // Jack or Spades
+                    if (jacks.len() > 0usize || spades.len() > 0usize) && !is_in(card, &jacks) &&
+                       !is_in(card, &spades) {
                         // has Jacks or suit, but didn't play one
                         return false;
                     } else {
                         return true;
                     }
-                },
-                0 ... 7 => { // Clubs
+                }
+                0...7 => {
+                    // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
                         return false;
@@ -1758,8 +1829,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
                         return false;
@@ -1767,8 +1839,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
                         return false;
@@ -1776,22 +1849,25 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
-        'h' => { // Hearts
+        }
+        'h' => {
+            // Hearts
             match first_card {
-                4 | 12 | 16 ... 23 | 28 => { // Jack or Hearts
-                    if (jacks.len() > 0usize || hearts.len() > 0usize) &&
-                        !is_in(card, &jacks) && !is_in(card, &hearts) {
+                4 | 12 | 16...23 | 28 => {
+                    // Jack or Hearts
+                    if (jacks.len() > 0usize || hearts.len() > 0usize) && !is_in(card, &jacks) &&
+                       !is_in(card, &hearts) {
                         // has Jacks or suit, but didn't play one
                         return false;
                     } else {
                         return true;
                     }
-                },
-                0 ... 7 => { // Clubs
+                }
+                0...7 => {
+                    // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
                         return false;
@@ -1799,8 +1875,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
                         return false;
@@ -1808,8 +1885,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
                         return false;
@@ -1817,22 +1895,25 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
-        'd' => { // Diamonds
+        }
+        'd' => {
+            // Diamonds
             match first_card {
-                4 | 12 | 20 | 24 ... 31 => { // Jack or Diamonds
+                4 | 12 | 20 | 24...31 => {
+                    // Jack or Diamonds
                     if (jacks.len() > 0usize || diamonds.len() > 0usize) &&
-                        !is_in(card, &jacks) && !is_in(card, &diamonds) {
+                       !is_in(card, &jacks) && !is_in(card, &diamonds) {
                         // has Jacks or suit, but didn't play one
                         return false;
                     } else {
                         return true;
                     }
-                },
-                0 ... 7 => { // Clubs
+                }
+                0...7 => {
+                    // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
                         return false;
@@ -1840,8 +1921,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
                         return false;
@@ -1849,8 +1931,9 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
                         return false;
@@ -1858,18 +1941,18 @@ fn is_valid_card(card: u8, first_card: u8, game: char,
                         // free to play any other card
                         return true;
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
+        }
         _ => panic!("Unknown game {}", game),
     }
 }
 
 fn print_card(card: u8, in_color: bool) {
-    let club    = "♣";
-    let spade   = "♠";
-    let heart   = "♥";
+    let club = "♣";
+    let spade = "♠";
+    let heart = "♥";
     let diamond = "♦";
     match card {
         0 => {
@@ -1880,7 +1963,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&ace));
             }
-        },
+        }
         1 => {
             let mut ten = "10".to_string();
             ten.push_str(club);
@@ -1889,7 +1972,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&ten));
             }
-        },
+        }
         2 => {
             let mut king = " K".to_string();
             king.push_str(club);
@@ -1898,7 +1981,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&king));
             }
-        },
+        }
         3 => {
             let mut queen = " Q".to_string();
             queen.push_str(club);
@@ -1907,7 +1990,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&queen));
             }
-        },
+        }
         4 => {
             let mut jack = " J".to_string();
             jack.push_str(club);
@@ -1916,7 +1999,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&jack));
             }
-        },
+        }
         5 => {
             let mut nine = " 9".to_string();
             nine.push_str(club);
@@ -1925,7 +2008,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&nine));
             }
-        },
+        }
         6 => {
             let mut eight = " 8".to_string();
             eight.push_str(club);
@@ -1934,7 +2017,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&eight));
             }
-        },
+        }
         7 => {
             let mut seven = " 7".to_string();
             seven.push_str(club);
@@ -1943,7 +2026,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&seven));
             }
-        },
+        }
         8 => {
             let mut ace = " A".to_string();
             ace.push_str(spade);
@@ -1952,7 +2035,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&ace));
             }
-        },
+        }
         9 => {
             let mut ten = "10".to_string();
             ten.push_str(spade);
@@ -1961,7 +2044,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&ten));
             }
-        },
+        }
         10 => {
             let mut king = " K".to_string();
             king.push_str(spade);
@@ -1970,7 +2053,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&king));
             }
-        },
+        }
         11 => {
             let mut queen = " Q".to_string();
             queen.push_str(spade);
@@ -1979,7 +2062,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&queen));
             }
-        },
+        }
         12 => {
             let mut jack = " J".to_string();
             jack.push_str(spade);
@@ -1988,7 +2071,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&jack));
             }
-        },
+        }
         13 => {
             let mut nine = " 9".to_string();
             nine.push_str(spade);
@@ -1997,7 +2080,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&nine));
             }
-        },
+        }
         14 => {
             let mut eight = " 8".to_string();
             eight.push_str(spade);
@@ -2006,7 +2089,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&eight));
             }
-        },
+        }
         15 => {
             let mut seven = " 7".to_string();
             seven.push_str(spade);
@@ -2015,7 +2098,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&seven));
             }
-        },
+        }
         16 => {
             let mut ace = " A".to_string();
             ace.push_str(heart);
@@ -2024,7 +2107,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&ace));
             }
-        },
+        }
         17 => {
             let mut ten = "10".to_string();
             ten.push_str(heart);
@@ -2033,7 +2116,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&ten));
             }
-        },
+        }
         18 => {
             let mut king = " K".to_string();
             king.push_str(heart);
@@ -2042,7 +2125,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&king));
             }
-        },
+        }
         19 => {
             let mut queen = " Q".to_string();
             queen.push_str(heart);
@@ -2051,7 +2134,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&queen));
             }
-        },
+        }
         20 => {
             let mut jack = " J".to_string();
             jack.push_str(heart);
@@ -2060,7 +2143,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&jack));
             }
-        },
+        }
         21 => {
             let mut nine = " 9".to_string();
             nine.push_str(heart);
@@ -2069,7 +2152,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&nine));
             }
-        },
+        }
         22 => {
             let mut eight = " 8".to_string();
             eight.push_str(heart);
@@ -2078,7 +2161,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&eight));
             }
-        },
+        }
         23 => {
             let mut seven = " 7".to_string();
             seven.push_str(heart);
@@ -2087,7 +2170,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&seven));
             }
-        },
+        }
         24 => {
             let mut ace = " A".to_string();
             ace.push_str(diamond);
@@ -2096,7 +2179,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&ace));
             }
-        },
+        }
         25 => {
             let mut ten = "10".to_string();
             ten.push_str(diamond);
@@ -2105,7 +2188,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&ten));
             }
-        },
+        }
         26 => {
             let mut king = " K".to_string();
             king.push_str(diamond);
@@ -2114,7 +2197,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&king));
             }
-        },
+        }
         27 => {
             let mut queen = " Q".to_string();
             queen.push_str(diamond);
@@ -2123,7 +2206,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&queen));
             }
-        },
+        }
         28 => {
             let mut jack = " J".to_string();
             jack.push_str(diamond);
@@ -2132,7 +2215,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&jack));
             }
-        },
+        }
         29 => {
             let mut nine = " 9".to_string();
             nine.push_str(diamond);
@@ -2141,7 +2224,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&nine));
             }
-        },
+        }
         30 => {
             let mut eight = " 8".to_string();
             eight.push_str(diamond);
@@ -2150,7 +2233,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&eight));
             }
-        },
+        }
         31 => {
             let mut seven = " 7".to_string();
             seven.push_str(diamond);
@@ -2159,7 +2242,7 @@ fn print_card(card: u8, in_color: bool) {
             } else {
                 print!("{} ", White.bold().paint(&seven));
             }
-        },
+        }
         _ => panic!("Unknown card"),
     }
 }
@@ -2194,13 +2277,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0 ... 7 => clubs.push(cards[n]),
+                    0...7 => clubs.push(cards[n]),
                     // Spades
-                    8 ... 15 => spades.push(cards[n]),
+                    8...15 => spades.push(cards[n]),
                     // Hearts
-                    16 ... 23 => hearts.push(cards[n]),
+                    16...23 => hearts.push(cards[n]),
                     // Diamonds
-                    24 ... 31 => diamonds.push(cards[n]),
+                    24...31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -2213,7 +2296,8 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0 ... 7 => { // Clubs
+                0...7 => {
+                    // Clubs
                     // append clubs
                     for n in 0..clubs.len() {
                         sorted.push(clubs[n]);
@@ -2230,8 +2314,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     // append spades
                     for n in 0..spades.len() {
                         sorted.push(spades[n]);
@@ -2248,8 +2333,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     // append hearts
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
@@ -2266,8 +2352,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     // append diamonds
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
@@ -2284,21 +2371,21 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
+        }
         'n' => {
             for n in 0..3 {
                 match cards[n] {
                     // Clubs
-                    0 ... 7 => clubs.push(cards[n]),
+                    0...7 => clubs.push(cards[n]),
                     // Spades
-                    8 ... 15 => spades.push(cards[n]),
+                    8...15 => spades.push(cards[n]),
                     // Hearts
-                    16 ... 23 => hearts.push(cards[n]),
+                    16...23 => hearts.push(cards[n]),
                     // Diamonds
-                    24 ... 31 => diamonds.push(cards[n]),
+                    24...31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -2311,7 +2398,8 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0 ... 7 => { // Clubs
+                0...7 => {
+                    // Clubs
                     // append clubs
                     let mut pushed_ten = false;
                     let mut ten_found = false;
@@ -2408,8 +2496,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     if ten_found && !pushed_ten {
                         sorted.push(ten);
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     // append spades
                     let mut pushed_ten = false;
                     let mut ten_found = false;
@@ -2506,8 +2595,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     if ten_found && !pushed_ten {
                         sorted.push(ten);
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     // append hearts
                     let mut pushed_ten = false;
                     let mut ten_found = false;
@@ -2604,8 +2694,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     if ten_found && !pushed_ten {
                         sorted.push(ten);
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     // append diamonds
                     let mut pushed_ten = false;
                     let mut ten_found = false;
@@ -2702,10 +2793,10 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     if ten_found && !pushed_ten {
                         sorted.push(ten);
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
+        }
         'c' => {
             // first find Jacks
             for n in 0..3 {
@@ -2719,13 +2810,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0 ... 7 => clubs.push(cards[n]),
+                    0...7 => clubs.push(cards[n]),
                     // Spades
-                    8 ... 15 => spades.push(cards[n]),
+                    8...15 => spades.push(cards[n]),
                     // Hearts
-                    16 ... 23 => hearts.push(cards[n]),
+                    16...23 => hearts.push(cards[n]),
                     // Diamonds
-                    24 ... 31 => diamonds.push(cards[n]),
+                    24...31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -2738,7 +2829,8 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0 ... 7 => { // Clubs
+                0...7 => {
+                    // Clubs
                     // append clubs
                     for n in 0..clubs.len() {
                         sorted.push(clubs[n]);
@@ -2755,8 +2847,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     // append clubs
                     for n in 0..clubs.len() {
                         sorted.push(clubs[n]);
@@ -2773,8 +2866,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     // append clubs
                     for n in 0..clubs.len() {
                         sorted.push(clubs[n]);
@@ -2791,8 +2885,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     // append clubs
                     for n in 0..clubs.len() {
                         sorted.push(clubs[n]);
@@ -2809,10 +2904,10 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
+        }
         's' => {
             // first find Jacks
             for n in 0..3 {
@@ -2826,13 +2921,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0 ... 7 => clubs.push(cards[n]),
+                    0...7 => clubs.push(cards[n]),
                     // Spades
-                    8 ... 15 => spades.push(cards[n]),
+                    8...15 => spades.push(cards[n]),
                     // Hearts
-                    16 ... 23 => hearts.push(cards[n]),
+                    16...23 => hearts.push(cards[n]),
                     // Diamonds
-                    24 ... 31 => diamonds.push(cards[n]),
+                    24...31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -2845,7 +2940,8 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0 ... 7 => { // Clubs
+                0...7 => {
+                    // Clubs
                     // append spades
                     for n in 0..spades.len() {
                         sorted.push(spades[n]);
@@ -2862,8 +2958,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     // append spades
                     for n in 0..spades.len() {
                         sorted.push(spades[n]);
@@ -2880,8 +2977,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     // append spades
                     for n in 0..spades.len() {
                         sorted.push(spades[n]);
@@ -2898,8 +2996,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     // append spades
                     for n in 0..spades.len() {
                         sorted.push(spades[n]);
@@ -2916,10 +3015,10 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
+        }
         'h' => {
             // first find Jacks
             for n in 0..3 {
@@ -2933,13 +3032,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0 ... 7 => clubs.push(cards[n]),
+                    0...7 => clubs.push(cards[n]),
                     // Spades
-                    8 ... 15 => spades.push(cards[n]),
+                    8...15 => spades.push(cards[n]),
                     // Hearts
-                    16 ... 23 => hearts.push(cards[n]),
+                    16...23 => hearts.push(cards[n]),
                     // Diamonds
-                    24 ... 31 => diamonds.push(cards[n]),
+                    24...31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -2951,7 +3050,8 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             hearts.sort();
             diamonds.sort();
             match first_card_played {
-                0 ... 7 => { // Clubs
+                0...7 => {
+                    // Clubs
                     // append hearts
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
@@ -2968,8 +3068,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     // append hearts
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
@@ -2986,8 +3087,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     // append hearts
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
@@ -3004,8 +3106,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     // append hearts
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
@@ -3022,10 +3125,10 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..spades.len() {
                         sorted.push(spades[n]);
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
+        }
         'd' => {
             // first find Jacks
             for n in 0..3 {
@@ -3039,13 +3142,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0 ... 7 => clubs.push(cards[n]),
+                    0...7 => clubs.push(cards[n]),
                     // Spades
-                    8 ... 15 => spades.push(cards[n]),
+                    8...15 => spades.push(cards[n]),
                     // Hearts
-                    16 ... 23 => hearts.push(cards[n]),
+                    16...23 => hearts.push(cards[n]),
                     // Diamonds
-                    24 ... 31 => diamonds.push(cards[n]),
+                    24...31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -3058,7 +3161,8 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0 ... 7 => { // Clubs
+                0...7 => {
+                    // Clubs
                     // append diamonds
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
@@ -3075,8 +3179,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
                     }
-                },
-                8 ... 15 => { // Spades
+                }
+                8...15 => {
+                    // Spades
                     // append diamonds
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
@@ -3093,8 +3198,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
                     }
-                },
-                16 ... 23 => { // Hearts
+                }
+                16...23 => {
+                    // Hearts
                     // append diamonds
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
@@ -3111,8 +3217,9 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..spades.len() {
                         sorted.push(spades[n]);
                     }
-                },
-                24 ... 31 => { // Diamonds
+                }
+                24...31 => {
+                    // Diamonds
                     // append diamonds
                     for n in 0..diamonds.len() {
                         sorted.push(diamonds[n]);
@@ -3129,21 +3236,26 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
                     }
-                },
+                }
                 _ => panic!("Unknown card"),
             }
-        },
-        _   => panic!("Unknown game {}", game),
+        }
+        _ => panic!("Unknown game {}", game),
     }
     sorted
 }
 
-fn who_wins_trick(played_cards: &Vec<u8>,
-                  game: char) -> u8 {
+fn who_wins_trick(played_cards: &Vec<u8>, game: char) -> u8 {
     let sorted = sort_trick_for(played_cards, game);
-    if sorted[0] == played_cards[0] { return 0u8; }
-    if sorted[0] == played_cards[1] { return 1u8; }
-    if sorted[0] == played_cards[2] { return 2u8; }
+    if sorted[0] == played_cards[0] {
+        return 0u8;
+    }
+    if sorted[0] == played_cards[1] {
+        return 1u8;
+    }
+    if sorted[0] == played_cards[2] {
+        return 2u8;
+    }
     0u8
 }
 
@@ -3157,8 +3269,8 @@ fn main() {
     opts.optflag("r", "record", "record a Skat game");
     opts.optflag("v", "version", "print version number");
     let matches = match opts.parse(&args[1..]) {
-        Ok(m) => { m }
-        Err(f) => { panic!(f.to_string()) }
+        Ok(m) => m,
+        Err(f) => panic!(f.to_string()),
     };
     if matches.opt_present("h") {
         print_usage(&program, opts);
@@ -3200,11 +3312,11 @@ fn main() {
                 let mut leader_id: u8 = 0u8;
                 let mut player_id: u8 = leader_id;
                 let mut tricks: Vec<Vec<u8>> = Vec::new();
-                let mut skat_first:  u8 = 0;
+                let mut skat_first: u8 = 0;
                 let mut skat_second: u8 = 0;
-                let mut first:  u8 = 0;
+                let mut first: u8 = 0;
                 let mut second: u8 = 0;
-                let mut third:  u8 = 0;
+                let mut third: u8 = 0;
                 let mut card_counter: u8 = 0;
                 for line in reader.lines() {
                     let input = line.unwrap();
@@ -3267,9 +3379,9 @@ fn main() {
                                     // select next player
                                     player_id = (player_id + 1) % 3;
                                     // next card
-                                    expect_first  = false;
+                                    expect_first = false;
                                     expect_second = true;
-                                    expect_third  = false;
+                                    expect_third = false;
                                 } else if expect_second {
                                     second = card;
                                     card_counter += 1;
@@ -3278,9 +3390,9 @@ fn main() {
                                     // select next player
                                     player_id = (player_id + 1) % 3;
                                     // next card
-                                    expect_first  = false;
+                                    expect_first = false;
                                     expect_second = false;
-                                    expect_third  = true;
+                                    expect_third = true;
                                 } else if expect_third {
                                     third = card;
                                     card_counter += 1;
@@ -3289,17 +3401,16 @@ fn main() {
                                     // select next player
                                     player_id = (player_id + 1) % 3;
                                     // store trick
-                                    let trick = vec!(leader_id, first, second, third);
-                                    let played_cards = vec!(first, second, third);
+                                    let trick = vec![leader_id, first, second, third];
+                                    let played_cards = vec![first, second, third];
                                     tricks.push(trick);
                                     // who wins this trick?
-                                    leader_id = (leader_id +
-                                                 who_wins_trick(&played_cards, g)) % 3;
+                                    leader_id = (leader_id + who_wins_trick(&played_cards, g)) % 3;
                                     player_id = leader_id;
                                     // next card
                                     expect_first = true;
                                     expect_second = false;
-                                    expect_third  = false;
+                                    expect_third = false;
                                 } else {
                                     println!("This is not supposed to happen !!!");
                                 }
@@ -3330,9 +3441,7 @@ fn main() {
                 let path = Path::new(&dst_file);
                 let display = path.display();
                 let mut file = match File::create(&path) {
-                    Err(why) => panic!("couldn't create {}: {}",
-                                       display,
-                                       Error::description(&why)),
+                    Err(why) => panic!("couldn't create {}: {}", display, Error::description(&why)),
                     Ok(file) => file,
                 };
                 // collect info here
@@ -3348,9 +3457,10 @@ fn main() {
                 }
                 match file.write_all(text.as_bytes()) {
                     Err(why) => {
-                        panic!("couldn't write to {}: {}", display,
+                        panic!("couldn't write to {}: {}",
+                               display,
                                Error::description(&why))
-                    },
+                    }
                     Ok(_) => println!("successfully wrote to {}", display),
                 }
                 for m in 0..tricks.len() {
@@ -3373,7 +3483,7 @@ fn main() {
                         .finalize();
                     skat.print_cards();
                 }
-            },
+            }
             None => panic!("no input file name"),
         }
         return;
@@ -3382,7 +3492,8 @@ fn main() {
             // highest bid
             println!("highest bid:");
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             let bid: u8 = match input.trim().parse() {
@@ -3393,7 +3504,8 @@ fn main() {
             // ask for announced game
             println!("announced game [gncshd]:");
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             let g: char;
@@ -3422,7 +3534,8 @@ fn main() {
             let mut hand = false;
             println!("Hand? Press '1' for yes:");
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             let input: u8 = match input.trim().parse() {
@@ -3439,7 +3552,8 @@ fn main() {
             let mut declarer = false;
             println!("Are you the declarer? Press '1' for yes:");
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             let input: u8 = match input.trim().parse() {
@@ -3481,7 +3595,8 @@ fn main() {
                         // ask for card to play
                         println!("card to play?");
                         let mut input = String::new();
-                        io::stdin().read_line(&mut input)
+                        io::stdin()
+                            .read_line(&mut input)
                             .ok()
                             .expect("failed to read line");
                         let input: u8 = match input.trim().parse() {
@@ -3510,7 +3625,8 @@ fn main() {
                         // ask for card to play
                         println!("card to play?");
                         let mut input = String::new();
-                        io::stdin().read_line(&mut input)
+                        io::stdin()
+                            .read_line(&mut input)
                             .ok()
                             .expect("failed to read line");
                         let input: u8 = match input.trim().parse() {
@@ -3543,8 +3659,7 @@ fn main() {
                     // store trick
                     tricks.push(trick);
                     // who wins this trick?
-                    leader_id = (leader_id +
-                                 who_wins_trick(&played_cards, g)) % 3;
+                    leader_id = (leader_id + who_wins_trick(&played_cards, g)) % 3;
                 }
             }
             // reconstructed distribution of cards
@@ -3569,7 +3684,8 @@ fn main() {
             // continue?
             println!("New game? [press 'q' to quit]");
             let mut input = String::new();
-            io::stdin().read_line(&mut input)
+            io::stdin()
+                .read_line(&mut input)
                 .ok()
                 .expect("failed to read line");
             if input == "q\n".to_string() {
@@ -3589,10 +3705,7 @@ fn main() {
     loop {
         round_counter += 1;
         // player with player_id is dealing
-        let (mut dealer,
-             mut responder,
-             mut bidder,
-             skat) = deal(player_id);
+        let (mut dealer, mut responder, mut bidder, skat) = deal(player_id);
         // bid
         let (declarer_id, game_value, mut sorted_game) = bid(&mut dealer,
                                                              &mut responder,
@@ -3610,19 +3723,25 @@ fn main() {
         let mut ouvert = false;
         let mut matadors: u8 = 0u8;
         if dealer.id == declarer_id {
-            dealer = dealer.announce_game(&mut sorted_game, &skat,
+            dealer = dealer.announce_game(&mut sorted_game,
+                                          &skat,
                                           // return values
-                                          &mut hand, &mut ouvert,
+                                          &mut hand,
+                                          &mut ouvert,
                                           &mut matadors);
         } else if responder.id == declarer_id {
-            responder = responder.announce_game(&mut sorted_game, &skat,
+            responder = responder.announce_game(&mut sorted_game,
+                                                &skat,
                                                 // return values
-                                                &mut hand, &mut ouvert,
+                                                &mut hand,
+                                                &mut ouvert,
                                                 &mut matadors);
         } else if bidder.id == declarer_id {
-            bidder = bidder.announce_game(&mut sorted_game, &skat,
+            bidder = bidder.announce_game(&mut sorted_game,
+                                          &skat,
                                           // return values
-                                          &mut hand, &mut ouvert,
+                                          &mut hand,
+                                          &mut ouvert,
                                           &mut matadors);
         }
         // all players sort for game
@@ -3651,7 +3770,7 @@ fn main() {
                     }
                 }
                 "Grand"
-            },
+            }
             'n' => {
                 if hand {
                     hand_announced.push_str("Hand ");
@@ -3665,7 +3784,7 @@ fn main() {
                     }
                 }
                 "Null"
-            },
+            }
             'c' => {
                 if hand {
                     hand_announced.push_str("Hand ");
@@ -3677,7 +3796,7 @@ fn main() {
                     }
                 }
                 "Clubs"
-            },
+            }
             's' => {
                 if hand {
                     hand_announced.push_str("Hand ");
@@ -3689,7 +3808,7 @@ fn main() {
                     }
                 }
                 "Spades"
-            },
+            }
             'h' => {
                 if hand {
                     hand_announced.push_str("Hand ");
@@ -3701,7 +3820,7 @@ fn main() {
                     }
                 }
                 "Hearts"
-            },
+            }
             'd' => {
                 if hand {
                     hand_announced.push_str("Hand ");
@@ -3713,15 +3832,18 @@ fn main() {
                     }
                 }
                 "Diamonds"
-            },
-            _   => panic!("Unknown game {}", sorted_game),
+            }
+            _ => panic!("Unknown game {}", sorted_game),
         };
         'trick_loop: for trick in 0..10 {
             println!("#########");
             println!("trick #{}:", trick);
             println!("#########");
             println!("Player {} plays {}{}{}bidding {}",
-                     player_name, game, hand_announced, ouvert_announced,
+                     player_name,
+                     game,
+                     hand_announced,
+                     ouvert_announced,
                      game_value);
             responder.print_counter();
             bidder.print_counter();
@@ -3731,16 +3853,13 @@ fn main() {
             for player in 0..3 {
                 if dealer.id == leader_id {
                     dealer.print_cards(false);
-                    dealer.play_card(&mut played_cards,
-                                     player, sorted_game);
+                    dealer.play_card(&mut played_cards, player, sorted_game);
                 } else if responder.id == leader_id {
                     responder.print_cards(false);
-                    responder.play_card(&mut played_cards,
-                                        player, sorted_game);
+                    responder.play_card(&mut played_cards, player, sorted_game);
                 } else if bidder.id == leader_id {
                     bidder.print_cards(false);
-                    bidder.play_card(&mut played_cards,
-                                     player, sorted_game);
+                    bidder.play_card(&mut played_cards, player, sorted_game);
                 }
                 // select next player
                 leader_id = (leader_id + 1) % 3;
@@ -3751,17 +3870,14 @@ fn main() {
             print_card(played_cards[2], true);
             println!("");
             // who wins this trick?
-            let winner_id: u8 = (leader_id +
-                                 who_wins_trick(&played_cards,
-                                                sorted_game)) % 3;
+            let winner_id: u8 = (leader_id + who_wins_trick(&played_cards, sorted_game)) % 3;
             let winner_name = match winner_id {
                 0 => "A",
                 1 => "B",
                 2 => "C",
                 _ => panic!("Unknown player {}", winner_id),
             };
-            println!("Player {} wins trick {} ...",
-                     winner_name, trick);
+            println!("Player {} wins trick {} ...", winner_name, trick);
             if dealer.id == winner_id {
                 dealer.add_trick(&played_cards);
             } else if responder.id == winner_id {
@@ -3775,7 +3891,7 @@ fn main() {
             if sorted_game == 'n' && winner_id == declarer_id {
                 break 'trick_loop;
             }
-        };
+        }
         // count cards
         let mut declarer_count: u8 = 0u8;
         let mut team_count: u8 = 0u8;
@@ -3803,7 +3919,7 @@ fn main() {
         println!("matadors = {:?}", matadors);
         // declarer's game value
         let schneider_announced: bool = false; // TODO
-        let schwarz_announced:   bool = false; // TODO
+        let schwarz_announced: bool = false; // TODO
         let mut decl_game_value: u8 = matadors;
         if hand {
             // print Skat
@@ -3835,7 +3951,7 @@ fn main() {
             match sorted_game {
                 'g' => {
                     decl_game_value *= 24;
-                },
+                }
                 'n' => {
                     if ouvert {
                         // Null Ouvert Hand
@@ -3844,20 +3960,20 @@ fn main() {
                         // Null Hand
                         decl_game_value = 35;
                     }
-                },
+                }
                 'c' => {
                     decl_game_value *= 12;
-                },
+                }
                 's' => {
                     decl_game_value *= 11;
-                },
+                }
                 'h' => {
                     decl_game_value *= 10;
-                },
+                }
                 'd' => {
-                    decl_game_value *=  9;
-                },
-                _   => panic!("Unknown game {}", sorted_game),
+                    decl_game_value *= 9;
+                }
+                _ => panic!("Unknown game {}", sorted_game),
             }
         } else {
             // game
@@ -3873,7 +3989,7 @@ fn main() {
             match sorted_game {
                 'g' => {
                     decl_game_value *= 24;
-                },
+                }
                 'n' => {
                     if ouvert {
                         // Null Ouvert
@@ -3882,42 +3998,54 @@ fn main() {
                         // Null
                         decl_game_value = 23;
                     }
-                },
+                }
                 'c' => {
                     decl_game_value *= 12;
-                },
+                }
                 's' => {
                     decl_game_value *= 11;
-                },
+                }
                 'h' => {
                     decl_game_value *= 10;
-                },
+                }
                 'd' => {
-                    decl_game_value *=  9;
-                },
-                _   => panic!("Unknown game {}", sorted_game),
+                    decl_game_value *= 9;
+                }
+                _ => panic!("Unknown game {}", sorted_game),
             }
         }
         if sorted_game == 'n' {
             // check Null first
             if declarer_count == 0 || tricks_len == 0 {
                 println!("declarer wins {}{}{}with {} to {}",
-                         game, hand_announced, ouvert_announced,
-                         declarer_count, team_count);
+                         game,
+                         hand_announced,
+                         ouvert_announced,
+                         declarer_count,
+                         team_count);
             } else {
                 println!("declarer looses {}{}{}with {} to {}",
-                         game, hand_announced, ouvert_announced,
-                         declarer_count, team_count);
+                         game,
+                         hand_announced,
+                         ouvert_announced,
+                         declarer_count,
+                         team_count);
             }
         } else {
             if declarer_count > team_count {
                 println!("declarer wins {}{}{}with {} to {}",
-                         game, hand_announced, ouvert_announced,
-                         declarer_count, team_count);
+                         game,
+                         hand_announced,
+                         ouvert_announced,
+                         declarer_count,
+                         team_count);
             } else {
                 println!("declarer looses {}{}{}with {} to {}",
-                         game, hand_announced, ouvert_announced,
-                         declarer_count, team_count);
+                         game,
+                         hand_announced,
+                         ouvert_announced,
+                         declarer_count,
+                         team_count);
             }
         }
         println!("game_value = {:?}", game_value);
@@ -3930,20 +4058,23 @@ fn main() {
             if declarer_count == 0 || tricks_len == 0 {
                 // declarer wins
                 match decl_game_value {
-                    23 => { // Null
+                    23 => {
+                        // Null
                         score[declarer_id as usize] += 23;
-                    },
-                    35 => { // Null Hand
+                    }
+                    35 => {
+                        // Null Hand
                         score[declarer_id as usize] += 35;
-                    },
-                    46 => { // Null Ouvert
+                    }
+                    46 => {
+                        // Null Ouvert
                         score[declarer_id as usize] += 46;
-                    },
-                    59 => { // Null Ouvert Hand
+                    }
+                    59 => {
+                        // Null Ouvert Hand
                         score[declarer_id as usize] += 59;
-                    },
-                    _ => panic!("Unknown game value {}, Null expected",
-                                decl_game_value),
+                    }
+                    _ => panic!("Unknown game value {}, Null expected", decl_game_value),
                 }
             } else {
                 // declarer looses
@@ -3968,7 +4099,8 @@ fn main() {
         // continue?
         println!("New game? [press 'q' to quit]");
         let mut input = String::new();
-        io::stdin().read_line(&mut input)
+        io::stdin()
+            .read_line(&mut input)
             .ok()
             .expect("failed to read line");
         if input == "q\n".to_string() {
