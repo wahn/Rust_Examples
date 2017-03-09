@@ -3316,7 +3316,7 @@ fn main() {
                 let mut skat_second: u8 = 0;
                 let mut first: u8 = 0;
                 let mut second: u8 = 0;
-                let mut third: u8 = 0;
+                let mut third: u8;
                 let mut card_counter: u8 = 0;
                 for line in reader.lines() {
                     let input = line.unwrap();
@@ -3398,8 +3398,6 @@ fn main() {
                                     card_counter += 1;
                                     // store played card with current player
                                     players[player_id as usize].add(card);
-                                    // select next player
-                                    player_id = (player_id + 1) % 3;
                                     // store trick
                                     let trick = vec![leader_id, first, second, third];
                                     let played_cards = vec![first, second, third];
