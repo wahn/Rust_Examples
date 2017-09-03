@@ -103,7 +103,7 @@ impl Player {
             Ok(num) => num,
             Err(_) => 0,
         };
-        let mut player_builder = &mut PlayerBuilder::new();
+        let player_builder = &mut PlayerBuilder::new();
         player_builder
             .id(self.id)
             // copy cards from self
@@ -206,7 +206,7 @@ impl Player {
         self.counter
     }
 
-    fn play_card(&mut self, mut played_cards: &mut Vec<u8>, player: u8, game: char) {
+    fn play_card(&mut self, played_cards: &mut Vec<u8>, player: u8, game: char) {
         let mut first_card;
         loop {
             println!("choose card [0-{}]:", self.cards.len() - 1);
@@ -4098,6 +4098,9 @@ fn main() {
                     if input == "g".to_string() {
                         println!("Grand announced ...");
                         g = 'g';
+                    } else if input == "b".to_string() {
+                        println!("Sächsische Spitze announced ...");
+                        g = 'b';
                     } else if input == "n".to_string() {
                         println!("Null announced ...");
                         g = 'n';
