@@ -47,6 +47,11 @@ impl Player {
                 g = 'g';
                 self.sort_cards_for(g);
                 self.print_cards(false);
+            } else if input == "b\n".to_string() {
+                println!("Sort for Sächsische Spitze ...");
+                g = 'b';
+                self.sort_cards_for(g);
+                self.print_cards(false);
             } else if input == "n\n".to_string() {
                 println!("Sort for Null ...");
                 g = 'n';
@@ -112,9 +117,11 @@ impl Player {
             .add(self.cards[7])
             .add(self.cards[8])
             .add(self.cards[9]);
+        let tuple_matadors: (u8, u8);
         if input == 1 {
             // Matadors jack strait
-            *matadors = player_builder.matadors_jack_strait(&skat);
+            tuple_matadors = player_builder.matadors_jack_strait(&skat);
+            *matadors = tuple_matadors.0;
             // print Skat
             skat.print_cards();
             // deal with Skat
@@ -126,7 +133,8 @@ impl Player {
                 .drop2();
         } else {
             // Matadors jack strait
-            *matadors = player_builder.matadors_jack_strait(&skat);
+            tuple_matadors = player_builder.matadors_jack_strait(&skat);
+            *matadors = tuple_matadors.0;
             // player still gets the Skat for counting
             player_builder.do_not_take(&skat);
             *hand = true;
@@ -145,6 +153,14 @@ impl Player {
                 } else {
                     println!("Grand announced ...");
                 }
+            }
+            'b' => {
+                if *hand {
+                    println!("Sächsische Spitze Hand announced ...");
+                } else {
+                    println!("Sächsische Spitze announced ...");
+                }
+                *matadors = tuple_matadors.1; // overwrite
             }
             'n' => {
                 if *hand {
@@ -429,6 +445,148 @@ impl Player {
                 for n in 0..diamonds.len() {
                     sorted.push(diamonds[n]);
                 }
+            }
+            'b' => {
+                // println!("Sächsische Spitze");
+
+                // first find Jacks
+                for n in 0..self.cards.len() {
+                    match self.cards[n] {
+                        // DiamondsJack
+                        28 => sorted.push(self.cards[n]),
+                        // HeartsJack
+                        20 => sorted.push(self.cards[n]),
+                        // SpadesJack
+                        12 => sorted.push(self.cards[n]),
+                        // ClubsJack
+                        4 => sorted.push(self.cards[n]),
+                        // Clubs
+                        0...7 => clubs.push(self.cards[n]),
+                        // Spades
+                        8...15 => spades.push(self.cards[n]),
+                        // Hearts
+                        16...23 => hearts.push(self.cards[n]),
+                        // Diamonds
+                        24...31 => diamonds.push(self.cards[n]),
+                        _ => panic!("Unknown card"),
+                    }
+                }
+                // order Jacks
+                sorted.sort();
+                sorted.reverse();
+                // order suits
+                clubs.sort();
+                spades.sort();
+                hearts.sort();
+                diamonds.sort();
+                // append clubs
+                let mut sorted2: Vec<u8> = Vec::new();
+                let mut pushed_ten = false;
+                let mut ten_found = false;
+                let mut ten = 1; // ClubsTen
+                for n in 0..clubs.len() {
+                    // change position for 10
+                    if clubs[n] != ten {
+                        if clubs[n] >= 5 {
+                            if ten_found && !pushed_ten {
+                                sorted2.push(ten);
+                                pushed_ten = true;
+                            }
+                            sorted2.push(clubs[n]);
+                        } else {
+                            sorted2.push(clubs[n]);
+                        }
+                    } else {
+                        // we have a 10 in current set?
+                        ten_found = true;
+                    }
+                }
+                if ten_found && !pushed_ten {
+                    sorted2.push(ten);
+                }
+                sorted2.reverse();
+                sorted.append(&mut sorted2);
+                // append hearts
+                let mut sorted2: Vec<u8> = Vec::new();
+                pushed_ten = false;
+                ten_found = false;
+                ten = 17; // HeartsTen
+                for n in 0..hearts.len() {
+                    // change position for 10
+                    if hearts[n] != ten {
+                        if hearts[n] >= 21 {
+                            if ten_found && !pushed_ten {
+                                sorted2.push(ten);
+                                pushed_ten = true;
+                            }
+                            sorted2.push(hearts[n]);
+                        } else {
+                            sorted2.push(hearts[n]);
+                        }
+                    } else {
+                        // we have a 10 in current set?
+                        ten_found = true;
+                    }
+                }
+                if ten_found && !pushed_ten {
+                    sorted2.push(ten);
+                }
+                sorted2.reverse();
+                sorted.append(&mut sorted2);
+                // append spades
+                let mut sorted2: Vec<u8> = Vec::new();
+                pushed_ten = false;
+                ten_found = false;
+                ten = 9; // SpadesTen
+                for n in 0..spades.len() {
+                    // change position for 10
+                    if spades[n] != ten {
+                        if spades[n] >= 13 {
+                            if ten_found && !pushed_ten {
+                                sorted2.push(ten);
+                                pushed_ten = true;
+                            }
+                            sorted2.push(spades[n]);
+                        } else {
+                            sorted2.push(spades[n]);
+                        }
+                    } else {
+                        // we have a 10 in current set?
+                        ten_found = true;
+                    }
+                }
+                if ten_found && !pushed_ten {
+                    sorted2.push(ten);
+                }
+                sorted2.reverse();
+                sorted.append(&mut sorted2);
+                // append diamonds
+                let mut sorted2: Vec<u8> = Vec::new();
+                pushed_ten = false;
+                ten_found = false;
+                ten = 25; // DiamondsTen
+                for n in 0..diamonds.len() {
+                    // change position for 10
+                    if diamonds[n] != ten {
+                        if diamonds[n] >= 29 {
+                            if ten_found && !pushed_ten {
+                                sorted2.push(ten);
+                                pushed_ten = true;
+                            }
+                            sorted2.push(diamonds[n]);
+                        } else {
+                            sorted2.push(diamonds[n]);
+                        }
+                    } else {
+                        // we have a 10 in current set?
+                        ten_found = true;
+                    }
+                }
+                if ten_found && !pushed_ten {
+                    sorted2.push(ten);
+                }
+                sorted2.reverse();
+                sorted.append(&mut sorted2);
             }
             'n' => {
                 // println!("Null");
@@ -856,8 +1014,9 @@ impl PlayerBuilder {
         self
     }
 
-    fn matadors_jack_strait(&self, skat: &Skat) -> u8 {
+    fn matadors_jack_strait(&self, skat: &Skat) -> (u8, u8) {
         let mut matadors: u8 = 0u8;
+        let mut b_matadors: u8 = 0u8;
         let mut jacks: Vec<u8> = Vec::new();
         // first find Jacks
         for n in 0..10 {
@@ -901,8 +1060,67 @@ impl PlayerBuilder {
         }
         // order Jacks
         jacks.sort();
-        // count matadors
+        let mut jacks_copy = jacks.to_vec();
+        jacks_copy.reverse();
+        // count matadors for Sächsische Spitze indepently
         let mut with = false;
+        let jacks_copy_len = jacks_copy.len();
+        // _index not used
+        for _index in 0..jacks_copy_len {
+            let jack = jacks_copy[0]; // first
+            match jack {
+                // DiamondsJack
+                28 => {
+                    with = true;
+                    b_matadors = 1;
+                    jacks_copy.remove(0);
+                }
+                // HeartsJack
+                20 => {
+                    if with {
+                        b_matadors = 2;
+                        jacks_copy.remove(0);
+                    } else {
+                        b_matadors = 1;
+                        break;
+                    }
+                }
+                // SpadesJack
+                12 => {
+                    if with {
+                        if b_matadors == 2 {
+                            b_matadors = 3;
+                            jacks_copy.remove(0);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        b_matadors = 2;
+                        break;
+                    }
+                }
+                // ClubsJack
+                4 => {
+                    if with {
+                        if b_matadors == 3 {
+                            b_matadors = 4;
+                            jacks_copy.remove(0);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        b_matadors = 3;
+                        break;
+                    }
+                }
+                _ => panic!("no Jack found"),
+            }
+        }
+        if jacks_copy_len == 0 {
+            b_matadors = 4; // without 4
+        }
+        // count matadors
+        with = false;
         let jacks_len = jacks.len();
         // _index not used
         for _index in 0..jacks_len {
@@ -921,7 +1139,7 @@ impl PlayerBuilder {
                         jacks.remove(0);
                     } else {
                         matadors = 1;
-                        return matadors;
+                        return (matadors, b_matadors);
                     }
                 }
                 // HeartsJack
@@ -931,11 +1149,11 @@ impl PlayerBuilder {
                             matadors = 3;
                             jacks.remove(0);
                         } else {
-                            return matadors;
+                            return (matadors, b_matadors);
                         }
                     } else {
                         matadors = 2;
-                        return matadors;
+                        return (matadors, b_matadors);
                     }
                 }
                 // DiamondsJack
@@ -945,11 +1163,11 @@ impl PlayerBuilder {
                             matadors = 4;
                             jacks.remove(0);
                         } else {
-                            return matadors;
+                            return (matadors, b_matadors);
                         }
                     } else {
                         matadors = 3;
-                        return matadors;
+                        return (matadors, b_matadors);
                     }
                 }
                 _ => panic!("no Jack found"),
@@ -958,7 +1176,7 @@ impl PlayerBuilder {
         if jacks_len == 0 {
             matadors = 4; // without 4
         }
-        matadors
+        (matadors, b_matadors)
     }
 
     fn print_cards(&self) {
@@ -1179,17 +1397,18 @@ impl RecordBuilder {
 
 fn announce(game: char, ouvert: &mut bool) -> char {
     let mut g: char = game; // copy game value (can still be changed)
-    print!("announce game [gncshd], ouvert [o] or y for ");
+    print!("announce game [gbncshd], ouvert [o] or y for ");
     loop {
         match g {
             'g' => println!("Grand?"),
+            'b' => println!("Sächsische Spitze?"),
             'n' => println!("Null?"),
             'c' => println!("Clubs?"),
             's' => println!("Spades?"),
             'h' => println!("Hearts?"),
             'd' => println!("Diamonds?"),
             _ => {
-                println!("Choose game [gncshd]:");
+                println!("Choose game [gbncshd]:");
                 g = 'd';
             }
         }
@@ -1202,6 +1421,9 @@ fn announce(game: char, ouvert: &mut bool) -> char {
             return g;
         } else if input == "g\n".to_string() {
             g = 'g';
+            return g;
+        } else if input == "b\n".to_string() {
+            g = 'b';
             return g;
         } else if input == "n\n".to_string() {
             g = 'n';
@@ -1244,7 +1466,7 @@ fn bid(dealer: &mut Player,
     let mut bidder_bid: u8;
     let mut g: char = 'd';
     loop {
-        println!("bid (or [gncshd]):");
+        println!("bid (or [gbncshd]):");
         let mut input = String::new();
         io::stdin()
             .read_line(&mut input)
@@ -1253,6 +1475,11 @@ fn bid(dealer: &mut Player,
         if input == "g\n".to_string() {
             println!("Sort for Grand ...");
             g = 'g';
+            bidder.sort_cards_for(g);
+            bidder.print_cards(false);
+        } else if input == "b\n".to_string() {
+            println!("Sort for Sächsische Spitze ...");
+            g = 'b';
             bidder.sort_cards_for(g);
             bidder.print_cards(false);
         } else if input == "n\n".to_string() {
@@ -1300,7 +1527,7 @@ fn bid(dealer: &mut Player,
     // ask for input
     let mut responder_bid: u8;
     loop {
-        println!("bid (or [gncshd]):");
+        println!("bid (or [gbncshd]):");
         let mut input = String::new();
         io::stdin()
             .read_line(&mut input)
@@ -1309,6 +1536,11 @@ fn bid(dealer: &mut Player,
         if input == "g\n".to_string() {
             println!("Sort for Grand ...");
             g = 'g';
+            responder.sort_cards_for(g);
+            responder.print_cards(false);
+        } else if input == "b\n".to_string() {
+            println!("Sort for Sächsische Spitze ...");
+            g = 'b';
             responder.sort_cards_for(g);
             responder.print_cards(false);
         } else if input == "n\n".to_string() {
@@ -1355,7 +1587,7 @@ fn bid(dealer: &mut Player,
     // ask for input
     let mut dealer_bid: u8;
     loop {
-        println!("bid (or [gncshd]):");
+        println!("bid (or [gbncshd]):");
         let mut input = String::new();
         io::stdin()
             .read_line(&mut input)
@@ -1364,6 +1596,11 @@ fn bid(dealer: &mut Player,
         if input == "g\n".to_string() {
             println!("Sort for Grand ...");
             g = 'g';
+            dealer.sort_cards_for(g);
+            dealer.print_cards(false);
+        } else if input == "b\n".to_string() {
+            println!("Sort for Sächsische Spitze ...");
+            g = 'b';
             dealer.sort_cards_for(g);
             dealer.print_cards(false);
         } else if input == "n\n".to_string() {
@@ -1651,6 +1888,63 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
     match game {
         'g' => {
             // Grand
+            match first_card {
+                4 | 12 | 20 | 28 => {
+                    // Jack
+                    if jacks.len() > 0usize && !is_in(card, &jacks) {
+                        // has Jacks, but didn't play one
+                        return false;
+                    } else {
+                        // has Jacks and played one of it
+                        // or doesn't have any Jacks
+                        return true;
+                    }
+                }
+                0...7 => {
+                    // Clubs
+                    if clubs.len() > 0usize && !is_in(card, &clubs) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                }
+                8...15 => {
+                    // Spades
+                    if spades.len() > 0usize && !is_in(card, &spades) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                }
+                16...23 => {
+                    // Hearts
+                    if hearts.len() > 0usize && !is_in(card, &hearts) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                }
+                24...31 => {
+                    // Diamonds
+                    if diamonds.len() > 0usize && !is_in(card, &diamonds) {
+                        // has suit, but didn't play one
+                        return false;
+                    } else {
+                        // free to play any other card
+                        return true;
+                    }
+                }
+                _ => panic!("Unknown card"),
+            }
+        }
+        'b' => {
+            // Sächsische Spitze
             match first_card {
                 4 | 12 | 20 | 28 => {
                     // Jack
@@ -2371,6 +2665,486 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     for n in 0..hearts.len() {
                         sorted.push(hearts[n]);
                     }
+                }
+                _ => panic!("Unknown card"),
+            }
+        }
+        'b' => {
+            // first find Jacks
+            for n in 0..3 {
+                match cards[n] {
+                    // DiamondsJack
+                    28 => sorted.push(cards[n]),
+                    // HeartsJack
+                    20 => sorted.push(cards[n]),
+                    // SpadesJack
+                    12 => sorted.push(cards[n]),
+                    // ClubsJack
+                    4 => sorted.push(cards[n]),
+                    // Clubs
+                    0...7 => clubs.push(cards[n]),
+                    // Spades
+                    8...15 => spades.push(cards[n]),
+                    // Hearts
+                    16...23 => hearts.push(cards[n]),
+                    // Diamonds
+                    24...31 => diamonds.push(cards[n]),
+                    _ => panic!("Unknown card"),
+                }
+            }
+            // order Jacks
+            sorted.sort();
+            sorted.reverse();
+            // order suits
+            clubs.sort();
+            spades.sort();
+            hearts.sort();
+            diamonds.sort();
+            // append suit of first card first
+            match first_card_played {
+                0...7 => {
+                    // Clubs
+                    // append clubs
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    let mut pushed_ten = false;
+                    let mut ten_found = false;
+                    let mut ten = 1; // ClubsTen
+                    for n in 0..clubs.len() {
+                        // change position for 10
+                        if clubs[n] != ten {
+                            if clubs[n] >= 5 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(clubs[n]);
+                            } else {
+                                sorted2.push(clubs[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append hearts
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 17; // HeartsTen
+                    for n in 0..hearts.len() {
+                        // change position for 10
+                        if hearts[n] != ten {
+                            if hearts[n] >= 21 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(hearts[n]);
+                            } else {
+                                sorted2.push(hearts[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append spades
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 9; // SpadesTen
+                    for n in 0..spades.len() {
+                        // change position for 10
+                        if spades[n] != ten {
+                            if spades[n] >= 13 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(spades[n]);
+                            } else {
+                                sorted2.push(spades[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append diamonds
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 25; // DiamondsTen
+                    for n in 0..diamonds.len() {
+                        // change position for 10
+                        if diamonds[n] != ten {
+                            if diamonds[n] >= 29 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(diamonds[n]);
+                            } else {
+                                sorted2.push(diamonds[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                }
+                8...15 => {
+                    // Spades
+                    // append spades
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    let mut pushed_ten = false;
+                    let mut ten_found = false;
+                    let mut ten = 9; // SpadesTen
+                    for n in 0..spades.len() {
+                        // change position for 10
+                        if spades[n] != ten {
+                            if spades[n] >= 13 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(spades[n]);
+                            } else {
+                                sorted2.push(spades[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append clubs
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 1; // ClubsTen
+                    for n in 0..clubs.len() {
+                        // change position for 10
+                        if clubs[n] != ten {
+                            if clubs[n] >= 5 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(clubs[n]);
+                            } else {
+                                sorted2.push(clubs[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append hearts
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 17; // HeartsTen
+                    for n in 0..hearts.len() {
+                        // change position for 10
+                        if hearts[n] != ten {
+                            if hearts[n] >= 21 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(hearts[n]);
+                            } else {
+                                sorted2.push(hearts[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append diamonds
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 25; // DiamondsTen
+                    for n in 0..diamonds.len() {
+                        // change position for 10
+                        if diamonds[n] != ten {
+                            if diamonds[n] >= 29 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(diamonds[n]);
+                            } else {
+                                sorted2.push(diamonds[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                }
+                16...23 => {
+                    // Hearts
+                    // append hearts
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    let mut pushed_ten = false;
+                    let mut ten_found = false;
+                    let mut ten = 17; // HeartsTen
+                    for n in 0..hearts.len() {
+                        // change position for 10
+                        if hearts[n] != ten {
+                            if hearts[n] >= 21 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(hearts[n]);
+                            } else {
+                                sorted2.push(hearts[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append clubs
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 1; // ClubsTen
+                    for n in 0..clubs.len() {
+                        // change position for 10
+                        if clubs[n] != ten {
+                            if clubs[n] >= 5 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(clubs[n]);
+                            } else {
+                                sorted2.push(clubs[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append spades
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 9; // SpadesTen
+                    for n in 0..spades.len() {
+                        // change position for 10
+                        if spades[n] != ten {
+                            if spades[n] >= 13 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(spades[n]);
+                            } else {
+                                sorted2.push(spades[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append diamonds
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 25; // DiamondsTen
+                    for n in 0..diamonds.len() {
+                        // change position for 10
+                        if diamonds[n] != ten {
+                            if diamonds[n] >= 29 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(diamonds[n]);
+                            } else {
+                                sorted2.push(diamonds[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                }
+                24...31 => {
+                    // Diamonds
+                    // append diamonds
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    let mut pushed_ten = false;
+                    let mut ten_found = false;
+                    let mut ten = 25; // DiamondsTen
+                    for n in 0..diamonds.len() {
+                        // change position for 10
+                        if diamonds[n] != ten {
+                            if diamonds[n] >= 29 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(diamonds[n]);
+                            } else {
+                                sorted2.push(diamonds[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append clubs
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 1; // ClubsTen
+                    for n in 0..clubs.len() {
+                        // change position for 10
+                        if clubs[n] != ten {
+                            if clubs[n] >= 5 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(clubs[n]);
+                            } else {
+                                sorted2.push(clubs[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append hearts
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 17; // HeartsTen
+                    for n in 0..hearts.len() {
+                        // change position for 10
+                        if hearts[n] != ten {
+                            if hearts[n] >= 21 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(hearts[n]);
+                            } else {
+                                sorted2.push(hearts[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
+                    // append spades
+                    let mut sorted2: Vec<u8> = Vec::new();
+                    pushed_ten = false;
+                    ten_found = false;
+                    ten = 9; // SpadesTen
+                    for n in 0..spades.len() {
+                        // change position for 10
+                        if spades[n] != ten {
+                            if spades[n] >= 13 {
+                                if ten_found && !pushed_ten {
+                                    sorted2.push(ten);
+                                    pushed_ten = true;
+                                }
+                                sorted2.push(spades[n]);
+                            } else {
+                                sorted2.push(spades[n]);
+                            }
+                        } else {
+                            // we have a 10 in current set?
+                            ten_found = true;
+                        }
+                    }
+                    if ten_found && !pushed_ten {
+                        sorted2.push(ten);
+                    }
+                    sorted2.reverse();
+                    sorted.append(&mut sorted2);
                 }
                 _ => panic!("Unknown card"),
             }
@@ -3500,7 +4274,7 @@ fn main() {
             };
             println!("highest bid = {:?}", bid);
             // ask for announced game
-            println!("announced game [gncshd]:");
+            println!("announced game [gbncshd]:");
             let mut input = String::new();
             io::stdin()
                 .read_line(&mut input)
@@ -3510,6 +4284,9 @@ fn main() {
             if input == "g\n".to_string() {
                 println!("Grand announced ...");
                 g = 'g';
+            } else if input == "b\n".to_string() {
+                println!("Sächsische Spitze announced ...");
+                g = 'b';
             } else if input == "n\n".to_string() {
                 println!("Null announced ...");
                 g = 'n';
@@ -3769,6 +4546,18 @@ fn main() {
                 }
                 "Grand"
             }
+            'b' => {
+                if hand {
+                    hand_announced.push_str("Hand ");
+                    if ouvert {
+                        ouvert_announced.push_str("Ouvert ");
+                    } else {
+                        // there is only Grand Hand Ouvert
+                        ouvert = false;
+                    }
+                }
+                "Sächsische Spitze"
+            }
             'n' => {
                 if hand {
                     hand_announced.push_str("Hand ");
@@ -3950,6 +4739,9 @@ fn main() {
                 'g' => {
                     decl_game_value *= 24;
                 }
+                'b' => {
+                    decl_game_value *= 20;
+                }
                 'n' => {
                     if ouvert {
                         // Null Ouvert Hand
@@ -3988,6 +4780,9 @@ fn main() {
                 'g' => {
                     decl_game_value *= 24;
                 }
+                'b' => {
+                    decl_game_value *= 20;
+                }
                 'n' => {
                     if ouvert {
                         // Null Ouvert
@@ -4009,6 +4804,7 @@ fn main() {
                 'd' => {
                     decl_game_value *= 9;
                 }
+
                 _ => panic!("Unknown game {}", sorted_game),
             }
         }
