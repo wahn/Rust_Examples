@@ -4,6 +4,6 @@ version = "0.1.0"
 authors = ["Jan Walter <jdb.walter@gmail.com>"]
 
 [dependencies]
-ansi_term="0.6"
-getopts="0.2"
-rand="0.3.14"
+ansi_term="0.12.1"
+getopts="0.2.21"
+rand="0.7.3"
