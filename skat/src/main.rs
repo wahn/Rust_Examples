@@ -11,7 +11,6 @@ use std::io::prelude::*;
 use std::io;
 use std::io::BufReader;
 use std::path::Path;
-use std::error::Error;
 
 pub const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
@@ -4216,7 +4215,7 @@ fn main() {
                 let path = Path::new(&dst_file);
                 let display = path.display();
                 let mut file = match File::create(&path) {
-                    Err(why) => panic!("couldn't create {}: {}", display, Error::description(&why)),
+                    Err(why) => panic!("couldn't create {}: {}", display, why.to_string()),
                     Ok(file) => file,
                 };
                 // collect info here
@@ -4234,7 +4233,7 @@ fn main() {
                     Err(why) => {
                         panic!("couldn't write to {}: {}",
                                display,
-                               Error::description(&why))
+                               why.to_string())
                     }
                     Ok(_) => println!("successfully wrote to {}", display),
                 }
