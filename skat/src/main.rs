@@ -220,7 +220,7 @@ impl Player {
                 Err(_) => 0,
             };
             match input {
-                0...9 => {
+                0..=9 => {
                     if input >= self.cards.len() as u8 {
                         continue;
                     }
@@ -300,13 +300,13 @@ impl Player {
                 // DiamondsJack
                 28 => sorted.push(self.cards[n]),
                 // Clubs
-                0...7 => clubs.push(self.cards[n]),
+                0..=7 => clubs.push(self.cards[n]),
                 // Spades
-                8...15 => spades.push(self.cards[n]),
+                8..=15 => spades.push(self.cards[n]),
                 // Hearts
-                16...23 => hearts.push(self.cards[n]),
+                16..=23 => hearts.push(self.cards[n]),
                 // Diamonds
-                24...31 => diamonds.push(self.cards[n]),
+                24..=31 => diamonds.push(self.cards[n]),
                 _ => panic!("Unknown card"),
             }
         }
@@ -412,13 +412,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0...7 => clubs.push(self.cards[n]),
+                        0..=7 => clubs.push(self.cards[n]),
                         // Spades
-                        8...15 => spades.push(self.cards[n]),
+                        8..=15 => spades.push(self.cards[n]),
                         // Hearts
-                        16...23 => hearts.push(self.cards[n]),
+                        16..=23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24...31 => diamonds.push(self.cards[n]),
+                        24..=31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -461,13 +461,13 @@ impl Player {
                         // ClubsJack
                         4 => sorted.push(self.cards[n]),
                         // Clubs
-                        0...7 => clubs.push(self.cards[n]),
+                        0..=7 => clubs.push(self.cards[n]),
                         // Spades
-                        8...15 => spades.push(self.cards[n]),
+                        8..=15 => spades.push(self.cards[n]),
                         // Hearts
-                        16...23 => hearts.push(self.cards[n]),
+                        16..=23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24...31 => diamonds.push(self.cards[n]),
+                        24..=31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -594,13 +594,13 @@ impl Player {
                 for n in 0..self.cards.len() {
                     match self.cards[n] {
                         // Clubs
-                        0...7 => clubs.push(self.cards[n]),
+                        0..=7 => clubs.push(self.cards[n]),
                         // Spades
-                        8...15 => spades.push(self.cards[n]),
+                        8..=15 => spades.push(self.cards[n]),
                         // Hearts
-                        16...23 => hearts.push(self.cards[n]),
+                        16..=23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24...31 => diamonds.push(self.cards[n]),
+                        24..=31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -723,13 +723,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0...7 => clubs.push(self.cards[n]),
+                        0..=7 => clubs.push(self.cards[n]),
                         // Spades
-                        8...15 => spades.push(self.cards[n]),
+                        8..=15 => spades.push(self.cards[n]),
                         // Hearts
-                        16...23 => hearts.push(self.cards[n]),
+                        16..=23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24...31 => diamonds.push(self.cards[n]),
+                        24..=31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -772,13 +772,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0...7 => clubs.push(self.cards[n]),
+                        0..=7 => clubs.push(self.cards[n]),
                         // Spades
-                        8...15 => spades.push(self.cards[n]),
+                        8..=15 => spades.push(self.cards[n]),
                         // Hearts
-                        16...23 => hearts.push(self.cards[n]),
+                        16..=23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24...31 => diamonds.push(self.cards[n]),
+                        24..=31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -821,13 +821,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0...7 => clubs.push(self.cards[n]),
+                        0..=7 => clubs.push(self.cards[n]),
                         // Spades
-                        8...15 => spades.push(self.cards[n]),
+                        8..=15 => spades.push(self.cards[n]),
                         // Hearts
-                        16...23 => hearts.push(self.cards[n]),
+                        16..=23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24...31 => diamonds.push(self.cards[n]),
+                        24..=31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -870,13 +870,13 @@ impl Player {
                         // DiamondsJack
                         28 => sorted.push(self.cards[n]),
                         // Clubs
-                        0...7 => clubs.push(self.cards[n]),
+                        0..=7 => clubs.push(self.cards[n]),
                         // Spades
-                        8...15 => spades.push(self.cards[n]),
+                        8..=15 => spades.push(self.cards[n]),
                         // Hearts
-                        16...23 => hearts.push(self.cards[n]),
+                        16..=23 => hearts.push(self.cards[n]),
                         // Diamonds
-                        24...31 => diamonds.push(self.cards[n]),
+                        24..=31 => diamonds.push(self.cards[n]),
                         _ => panic!("Unknown card"),
                     }
                 }
@@ -969,7 +969,7 @@ impl PlayerBuilder {
                 Err(_) => 0,
             };
             match input {
-                0...11 => {
+                0..=11 => {
                     println!("{} chosen ...", input);
                     let card = self.cards.remove(input as usize);
                     self.counter += Player::value_of(card);
@@ -996,7 +996,7 @@ impl PlayerBuilder {
                 Err(_) => 0,
             };
             match input {
-                0...10 => {
+                0..=10 => {
                     println!("{} chosen ...", input);
                     let card = self.cards.remove(input as usize);
                     self.counter += Player::value_of(card);
@@ -1875,13 +1875,13 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
             // DiamondsJack
             28 => jacks.push(cards[n]),
             // Clubs
-            0...7 => clubs.push(cards[n]),
+            0..=7 => clubs.push(cards[n]),
             // Spades
-            8...15 => spades.push(cards[n]),
+            8..=15 => spades.push(cards[n]),
             // Hearts
-            16...23 => hearts.push(cards[n]),
+            16..=23 => hearts.push(cards[n]),
             // Diamonds
-            24...31 => diamonds.push(cards[n]),
+            24..=31 => diamonds.push(cards[n]),
             _ => panic!("Unknown card"),
         }
     }
@@ -1900,7 +1900,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
@@ -1910,7 +1910,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
@@ -1920,7 +1920,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
@@ -1930,7 +1930,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
@@ -1957,7 +1957,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
@@ -1967,7 +1967,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
@@ -1977,7 +1977,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
@@ -1987,7 +1987,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
@@ -2012,7 +2012,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                 }
             }
             match first_card {
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
@@ -2022,7 +2022,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
@@ -2032,7 +2032,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
@@ -2042,7 +2042,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
@@ -2058,7 +2058,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
         'c' => {
             // Clubs
             match first_card {
-                0...7 | 12 | 20 | 28 => {
+                0..=7 | 12 | 20 | 28 => {
                     // Jack or Clubs
                     if (jacks.len() > 0usize || clubs.len() > 0usize) && !is_in(card, &jacks) &&
                        !is_in(card, &clubs) {
@@ -2068,7 +2068,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
@@ -2078,7 +2078,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
@@ -2088,7 +2088,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
@@ -2104,7 +2104,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
         's' => {
             // Spades
             match first_card {
-                4 | 8...15 | 20 | 28 => {
+                4 | 8..=15 | 20 | 28 => {
                     // Jack or Spades
                     if (jacks.len() > 0usize || spades.len() > 0usize) && !is_in(card, &jacks) &&
                        !is_in(card, &spades) {
@@ -2114,7 +2114,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
@@ -2124,7 +2124,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
@@ -2134,7 +2134,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
@@ -2150,7 +2150,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
         'h' => {
             // Hearts
             match first_card {
-                4 | 12 | 16...23 | 28 => {
+                4 | 12 | 16..=23 | 28 => {
                     // Jack or Hearts
                     if (jacks.len() > 0usize || hearts.len() > 0usize) && !is_in(card, &jacks) &&
                        !is_in(card, &hearts) {
@@ -2160,7 +2160,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
@@ -2170,7 +2170,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
@@ -2180,7 +2180,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     if diamonds.len() > 0usize && !is_in(card, &diamonds) {
                         // has suit, but didn't play one
@@ -2196,7 +2196,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
         'd' => {
             // Diamonds
             match first_card {
-                4 | 12 | 20 | 24...31 => {
+                4 | 12 | 20 | 24..=31 => {
                     // Jack or Diamonds
                     if (jacks.len() > 0usize || diamonds.len() > 0usize) &&
                        !is_in(card, &jacks) && !is_in(card, &diamonds) {
@@ -2206,7 +2206,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     if clubs.len() > 0usize && !is_in(card, &clubs) {
                         // has suit, but didn't play one
@@ -2216,7 +2216,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     if spades.len() > 0usize && !is_in(card, &spades) {
                         // has suit, but didn't play one
@@ -2226,7 +2226,7 @@ fn is_valid_card(card: u8, first_card: u8, game: char, cards: &Vec<u8>) -> bool 
                         return true;
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     if hearts.len() > 0usize && !is_in(card, &hearts) {
                         // has suit, but didn't play one
@@ -2251,7 +2251,7 @@ fn print_card(card: u8, in_color: bool) {
     match card {
         0 => {
             let mut ace = " A".to_string();
-            ace.push_str(club);
+            ace.push_str(&club);
             if in_color {
                 print!("{} ", Black.bold().paint(&ace));
             } else {
@@ -2260,7 +2260,7 @@ fn print_card(card: u8, in_color: bool) {
         }
         1 => {
             let mut ten = "10".to_string();
-            ten.push_str(club);
+            ten.push_str(&club);
             if in_color {
                 print!("{} ", Black.bold().paint(&ten));
             } else {
@@ -2269,7 +2269,7 @@ fn print_card(card: u8, in_color: bool) {
         }
         2 => {
             let mut king = " K".to_string();
-            king.push_str(club);
+            king.push_str(&club);
             if in_color {
                 print!("{} ", Black.bold().paint(&king));
             } else {
@@ -2278,7 +2278,7 @@ fn print_card(card: u8, in_color: bool) {
         }
         3 => {
             let mut queen = " Q".to_string();
-            queen.push_str(club);
+            queen.push_str(&club);
             if in_color {
                 print!("{} ", Black.bold().paint(&queen));
             } else {
@@ -2287,7 +2287,7 @@ fn print_card(card: u8, in_color: bool) {
         }
         4 => {
             let mut jack = " J".to_string();
-            jack.push_str(club);
+            jack.push_str(&club);
             if in_color {
                 print!("{} ", Black.bold().paint(&jack));
             } else {
@@ -2296,7 +2296,7 @@ fn print_card(card: u8, in_color: bool) {
         }
         5 => {
             let mut nine = " 9".to_string();
-            nine.push_str(club);
+            nine.push_str(&club);
             if in_color {
                 print!("{} ", Black.bold().paint(&nine));
             } else {
@@ -2305,7 +2305,7 @@ fn print_card(card: u8, in_color: bool) {
         }
         6 => {
             let mut eight = " 8".to_string();
-            eight.push_str(club);
+            eight.push_str(&club);
             if in_color {
                 print!("{} ", Black.bold().paint(&eight));
             } else {
@@ -2314,7 +2314,7 @@ fn print_card(card: u8, in_color: bool) {
         }
         7 => {
             let mut seven = " 7".to_string();
-            seven.push_str(club);
+            seven.push_str(&club);
             if in_color {
                 print!("{} ", Black.bold().paint(&seven));
             } else {
@@ -2571,13 +2571,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0...7 => clubs.push(cards[n]),
+                    0..=7 => clubs.push(cards[n]),
                     // Spades
-                    8...15 => spades.push(cards[n]),
+                    8..=15 => spades.push(cards[n]),
                     // Hearts
-                    16...23 => hearts.push(cards[n]),
+                    16..=23 => hearts.push(cards[n]),
                     // Diamonds
-                    24...31 => diamonds.push(cards[n]),
+                    24..=31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -2590,7 +2590,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     // append clubs
                     for n in 0..clubs.len() {
@@ -2609,7 +2609,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     // append spades
                     for n in 0..spades.len() {
@@ -2628,7 +2628,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     // append hearts
                     for n in 0..hearts.len() {
@@ -2647,7 +2647,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     // append diamonds
                     for n in 0..diamonds.len() {
@@ -2682,13 +2682,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // ClubsJack
                     4 => sorted.push(cards[n]),
                     // Clubs
-                    0...7 => clubs.push(cards[n]),
+                    0..=7 => clubs.push(cards[n]),
                     // Spades
-                    8...15 => spades.push(cards[n]),
+                    8..=15 => spades.push(cards[n]),
                     // Hearts
-                    16...23 => hearts.push(cards[n]),
+                    16..=23 => hearts.push(cards[n]),
                     // Diamonds
-                    24...31 => diamonds.push(cards[n]),
+                    24..=31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -2702,7 +2702,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     // append clubs
                     let mut sorted2: Vec<u8> = Vec::new();
@@ -2813,7 +2813,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     sorted2.reverse();
                     sorted.append(&mut sorted2);
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     // append spades
                     let mut sorted2: Vec<u8> = Vec::new();
@@ -2924,7 +2924,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     sorted2.reverse();
                     sorted.append(&mut sorted2);
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     // append hearts
                     let mut sorted2: Vec<u8> = Vec::new();
@@ -3035,7 +3035,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     sorted2.reverse();
                     sorted.append(&mut sorted2);
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     // append diamonds
                     let mut sorted2: Vec<u8> = Vec::new();
@@ -3153,13 +3153,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             for n in 0..3 {
                 match cards[n] {
                     // Clubs
-                    0...7 => clubs.push(cards[n]),
+                    0..=7 => clubs.push(cards[n]),
                     // Spades
-                    8...15 => spades.push(cards[n]),
+                    8..=15 => spades.push(cards[n]),
                     // Hearts
-                    16...23 => hearts.push(cards[n]),
+                    16..=23 => hearts.push(cards[n]),
                     // Diamonds
-                    24...31 => diamonds.push(cards[n]),
+                    24..=31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -3172,7 +3172,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     // append clubs
                     let mut pushed_ten = false;
@@ -3271,7 +3271,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(ten);
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     // append spades
                     let mut pushed_ten = false;
@@ -3370,7 +3370,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(ten);
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     // append hearts
                     let mut pushed_ten = false;
@@ -3469,7 +3469,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(ten);
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     // append diamonds
                     let mut pushed_ten = false;
@@ -3584,13 +3584,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0...7 => clubs.push(cards[n]),
+                    0..=7 => clubs.push(cards[n]),
                     // Spades
-                    8...15 => spades.push(cards[n]),
+                    8..=15 => spades.push(cards[n]),
                     // Hearts
-                    16...23 => hearts.push(cards[n]),
+                    16..=23 => hearts.push(cards[n]),
                     // Diamonds
-                    24...31 => diamonds.push(cards[n]),
+                    24..=31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -3603,7 +3603,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     // append clubs
                     for n in 0..clubs.len() {
@@ -3622,7 +3622,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     // append clubs
                     for n in 0..clubs.len() {
@@ -3641,7 +3641,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     // append clubs
                     for n in 0..clubs.len() {
@@ -3660,7 +3660,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     // append clubs
                     for n in 0..clubs.len() {
@@ -3695,13 +3695,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0...7 => clubs.push(cards[n]),
+                    0..=7 => clubs.push(cards[n]),
                     // Spades
-                    8...15 => spades.push(cards[n]),
+                    8..=15 => spades.push(cards[n]),
                     // Hearts
-                    16...23 => hearts.push(cards[n]),
+                    16..=23 => hearts.push(cards[n]),
                     // Diamonds
-                    24...31 => diamonds.push(cards[n]),
+                    24..=31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -3714,7 +3714,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     // append spades
                     for n in 0..spades.len() {
@@ -3733,7 +3733,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     // append spades
                     for n in 0..spades.len() {
@@ -3752,7 +3752,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     // append spades
                     for n in 0..spades.len() {
@@ -3771,7 +3771,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     // append spades
                     for n in 0..spades.len() {
@@ -3806,13 +3806,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0...7 => clubs.push(cards[n]),
+                    0..=7 => clubs.push(cards[n]),
                     // Spades
-                    8...15 => spades.push(cards[n]),
+                    8..=15 => spades.push(cards[n]),
                     // Hearts
-                    16...23 => hearts.push(cards[n]),
+                    16..=23 => hearts.push(cards[n]),
                     // Diamonds
-                    24...31 => diamonds.push(cards[n]),
+                    24..=31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -3824,7 +3824,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             hearts.sort();
             diamonds.sort();
             match first_card_played {
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     // append hearts
                     for n in 0..hearts.len() {
@@ -3843,7 +3843,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     // append hearts
                     for n in 0..hearts.len() {
@@ -3862,7 +3862,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     // append hearts
                     for n in 0..hearts.len() {
@@ -3881,7 +3881,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(diamonds[n]);
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     // append hearts
                     for n in 0..hearts.len() {
@@ -3916,13 +3916,13 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                     // DiamondsJack
                     28 => sorted.push(cards[n]),
                     // Clubs
-                    0...7 => clubs.push(cards[n]),
+                    0..=7 => clubs.push(cards[n]),
                     // Spades
-                    8...15 => spades.push(cards[n]),
+                    8..=15 => spades.push(cards[n]),
                     // Hearts
-                    16...23 => hearts.push(cards[n]),
+                    16..=23 => hearts.push(cards[n]),
                     // Diamonds
-                    24...31 => diamonds.push(cards[n]),
+                    24..=31 => diamonds.push(cards[n]),
                     _ => panic!("Unknown card"),
                 }
             }
@@ -3935,7 +3935,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
             diamonds.sort();
             // append suit of first card first
             match first_card_played {
-                0...7 => {
+                0..=7 => {
                     // Clubs
                     // append diamonds
                     for n in 0..diamonds.len() {
@@ -3954,7 +3954,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(hearts[n]);
                     }
                 }
-                8...15 => {
+                8..=15 => {
                     // Spades
                     // append diamonds
                     for n in 0..diamonds.len() {
@@ -3973,7 +3973,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(hearts[n]);
                     }
                 }
-                16...23 => {
+                16..=23 => {
                     // Hearts
                     // append diamonds
                     for n in 0..diamonds.len() {
@@ -3992,7 +3992,7 @@ fn sort_trick_for(cards: &Vec<u8>, game: char) -> Vec<u8> {
                         sorted.push(spades[n]);
                     }
                 }
-                24...31 => {
+                24..=31 => {
                     // Diamonds
                     // append diamonds
                     for n in 0..diamonds.len() {
