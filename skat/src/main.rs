@@ -2393,7 +2393,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         16 => {
-            let mut ace = "\x1b[0;30;47m A".to_string();
+            let mut ace = "\x1b[0;31;47m A".to_string();
             ace.push_str(heart);
             if in_color {
                 print!("{} ", Red.bold().paint(&ace));
@@ -2402,7 +2402,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         17 => {
-            let mut ten = "\x1b[0;30;47m10".to_string();
+            let mut ten = "\x1b[0;31;47m10".to_string();
             ten.push_str(heart);
             if in_color {
                 print!("{} ", Red.bold().paint(&ten));
@@ -2411,7 +2411,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         18 => {
-            let mut king = "\x1b[0;30;47m K".to_string();
+            let mut king = "\x1b[0;31;47m K".to_string();
             king.push_str(heart);
             if in_color {
                 print!("{} ", Red.bold().paint(&king));
@@ -2420,7 +2420,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         19 => {
-            let mut queen = "\x1b[0;30;47m Q".to_string();
+            let mut queen = "\x1b[0;31;47m Q".to_string();
             queen.push_str(heart);
             if in_color {
                 print!("{} ", Red.bold().paint(&queen));
@@ -2429,7 +2429,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         20 => {
-            let mut jack = "\x1b[0;30;47m J".to_string();
+            let mut jack = "\x1b[0;31;47m J".to_string();
             jack.push_str(heart);
             if in_color {
                 print!("{} ", Red.bold().paint(&jack));
@@ -2438,7 +2438,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         21 => {
-            let mut nine = "\x1b[0;30;47m 9".to_string();
+            let mut nine = "\x1b[0;31;47m 9".to_string();
             nine.push_str(heart);
             if in_color {
                 print!("{} ", Red.bold().paint(&nine));
@@ -2447,7 +2447,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         22 => {
-            let mut eight = "\x1b[0;30;47m 8".to_string();
+            let mut eight = "\x1b[0;31;47m 8".to_string();
             eight.push_str(heart);
             if in_color {
                 print!("{} ", Red.bold().paint(&eight));
@@ -2456,7 +2456,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         23 => {
-            let mut seven = "\x1b[0;30;47m 7".to_string();
+            let mut seven = "\x1b[0;31;47m 7".to_string();
             seven.push_str(heart);
             if in_color {
                 print!("{} ", Red.bold().paint(&seven));
@@ -2465,7 +2465,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         24 => {
-            let mut ace = "\x1b[0;30;47m A".to_string();
+            let mut ace = "\x1b[0;31;47m A".to_string();
             ace.push_str(diamond);
             if in_color {
                 print!("{} ", Yellow.bold().paint(&ace));
@@ -2474,7 +2474,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         25 => {
-            let mut ten = "\x1b[0;30;47m10".to_string();
+            let mut ten = "\x1b[0;31;47m10".to_string();
             ten.push_str(diamond);
             if in_color {
                 print!("{} ", Yellow.bold().paint(&ten));
@@ -2483,7 +2483,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         26 => {
-            let mut king = "\x1b[0;30;47m K".to_string();
+            let mut king = "\x1b[0;31;47m K".to_string();
             king.push_str(diamond);
             if in_color {
                 print!("{} ", Yellow.bold().paint(&king));
@@ -2492,7 +2492,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         27 => {
-            let mut queen = "\x1b[0;30;47m Q".to_string();
+            let mut queen = "\x1b[0;31;47m Q".to_string();
             queen.push_str(diamond);
             if in_color {
                 print!("{} ", Yellow.bold().paint(&queen));
@@ -2501,7 +2501,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         28 => {
-            let mut jack = "\x1b[0;30;47m J".to_string();
+            let mut jack = "\x1b[0;31;47m J".to_string();
             jack.push_str(diamond);
             if in_color {
                 print!("{} ", Yellow.bold().paint(&jack));
@@ -2510,7 +2510,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         29 => {
-            let mut nine = "\x1b[0;30;47m 9".to_string();
+            let mut nine = "\x1b[0;31;47m 9".to_string();
             nine.push_str(diamond);
             if in_color {
                 print!("{} ", Yellow.bold().paint(&nine));
@@ -2519,7 +2519,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         30 => {
-            let mut eight = "\x1b[0;30;47m 8".to_string();
+            let mut eight = "\x1b[0;31;47m 8".to_string();
             eight.push_str(diamond);
             if in_color {
                 print!("{} ", Yellow.bold().paint(&eight));
@@ -2528,7 +2528,7 @@ fn print_card(card: u8, in_color: bool) {
             }
         }
         31 => {
-            let mut seven = "\x1b[0;30;47m 7".to_string();
+            let mut seven = "\x1b[0;31;47m 7".to_string();
             seven.push_str(diamond);
             if in_color {
                 print!("{} ", Yellow.bold().paint(&seven));
